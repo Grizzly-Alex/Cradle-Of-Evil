@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine: MonoBehaviour
 {
     private IState currentState;
 
@@ -8,7 +8,13 @@ public class StateMachine : MonoBehaviour
     {
         currentState?.Exit();
         currentState = newState;
-        currentState?.Enter();
+        currentState.Enter();
+    }
+
+    public void InitState(IState initState)
+    {
+        currentState = initState;
+        currentState.Enter();
     }
 
     private void Update()
