@@ -19,6 +19,11 @@ public class StateMachine: MonoBehaviour
 
     private void Update()
     {
-        currentState?.LogicUpdate(Time.deltaTime);
+        currentState?.FrameUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        currentState?.PhysicsUpdate();       
     }
 }
