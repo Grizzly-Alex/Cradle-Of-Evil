@@ -4771,7 +4771,7 @@ MonoBehaviour:
   <InputReader>k__BackingField: {fileID: 360191225}
   <Core>k__BackingField: {fileID: 1741532792}
   <PlayerData>k__BackingField:
-    <StandingMoveSpeed>k__BackingField: 5
+    <StandingMoveSpeed>k__BackingField: 6
     <CrouchingMoveSpeed>k__BackingField: 2
 --- !u!114 &360191225
 MonoBehaviour:

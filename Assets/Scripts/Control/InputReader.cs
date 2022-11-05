@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 
 public class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
+    
     public Vector2 MovementValue { get; private set; }
     public float InputForceX { get; private set; }
     public float InputForceY { get; private set; }
     public int NormInputX { get; private set;}
     public int NormInputY { get; private set; }
     public event Action JumpEvent;
+    public event Action SitStandEvent;
     private Controls controls;
     private const float stickDeadzone = 0.5f;
 
@@ -57,6 +59,14 @@ public class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (context.performed)
         {
             JumpEvent?.Invoke();
+        }
+    }
+
+    public void OnSitStand(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SitStandEvent?.Invoke();
         }
     }
 }

@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStandingState : PlayerBaseState
-{    
+{ 
+       
     private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
-    private readonly int HashRunStart = Animator.StringToHash("RunStart");
-    private readonly int HashRun = Animator.StringToHash("Run");
-    private readonly int HashRunStop = Animator.StringToHash("RunStop");
-    private readonly int HashWalck = Animator.StringToHash("Walck");
-    
-
+    private readonly int HashisMove = Animator.StringToHash("isMove");
     private bool isGrounded;
 
 
@@ -21,12 +17,19 @@ public class PlayerStandingState : PlayerBaseState
     public override void Enter()
     {
         Debug.Log("Enter: Standing State");
+        
+        input.SitStandEvent += OnSit;
+
+        stateMachine.Animator.Play(HashIdleStand);
     }
 
     public override void FrameUpdate()
     {
         stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
-        
+
+        stateMachine.Animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
+
+      
         if(isGrounded)
         {
             //transition air state         
@@ -42,6 +45,10 @@ public class PlayerStandingState : PlayerBaseState
 
     public override void Exit()
     {
+        input.SitStandEvent -= OnSit;
+
         Debug.Log("Exit: Standing State");    
     }
+
+    private void OnSit() => stateMachine.SwitchState(new PlayerCrouchingState(stateMachine));
 }

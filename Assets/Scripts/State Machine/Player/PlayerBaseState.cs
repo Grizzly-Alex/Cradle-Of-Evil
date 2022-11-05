@@ -7,7 +7,9 @@ public abstract class PlayerBaseState : IState
     protected PlayerStateMachine stateMachine;
     protected InputReader input;
     protected Core core;
+    protected int currentHashAnim;
     protected PlayerData data;
+
 
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
