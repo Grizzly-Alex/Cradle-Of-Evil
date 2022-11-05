@@ -4653,7 +4653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 360191214}
   - component: {fileID: 360191225}
-  - component: {fileID: 360191223}
+  - component: {fileID: 360191227}
   - component: {fileID: 360191226}
   - component: {fileID: 360191215}
   - component: {fileID: 360191218}
@@ -4673,7 +4673,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360191213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.5, y: -1.5, z: 0}
+  m_LocalPosition: {x: -15.5, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4753,32 +4753,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!61 &360191223
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 360191213}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.59}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.55}
-    oldSize: {x: 3.125, y: 2.5}
-    newSize: {x: 3.125, y: 2.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.44, y: 1.37}
-  m_EdgeRadius: 0
 --- !u!114 &360191224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4792,13 +4766,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Rigidbody>k__BackingField: {fileID: 360191226}
-  <BoxCollider>k__BackingField: {fileID: 360191223}
+  <BoxCollider>k__BackingField: {fileID: 0}
   <Animator>k__BackingField: {fileID: 360191218}
   <InputReader>k__BackingField: {fileID: 360191225}
   <Core>k__BackingField: {fileID: 1741532792}
   <PlayerData>k__BackingField:
-    <StandingMoveSpeed>k__BackingField: 7
-    <CrouchingMoveSpeed>k__BackingField: 4
+    <StandingMoveSpeed>k__BackingField: 5
+    <CrouchingMoveSpeed>k__BackingField: 2
 --- !u!114 &360191225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4832,6 +4806,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!70 &360191227
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360191213}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.59}
+  m_Size: {x: 0.42, y: 1.37}
+  m_Direction: 0
 --- !u!1 &866903823
 GameObject:
   m_ObjectHideFlags: 3
@@ -5435,7 +5425,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444150607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.5, y: -1.5, z: -10}
+  m_LocalPosition: {x: -15.5, y: -1.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5555,7 +5545,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892614046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.5, y: -1.09375, z: -10}
+  m_LocalPosition: {x: -15.499998, y: -1.09375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5625,6 +5615,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4140435375988997164, guid: 9150344760f59c140830a3898c534212, type: 3}
       propertyPath: <GroundDistance>k__BackingField
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140435375988997164, guid: 9150344760f59c140830a3898c534212, type: 3}
+      propertyPath: <LeftGroundRayDistance>k__BackingField
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140435375988997164, guid: 9150344760f59c140830a3898c534212, type: 3}
+      propertyPath: <MidleGroundRayDistance>k__BackingField
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140435375988997164, guid: 9150344760f59c140830a3898c534212, type: 3}
+      propertyPath: <RightGroundRayDistance>k__BackingField
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4769231103168760028, guid: 9150344760f59c140830a3898c534212, type: 3}

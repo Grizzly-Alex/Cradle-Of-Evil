@@ -16,7 +16,32 @@ public class Movement: CoreComponent
         FacingDirection = 1;
     }
 
+    public void MoveAlongSurface(float velocity)
+    {
+        if(core.CollisionSenses.GetGroundSlopeAngle() != 0.0f)
+        {
+            SetVelocityOnSlope(velocity);
+        }
+        else
+        {
+            SetVelocityOnSmooth(velocity);
+        }
+    }
 
+    public void SetVelocityOnSlope(float velocity)
+    {
+        workingVector.Set(
+            -velocity * core.CollisionSenses.GetPerpendicularSurface().x,
+            -velocity * core.CollisionSenses.GetPerpendicularSurface().y);
+
+        SetFinalVelocity();
+    }
+
+    public void SetVelocityOnSmooth(float velocity)
+    {
+        workingVector.Set(velocity, Vector2.zero.y);
+        SetFinalVelocity();
+    }
 
     public void SetVelocityX(float velocity)
     {
@@ -36,10 +61,7 @@ public class Movement: CoreComponent
         SetFinalVelocity();
     }
 
-    public void SetFinalVelocity()
-    {
-        Rigidbody.velocity = workingVector;
-    }
+    public void SetFinalVelocity() => Rigidbody.velocity = workingVector;
 
 
     public void CheckIfShouldFlip(int xInput)

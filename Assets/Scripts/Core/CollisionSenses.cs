@@ -7,45 +7,28 @@ using System.Linq;
 public class CollisionSenses : CoreComponent
 {
     [field: Header("GROUND DETECTION")]
-    [field: SerializeField] public bool IsGrounded { get; private set; }
-    [field: SerializeField] public float GroundDistance { get; private set; }
     [field: SerializeField] public LayerMask GroundMask { get; private set; }
+    [field: SerializeField] public float GroundRayDistance { get; private set; }
 
-    public BoxCollider2D BoxCollider {get; private set; }
-
-    private List<RaycastHit2D> groundHits;
-
+    public CapsuleCollider2D PlayerCollider {get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-
-        BoxCollider = GetComponentInParent<BoxCollider2D>();       
+        
+        PlayerCollider = GetComponentInParent<CapsuleCollider2D>(); 
     }
-
+   
+    public bool DetectingGround() => GetGroundHit();  
     
+    public float GetGroundSlopeAngle() => Vector2.Angle(GetGroundHit().normal, Vector2.up);
 
-    public bool DetectingGround()
+    public Vector2 GetPerpendicularSurface() => Vector2.Perpendicular(GetGroundHit().normal).normalized;
+
+    private RaycastHit2D GetGroundHit()
     {
-        SetGroundHitsPositions();
-
-        return IsGrounded = groundHits.Any(hit => hit);
-    } 
-
-
-    private void SetGroundHitsPositions()
-    {
-        float pointHitPosY = (BoxCollider.transform.position.y + BoxCollider.offset.y) - BoxCollider.size.y / 2;
-        Vector2 pointHitLeft = new Vector2(BoxCollider.transform.position.x - BoxCollider.size.x / 2, pointHitPosY);
-        Vector2 pointHitRight = new Vector2(BoxCollider.transform.position.x + BoxCollider.size.x / 2, pointHitPosY);
-
-        groundHits = new List<RaycastHit2D>()
-        {
-            Physics2D.Raycast(pointHitLeft, Vector2.down, GroundDistance, GroundMask),
-            Physics2D.Raycast(pointHitRight, Vector2.down, GroundDistance, GroundMask)
-        };
-
-        Debug.DrawRay(pointHitLeft, Vector2.down * GroundDistance, Color.green);   
-        Debug.DrawRay(pointHitRight, Vector2.down * GroundDistance, Color.green);
-    }   
+        Vector2 pointHit = new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y);
+        Debug.DrawRay(pointHit, Vector2.down * GroundRayDistance, Color.red); 
+        return Physics2D.Raycast(pointHit, Vector2.down, GroundRayDistance, GroundMask);   
+    }       
 }

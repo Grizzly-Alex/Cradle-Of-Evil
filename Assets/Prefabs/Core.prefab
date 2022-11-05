@@ -72,8 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bc3eddd995a2746970710a9ddf2028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsGrounded>k__BackingField: 0
-  <GroundDistance>k__BackingField: 0.1
   <GroundMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
+  <GroundRayDistance>k__BackingField: 0.25
