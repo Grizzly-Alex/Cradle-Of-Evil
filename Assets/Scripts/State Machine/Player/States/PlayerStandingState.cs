@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,12 +37,17 @@ public class PlayerStandingState : PlayerBaseState
     {
         isGrounded = core.CollisionSenses.DetectingGround();
                
-        core.Movement.MoveAlongSurface(data.StandingMoveSpeed * input.NormInputX);
+        core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX);
+
+        switch (input.NormInputX)
+        {
+            case 0: SetPhysicsMaterial(materialsData.Friction); break;
+            default: SetPhysicsMaterial(materialsData.NoFriction); break;
+        }
     }
 
     public override void Exit()
-    {
-        
+    {        
         input.SitStandEvent -= OnSit;  
     }
 

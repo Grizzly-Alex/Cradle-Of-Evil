@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class PlayerBaseState : IState
 {
@@ -9,12 +10,14 @@ public abstract class PlayerBaseState : IState
     protected InputReader input;
     protected Core core;
     protected Animator animator; 
-    protected PlayerData data;
+    protected MaterialsData materialsData;
+    protected PlayerData playerData;
 
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
-        data = stateMachine.PlayerData;
+        playerData = stateMachine.PlayerData;
+        materialsData = stateMachine.MaterialsData;
         input = stateMachine.InputReader;
         core = stateMachine.Core;
         animator = stateMachine.Animator;
@@ -36,5 +39,12 @@ public abstract class PlayerBaseState : IState
         stateMachine.BodyCollider.size = newSize;
         stateMachine.BodyCollider.offset = center;
     }
-    
+
+    protected void SetPhysicsMaterial(PhysicsMaterial2D newMaterial)
+    {
+        if(stateMachine.Rigidbody.sharedMaterial.name.Equals
+        (newMaterial.name, StringComparison.Ordinal)) return;
+       
+        stateMachine.Rigidbody.sharedMaterial = newMaterial;
+    }   
 }

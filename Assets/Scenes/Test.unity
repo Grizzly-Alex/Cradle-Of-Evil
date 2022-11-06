@@ -4785,7 +4785,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360191213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.88875, y: -2.39875, z: 0}
+  m_LocalPosition: {x: -38, y: -2.4375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4882,6 +4882,9 @@ MonoBehaviour:
   <Animator>k__BackingField: {fileID: 360191218}
   <InputReader>k__BackingField: {fileID: 360191225}
   <Core>k__BackingField: {fileID: 1741532792}
+  <MaterialsData>k__BackingField:
+    <NoFriction>k__BackingField: {fileID: 6200000, guid: 2ea3183e888e96b448da5f79daf6d94e, type: 2}
+    <Friction>k__BackingField: {fileID: 6200000, guid: 57921e6d345b3d649b4f3c2b8bfb1be4, type: 2}
   <PlayerData>k__BackingField:
     <StandingMoveSpeed>k__BackingField: 6
     <CrouchingMoveSpeed>k__BackingField: 2
@@ -4915,7 +4918,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 2ea3183e888e96b448da5f79daf6d94e, type: 2}
+  m_Material: {fileID: 6200000, guid: 57921e6d345b3d649b4f3c2b8bfb1be4, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -5623,7 +5626,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444150607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.88875, y: -2.39875, z: -10}
+  m_LocalPosition: {x: -38, y: -2.4375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5743,7 +5746,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892614046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.88875, y: -1.0937498, z: -10}
+  m_LocalPosition: {x: -38, y: -1.09375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

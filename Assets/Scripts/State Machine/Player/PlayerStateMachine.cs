@@ -8,6 +8,7 @@ public class PlayerStateMachine: StateMachine
     [field: SerializeField] public Animator Animator { get; private set; }
     [field: SerializeField] public InputReader InputReader { get; private set; }
     [field: SerializeField] public Core Core { get; private set; }
+    [field: SerializeField] public MaterialsData MaterialsData { get; private set; }
     [field: SerializeField] public PlayerData PlayerData { get; private set; }
 
     private void Start()

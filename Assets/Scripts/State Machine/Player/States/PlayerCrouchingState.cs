@@ -35,7 +35,13 @@ public class PlayerCrouchingState : PlayerBaseState
     {
         isGrounded = core.CollisionSenses.DetectingGround();
                
-        core.Movement.MoveAlongSurface(data.CrouchingMoveSpeed * input.NormInputX);
+        core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
+
+        switch (input.NormInputX)
+        {
+            case 0: SetPhysicsMaterial(materialsData.Friction); break;
+            default: SetPhysicsMaterial(materialsData.NoFriction); break;
+        }
     }
 
     public override void Exit()

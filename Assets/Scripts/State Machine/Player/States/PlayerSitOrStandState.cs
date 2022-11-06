@@ -20,6 +20,8 @@ public class PlayerSitOrStandState : PlayerBaseState
 
     public override void Enter()
     {
+        SetPhysicsMaterial(materialsData.Friction);
+        
         if(isTransitToCrouch)
         {
             animator.Play(HashSitDown);
@@ -36,13 +38,13 @@ public class PlayerSitOrStandState : PlayerBaseState
         {
             if(isTransitToCrouch)
             {
-                SetColliderHeight(data.CrouchingColiderHeight);
+                SetColliderHeight(playerData.CrouchingColiderHeight);
 
                 stateMachine.SwitchState(new PlayerCrouchingState(stateMachine));
             }
             else
             {
-                SetColliderHeight(data.StandingColiderHeight);
+                SetColliderHeight(playerData.StandingColiderHeight);
 
                 stateMachine.SwitchState(new PlayerStandingState(stateMachine));
             }            
