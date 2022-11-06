@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlayerStateMachine: StateMachine
 {
     [field: SerializeField] public Rigidbody2D Rigidbody { get; private set; }
-    [field: SerializeField] public BoxCollider2D BoxCollider { get; private set; }
+    [field: SerializeField] public CapsuleCollider2D BodyCollider { get; private set; }
     [field: SerializeField] public Animator Animator { get; private set; }
     [field: SerializeField] public InputReader InputReader { get; private set; }
     [field: SerializeField] public Core Core { get; private set; }
@@ -13,5 +14,4 @@ public class PlayerStateMachine: StateMachine
     {
         InitState(new PlayerStandingState(this));
     }
-   
 }

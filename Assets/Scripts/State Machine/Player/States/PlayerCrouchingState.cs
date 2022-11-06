@@ -8,27 +8,23 @@ public class PlayerCrouchingState : PlayerBaseState
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
     private bool isGrounded;
 
-
     public PlayerCrouchingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void Enter()
     {
-        Debug.Log("Enter: Crouching State");
-
         input.SitStandEvent += OnStand;
 
-        stateMachine.Animator.Play(HashIdleCrouch);      
+        animator.Play(HashIdleCrouch);  
     }
 
     public override void FrameUpdate()
     {
         stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
 
-        stateMachine.Animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
-
-      
+        animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
+    
         if(isGrounded)
         {
             //transition air state         
@@ -44,10 +40,8 @@ public class PlayerCrouchingState : PlayerBaseState
 
     public override void Exit()
     {
-        input.SitStandEvent -= OnStand;
-        
-        Debug.Log("Exit: Crouching State");    
+        input.SitStandEvent -= OnStand;    
     }
 
-    private void OnStand() => stateMachine.SwitchState(new PlayerStandingState(stateMachine));
+    private void OnStand() => stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: false));
 }

@@ -26,4 +26,7 @@ public class StateMachine: MonoBehaviour
     {
         currentState?.PhysicsUpdate();       
     }
+
+    private void AnimationTriger() => currentState.AnimationTriger();
+    private void AnimationFinishTrigger() => currentState.AnimationFinishTrigger();
 }

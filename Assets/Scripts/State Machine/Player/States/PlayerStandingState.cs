@@ -9,27 +9,23 @@ public class PlayerStandingState : PlayerBaseState
     private readonly int HashisMove = Animator.StringToHash("isMove");
     private bool isGrounded;
 
-
     public PlayerStandingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
     }
 
     public override void Enter()
     {
-        Debug.Log("Enter: Standing State");
-        
         input.SitStandEvent += OnSit;
 
-        stateMachine.Animator.Play(HashIdleStand);
+        animator.Play(HashIdleStand);
     }
 
     public override void FrameUpdate()
     {
         stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
 
-        stateMachine.Animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
-
-      
+        animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
+            
         if(isGrounded)
         {
             //transition air state         
@@ -45,10 +41,9 @@ public class PlayerStandingState : PlayerBaseState
 
     public override void Exit()
     {
-        input.SitStandEvent -= OnSit;
-
-        Debug.Log("Exit: Standing State");    
+        
+        input.SitStandEvent -= OnSit;  
     }
 
-    private void OnSit() => stateMachine.SwitchState(new PlayerCrouchingState(stateMachine));
+    private void OnSit() => stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: true));
 }
