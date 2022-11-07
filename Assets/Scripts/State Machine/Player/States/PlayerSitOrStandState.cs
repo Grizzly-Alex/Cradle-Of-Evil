@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
-public class PlayerSitOrStandState : PlayerBaseState
+public sealed class PlayerSitOrStandState : PlayerBaseState
 {
     private readonly int HashSitDown = Animator.StringToHash("SitDown");
     private readonly int HashStandUp = Animator.StringToHash("StandUp");

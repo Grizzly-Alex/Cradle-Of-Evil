@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStandingState : PlayerBaseState
+public sealed class PlayerStandingState : PlayerBaseState
 { 
        
     private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
@@ -38,7 +35,7 @@ public class PlayerStandingState : PlayerBaseState
         isGrounded = core.CollisionSenses.DetectingGround();
                
         core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX);
-
+       
         switch (input.NormInputX)
         {
             case 0: SetPhysicsMaterial(materialsData.Friction); break;

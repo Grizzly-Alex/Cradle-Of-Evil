@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement: CoreComponent
+public sealed class Movement: CoreComponent
 {
     public Rigidbody2D Rigidbody { get; private set; }
     public int FacingDirection { get; private set; }

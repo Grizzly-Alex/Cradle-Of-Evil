@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -43,7 +41,7 @@ public abstract class PlayerBaseState : IState
     protected void SetPhysicsMaterial(PhysicsMaterial2D newMaterial)
     {
         if(stateMachine.Rigidbody.sharedMaterial.name.Equals
-        (newMaterial.name, StringComparison.Ordinal)) return;
+        (newMaterial.name, StringComparison.OrdinalIgnoreCase)) return;
        
         stateMachine.Rigidbody.sharedMaterial = newMaterial;
     }   

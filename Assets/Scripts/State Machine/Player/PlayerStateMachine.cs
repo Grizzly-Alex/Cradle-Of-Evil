@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerStateMachine: StateMachine
+public sealed class PlayerStateMachine: StateMachine
 {
     [field: SerializeField] public Rigidbody2D Rigidbody { get; private set; }
     [field: SerializeField] public CapsuleCollider2D BodyCollider { get; private set; }

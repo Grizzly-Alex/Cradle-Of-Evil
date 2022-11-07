@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour, Controls.IPlayerActions
+public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     
     public Vector2 MovementValue { get; private set; }

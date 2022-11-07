@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Linq;
+using System.Collections.Generic;
 
-public class CollisionSenses : CoreComponent
+public sealed class CollisionSenses : CoreComponent
 {
     [field: Header("GROUND DETECTION")]
     [field: SerializeField] public LayerMask GroundMask { get; private set; }
     [field: SerializeField] public float GroundRayDistance { get; private set; }
+
+    [field: Header("ROOF DETECTION")]
+    [field: SerializeField] public float RoofRayDistance { get; private set; }
 
     public CapsuleCollider2D PlayerCollider {get; private set; }
 
@@ -20,9 +21,11 @@ public class CollisionSenses : CoreComponent
     }
    
     public bool DetectingGround() => GetGroundHit();  
-    
-    public float GetGroundSlopeAngle() => Vector2.Angle(GetGroundHit().normal, Vector2.up);
 
+    public bool DetectingRoof() => GetRoofHits().Any(hit => hit); 
+
+    public float GetGroundSlopeAngle() => Vector2.Angle(GetGroundHit().normal, Vector2.up);
+    
     public Vector2 GetPerpendicularSurface() => Vector2.Perpendicular(GetGroundHit().normal).normalized;
 
     private RaycastHit2D GetGroundHit()
@@ -30,5 +33,20 @@ public class CollisionSenses : CoreComponent
         Vector2 pointHit = new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y);
         Debug.DrawRay(pointHit, Vector2.down * GroundRayDistance, Color.red); 
         return Physics2D.Raycast(pointHit, Vector2.down, GroundRayDistance, GroundMask);   
-    }       
+    }
+
+    public List<RaycastHit2D> GetRoofHits()
+    {
+        Vector2 pointHitLeft = new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.max.y);
+        Vector2 pointHitRight = new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.max.y);
+
+        Debug.DrawRay(pointHitLeft, Vector2.up * RoofRayDistance, Color.red); 
+        Debug.DrawRay(pointHitRight, Vector2.up * RoofRayDistance, Color.red); 
+               
+        return new List<RaycastHit2D>
+        {
+            Physics2D.Raycast(pointHitLeft, Vector2.up, RoofRayDistance, GroundMask),
+            Physics2D.Raycast(pointHitRight, Vector2.up, RoofRayDistance, GroundMask)
+        };
+    }     
 }

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCrouchingState : PlayerBaseState
+public sealed class PlayerCrouchingState : PlayerBaseState
 {
     private readonly int HashIdleCrouch = Animator.StringToHash("IdleCrouch");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
@@ -37,6 +35,8 @@ public class PlayerCrouchingState : PlayerBaseState
                
         core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
 
+        Debug.Log(core.CollisionSenses.DetectingRoof());
+
         switch (input.NormInputX)
         {
             case 0: SetPhysicsMaterial(materialsData.Friction); break;
@@ -49,5 +49,11 @@ public class PlayerCrouchingState : PlayerBaseState
         input.SitStandEvent -= OnStand;    
     }
 
-    private void OnStand() => stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: false));
+    private void OnStand()
+    {
+        if(!core.CollisionSenses.DetectingRoof())
+        {
+            stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: false)); 
+        }      
+    } 
 }
