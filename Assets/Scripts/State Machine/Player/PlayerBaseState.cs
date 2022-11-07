@@ -10,6 +10,7 @@ public abstract class PlayerBaseState : IState
     protected Animator animator; 
     protected MaterialsData materialsData;
     protected PlayerData playerData;
+    protected bool isGrounded;
 
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
@@ -22,13 +23,19 @@ public abstract class PlayerBaseState : IState
     }
     
     public abstract void Enter();
+
     public abstract void FrameUpdate();
-    public abstract void PhysicsUpdate();
+
+    public virtual void PhysicsUpdate()
+    {
+        isGrounded = core.CollisionSenses.DetectingGround();
+    }
     public abstract void Exit();
+
     public virtual void AnimationTriger() { }
+    
     public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
 
-    
     protected void SetColliderHeight(float height)
     {
         Vector2 center = stateMachine.BodyCollider.offset;
@@ -38,11 +45,20 @@ public abstract class PlayerBaseState : IState
         stateMachine.BodyCollider.offset = center;
     }
 
-    protected void SetPhysicsMaterial(PhysicsMaterial2D newMaterial)
+    protected void SetPhysMaterial(PhysicsMaterial2D newMaterial)
     {
         if(stateMachine.Rigidbody.sharedMaterial.name.Equals
-        (newMaterial.name, StringComparison.OrdinalIgnoreCase)) return;
+        (newMaterial.name, StringComparison.Ordinal)) return;
        
         stateMachine.Rigidbody.sharedMaterial = newMaterial;
-    }   
+    }  
+
+    protected void SwitchPhysMaterial(int InputX)
+    {
+        switch (input.NormInputX)
+        {
+            case 0: SetPhysMaterial(materialsData.Friction); break;
+            default: SetPhysMaterial(materialsData.NoFriction); break;
+        }
+    }     
 }

@@ -4,7 +4,6 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 {
     private readonly int HashIdleCrouch = Animator.StringToHash("IdleCrouch");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
-    private bool isGrounded;
 
     public PlayerCrouchingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -31,17 +30,11 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
     public override void PhysicsUpdate()
     {
-        isGrounded = core.CollisionSenses.DetectingGround();
-               
+        base.PhysicsUpdate();
+                    
         core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
 
-        Debug.Log(core.CollisionSenses.DetectingRoof());
-
-        switch (input.NormInputX)
-        {
-            case 0: SetPhysicsMaterial(materialsData.Friction); break;
-            default: SetPhysicsMaterial(materialsData.NoFriction); break;
-        }
+        SwitchPhysMaterial(input.NormInputX);
     }
 
     public override void Exit()

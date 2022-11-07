@@ -4,8 +4,7 @@ public sealed class PlayerStandingState : PlayerBaseState
 { 
        
     private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
-    private readonly int HashisMove = Animator.StringToHash("isMove");
-    private bool isGrounded;
+    private readonly int HashisMove = Animator.StringToHash("isMove"); 
 
     public PlayerStandingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -32,15 +31,13 @@ public sealed class PlayerStandingState : PlayerBaseState
 
     public override void PhysicsUpdate()
     {
-        isGrounded = core.CollisionSenses.DetectingGround();
-               
+        base.PhysicsUpdate(); 
+
+        Debug.Log(isGrounded);    
+    
         core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX);
-       
-        switch (input.NormInputX)
-        {
-            case 0: SetPhysicsMaterial(materialsData.Friction); break;
-            default: SetPhysicsMaterial(materialsData.NoFriction); break;
-        }
+
+        SwitchPhysMaterial(input.NormInputX);
     }
 
     public override void Exit()

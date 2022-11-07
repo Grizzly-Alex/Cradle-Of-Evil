@@ -72,9 +72,6 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -1041779341105240102}
     m_Position: {x: -500, y: 360, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -4308527447074933007}
-    m_Position: {x: -700, y: 560, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -83,7 +80,7 @@ AnimatorStateMachine:
   m_AnyStatePosition: {x: -480, y: 170, z: 0}
   m_EntryPosition: {x: -480, y: 270, z: 0}
   m_ExitPosition: {x: -480, y: 770, z: 0}
-  m_ParentStateMachinePosition: {x: -500, y: 60, z: 0}
+  m_ParentStateMachinePosition: {x: -500, y: 100, z: 0}
   m_DefaultState: {fileID: -1041779341105240102}
 --- !u!1101 &-7120995900675056286
 AnimatorStateTransition:
@@ -268,32 +265,6 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
---- !u!1102 &-4308527447074933007
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Walck
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b792369b9dcad7240a216a53e876aa6a, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1109 &-4083535378623422873
 AnimatorTransition:
   m_ObjectHideFlags: 1
@@ -367,7 +338,7 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: BaseLayer

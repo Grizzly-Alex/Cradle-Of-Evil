@@ -8,8 +8,11 @@ public struct PlayerData
     [field: SerializeField] public float StandingMoveSpeed { get; private set; }
     [field: SerializeField] public float CrouchingMoveSpeed { get; private set; }
 
+    [field: Header("JUMPING")]
+    [field: SerializeField] public float JumpForce { get; private set; }
+    [field: SerializeField] public float JumpCount { get; private set; }
+
     [field: Header("COLIDER SIZE")]
     [field: SerializeField] public float StandingColiderHeight { get; private set; }
     [field: SerializeField] public float CrouchingColiderHeight { get; private set; }
-
 }

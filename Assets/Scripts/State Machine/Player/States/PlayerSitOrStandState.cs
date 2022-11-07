@@ -4,7 +4,6 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 {
     private readonly int HashSitDown = Animator.StringToHash("SitDown");
     private readonly int HashStandUp = Animator.StringToHash("StandUp");
-    private bool isGrounded;
     private bool isTransitToCrouch;
 
 
@@ -15,7 +14,7 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 
     public override void Enter()
     {
-        SetPhysicsMaterial(materialsData.Friction);
+        SetPhysMaterial(materialsData.Friction);
         
         if(isTransitToCrouch)
         {
@@ -52,9 +51,9 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
     }
 
     public override void PhysicsUpdate()
-    {
-        isGrounded = core.CollisionSenses.DetectingGround();
-
+    {  
+        base.PhysicsUpdate();
+              
         core.Movement.SetVelocityZero();
     }
 
