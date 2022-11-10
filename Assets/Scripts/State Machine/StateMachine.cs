@@ -19,7 +19,7 @@ public class StateMachine: MonoBehaviour
 
     private void Update()
     {
-        currentState?.FrameUpdate();
+        currentState?.LogicUpdate();
     }
 
     private void FixedUpdate()

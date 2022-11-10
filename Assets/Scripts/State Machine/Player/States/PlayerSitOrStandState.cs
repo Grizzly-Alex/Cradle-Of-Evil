@@ -14,6 +14,8 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 
     public override void Enter()
     {
+        base.Enter();
+
         SetPhysMaterial(materialsData.Friction);
         
         if(isTransitToCrouch)
@@ -26,8 +28,10 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
         }      
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
+        base.LogicUpdate();
+
         if(isAnimationFinished)
         {
             if(isTransitToCrouch)
@@ -39,15 +43,15 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
             else
             {
                 SetColliderHeight(playerData.StandingColiderHeight);
-
+                
                 stateMachine.SwitchState(new PlayerStandingState(stateMachine));
             }            
         }
 
-        if(isGrounded)
+        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            //transition air state         
-        }  
+            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
+        }
     }
 
     public override void PhysicsUpdate()
@@ -59,6 +63,7 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 
     public override void Exit()
     {
+        base.Exit();
    
     }
 }

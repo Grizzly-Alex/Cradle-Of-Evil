@@ -7,6 +7,7 @@ public sealed class CollisionSenses : CoreComponent
     [field: Header("GROUND DETECTION")]
     [field: SerializeField] public LayerMask GroundMask { get; private set; }
     [field: SerializeField] public float GroundRayDistance { get; private set; }
+    [field: SerializeField] public float GroundRayYposition { get; private set; }
 
     [field: Header("ROOF DETECTION")]
     [field: SerializeField] public float RoofRayDistance { get; private set; }
@@ -19,8 +20,9 @@ public sealed class CollisionSenses : CoreComponent
         
         PlayerCollider = GetComponentInParent<CapsuleCollider2D>(); 
     }
-   
-    public bool DetectingGround() => GetGroundHit();  
+
+
+    public bool DetectingGround() => GetGroundHit();
 
     public bool DetectingRoof() => GetRoofHits().Any(hit => hit); 
 
@@ -30,23 +32,29 @@ public sealed class CollisionSenses : CoreComponent
 
     private RaycastHit2D GetGroundHit()
     {
-        Vector2 pointHit = new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y);
-        Debug.DrawRay(pointHit, Vector2.down * GroundRayDistance, Color.red); 
+        Vector2 pointHit = new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y + GroundRayYposition);
         return Physics2D.Raycast(pointHit, Vector2.down, GroundRayDistance, GroundMask);   
     }
 
     public List<RaycastHit2D> GetRoofHits()
-    {
-        Vector2 pointHitLeft = new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.max.y);
-        Vector2 pointHitRight = new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.max.y);
-
-        Debug.DrawRay(pointHitLeft, Vector2.up * RoofRayDistance, Color.red); 
-        Debug.DrawRay(pointHitRight, Vector2.up * RoofRayDistance, Color.red); 
-               
+    {               
         return new List<RaycastHit2D>
         {
-            Physics2D.Raycast(pointHitLeft, Vector2.up, RoofRayDistance, GroundMask),
-            Physics2D.Raycast(pointHitRight, Vector2.up, RoofRayDistance, GroundMask)
+            Physics2D.Raycast(new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.max.y),
+            Vector2.up, RoofRayDistance, GroundMask),
+            Physics2D.Raycast(new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.max.y),
+            Vector2.up, RoofRayDistance, GroundMask)
         };
-    }     
+    } 
+
+    private void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.white;
+        //Gizmos.DrawWireSphere(new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y), GroundCheckRadius);  
+        //Gizmos.DrawRay(new Vector2(PlayerCollider.bounds.center.x, PlayerCollider.bounds.min.y + GroundRayYposition), new Vector2(0, - GroundRayDistance)); //ground ray
+        //Gizmos.DrawRay(new Vector2(PlayerCollider.bounds.min.x, PlayerCollider.bounds.max.y), new Vector2(0, GroundRayDistance)); //roof ray
+        //Gizmos.DrawRay(new Vector2(PlayerCollider.bounds.max.x, PlayerCollider.bounds.max.y), new Vector2(0, GroundRayDistance)); //roof ray
+    }
+    
+  
 }

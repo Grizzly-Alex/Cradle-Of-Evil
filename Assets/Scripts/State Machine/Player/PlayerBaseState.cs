@@ -3,7 +3,7 @@ using System;
 
 public abstract class PlayerBaseState : IState
 {
-    protected bool isAnimationFinished = false;
+    protected bool isAnimationFinished;
     protected PlayerStateMachine stateMachine;
     protected InputReader input;
     protected Core core;
@@ -12,6 +12,7 @@ public abstract class PlayerBaseState : IState
     protected PlayerData playerData;
     protected bool isGrounded;
 
+    
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
@@ -22,20 +23,41 @@ public abstract class PlayerBaseState : IState
         animator = stateMachine.Animator;
     }
     
-    public abstract void Enter();
+    #region State Machine
+    public virtual void Enter()
+    {
+        isAnimationFinished = false;
+        DoCheck();     
+    }
 
-    public abstract void FrameUpdate();
+    public virtual void LogicUpdate()
+    {
+        core.Movement.LogicUpdate();
+    }
 
     public virtual void PhysicsUpdate()
+    {     
+        DoCheck();      
+    }
+    
+    public virtual void Exit()
+    {
+
+    }
+
+    public virtual void DoCheck()
     {
         isGrounded = core.CollisionSenses.DetectingGround();
     }
-    public abstract void Exit();
+    #endregion 
 
+    #region Trigers
     public virtual void AnimationTriger() { }
-    
-    public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
 
+    public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
+    #endregion
+
+    #region Methods
     protected void SetColliderHeight(float height)
     {
         Vector2 center = stateMachine.BodyCollider.offset;
@@ -60,5 +82,6 @@ public abstract class PlayerBaseState : IState
             case 0: SetPhysMaterial(materialsData.Friction); break;
             default: SetPhysMaterial(materialsData.NoFriction); break;
         }
-    }     
+    } 
+    #endregion    
 }

@@ -10,7 +10,10 @@ public struct PlayerData
 
     [field: Header("JUMPING")]
     [field: SerializeField] public float JumpForce { get; private set; }
-    [field: SerializeField] public float JumpCount { get; private set; }
+    [field: SerializeField] public int JumpCount { get; private set; }
+
+    [field: Header("Air")]
+    [field: SerializeField] public float InAirMoveSpeed { get; private set; }
 
     [field: Header("COLIDER SIZE")]
     [field: SerializeField] public float StandingColiderHeight { get; private set; }

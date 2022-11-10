@@ -4,6 +4,7 @@ public sealed class PlayerStandingState : PlayerBaseState
 { 
        
     private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
+    private readonly int HashRun = Animator.StringToHash("RunStart");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
 
     public PlayerStandingState(PlayerStateMachine stateMachine) : base(stateMachine)
@@ -12,38 +13,54 @@ public sealed class PlayerStandingState : PlayerBaseState
 
     public override void Enter()
     {
-        input.SitStandEvent += OnSit;
+        base.Enter();
 
-        animator.Play(HashIdleStand);
+        Debug.Log("Stand");
+
+        input.SitStandEvent += OnSit;
+        input.JumpEvent += OnJump;
+
+        if(input.NormInputX != 0)
+        {
+            animator.Play(HashRun);
+        }
+        else
+        {
+            animator.Play(HashIdleStand);
+        }
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
+        base.LogicUpdate();
+
         stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
 
         animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
-            
-        if(isGrounded)
+
+        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            //transition air state         
+            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
         }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate(); 
-
-        Debug.Log(isGrounded);    
-    
+      
         core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX);
 
         SwitchPhysMaterial(input.NormInputX);
     }
 
     public override void Exit()
-    {        
+    {   
+        base.Exit();
+
         input.SitStandEvent -= OnSit;  
+        input.JumpEvent -= OnJump;
     }
 
     private void OnSit() => stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: true));
+    private void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
 }

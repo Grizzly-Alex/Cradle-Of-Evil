@@ -4,7 +4,9 @@ public sealed class Movement: CoreComponent
 {
     public Rigidbody2D Rigidbody { get; private set; }
     public int FacingDirection { get; private set; }
+    public Vector2 CurrentVelocity { get; private set; }
     private Vector2 workingVector;
+    
 
     protected override void Awake()
     {
@@ -12,6 +14,11 @@ public sealed class Movement: CoreComponent
 
         Rigidbody = GetComponentInParent<Rigidbody2D>();
         FacingDirection = 1;
+    }
+
+    public void LogicUpdate()
+    {
+        CurrentVelocity = Rigidbody.velocity;
     }
 
     public void MoveAlongSurface(float velocity)
@@ -59,8 +66,11 @@ public sealed class Movement: CoreComponent
         SetFinalVelocity();
     }
 
-    public void SetFinalVelocity() => Rigidbody.velocity = workingVector;
-
+    public void SetFinalVelocity()
+    {
+        Rigidbody.velocity = workingVector;
+        CurrentVelocity = workingVector;
+    } 
 
     public void CheckIfShouldFlip(int xInput)
     {

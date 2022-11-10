@@ -11,20 +11,27 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
     public override void Enter()
     {
+        base.Enter();
+
         input.SitStandEvent += OnStand;
+        input.JumpEvent += OnJump;
 
         animator.Play(HashIdleCrouch);  
     }
 
-    public override void FrameUpdate()
+    public override void LogicUpdate()
     {
+        base.LogicUpdate();
+
         stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
 
         animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
     
-        if(isGrounded)
+        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            //transition air state         
+            SetColliderHeight(playerData.StandingColiderHeight);
+
+            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
         }
     }
 
@@ -39,14 +46,27 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
     public override void Exit()
     {
-        input.SitStandEvent -= OnStand;    
+        base.Exit();
+
+        input.SitStandEvent -= OnStand;  
+        input.JumpEvent -= OnJump;  
     }
 
     private void OnStand()
     {
         if(!core.CollisionSenses.DetectingRoof())
-        {
+        {           
             stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: false)); 
+        }      
+    } 
+
+    private void OnJump()
+    {
+        if(!core.CollisionSenses.DetectingRoof())
+        {
+            SetColliderHeight(playerData.StandingColiderHeight);
+            
+            stateMachine.SwitchState(new PlayerJumpingState(stateMachine)); 
         }      
     } 
 }
