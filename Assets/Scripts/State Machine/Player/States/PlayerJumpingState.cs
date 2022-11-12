@@ -14,9 +14,8 @@ public class PlayerJumpingState : PlayerInAirState
     {
         base.Enter();
 
-        Debug.Log("Jump");   
-
         animator.Play(HashJumpingState);
+        
         core.Movement.SetVelocityY(playerData.JumpForce);
     }
 
@@ -29,4 +28,5 @@ public class PlayerJumpingState : PlayerInAirState
             stateMachine.SwitchState(new PlayerFallingState(stateMachine));
         }
     } 
+
 }

@@ -4,7 +4,8 @@ using UnityEngine.InputSystem;
 
 public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
-    
+    [field: SerializeField] public float StickDeadzone { get; private set; }
+    [field: SerializeField] public float inputCooldown { get; private set; }
     public Vector2 MovementValue { get; private set; }
     public float InputForceX { get; private set; }
     public float InputForceY { get; private set; }
@@ -13,7 +14,6 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action JumpEvent;
     public event Action SitStandEvent;
     private Controls controls;
-    private const float stickDeadzone = 0.5f;
 
 
     private void Start()
@@ -29,29 +29,14 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     }
 
     public void OnMove(InputAction.CallbackContext context)
-    {
+    {     
         MovementValue = context.ReadValue<Vector2>();
 
         InputForceX = Mathf.Abs(MovementValue.x);
         InputForceY = Mathf.Abs(MovementValue.y);
 
-        if (InputForceX > stickDeadzone)
-        {
-            NormInputX = (int)(MovementValue * Vector2.right).normalized.x;
-        }
-        else
-        {
-            NormInputX = 0;
-        }
-
-        if (InputForceY > stickDeadzone)
-        {
-            NormInputY = (int)(MovementValue * Vector2.up).normalized.y;
-        }
-        else
-        {
-            NormInputY = 0;
-        }
+        NormInputX = StickLimiter(InputForceX, (int)(MovementValue * Vector2.right).normalized.x);
+        NormInputY = StickLimiter(InputForceY, (int)(MovementValue * Vector2.up).normalized.y); 
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -69,4 +54,6 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
             SitStandEvent?.Invoke();
         }
     }
+
+    private int StickLimiter(float force, int input) => force > StickDeadzone ? input : 0;
 }

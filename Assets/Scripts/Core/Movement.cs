@@ -74,7 +74,7 @@ public sealed class Movement: CoreComponent
 
     public void CheckIfShouldFlip(int xInput)
     {
-        if (xInput != 0 && xInput != FacingDirection)
+        if(xInput != 0 && xInput != FacingDirection)
         {
             Flip();
         }

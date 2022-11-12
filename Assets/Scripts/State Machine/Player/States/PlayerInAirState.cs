@@ -40,5 +40,8 @@ public class PlayerInAirState : PlayerBaseState
         input.JumpEvent -= OnJump;
     }
 
-    private void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
+    private void OnJump()
+    {        
+        stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
+    } 
 }

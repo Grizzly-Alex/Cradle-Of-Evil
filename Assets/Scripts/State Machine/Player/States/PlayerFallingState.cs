@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class PlayerFallingState : PlayerInAirState
 {
     private readonly int HashFallingState = Animator.StringToHash("FallingState");
+    private float fallingForce;
     
     public PlayerFallingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -14,7 +14,6 @@ public class PlayerFallingState : PlayerInAirState
     {
         base.Enter();
 
-        Debug.Log("Falling");
         animator.Play(HashFallingState);       
     }
 
@@ -22,10 +21,20 @@ public class PlayerFallingState : PlayerInAirState
     {
         base.LogicUpdate();
 
+        CheckFallingForce(core.Movement.CurrentVelocity);
+
         if(isGrounded)
         {
-            stateMachine.SwitchState(new PlayerStandingState(stateMachine));
-            // switch landing state
+            stateMachine.SwitchState(new PlayerLandingState(stateMachine, fallingForce));
         }     
     }
+ 
+    private void CheckFallingForce(Vector2 velocity)    
+    {
+        if (fallingForce > velocity.y)
+        {            
+            fallingForce = velocity.y;
+        }
+    }
+    
 }
