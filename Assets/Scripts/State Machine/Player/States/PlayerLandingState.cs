@@ -17,6 +17,9 @@ public class PlayerLandingState : PlayerBaseState
     {
         base.Enter();
 
+        input.JumpEvent += OnJump;
+
+        stateMachine.JumpingState.ResetAmountOfJumpsLeft();
         SetPhysMaterial(materialsData.Friction);
         core.Movement.SetVelocityZero();
 
@@ -60,5 +63,15 @@ public class PlayerLandingState : PlayerBaseState
     public override void Exit()
     {
         base.Exit();
+
+        input.JumpEvent -= OnJump;
     }
+
+    private void OnJump()
+    {
+        if(LandingForce > playerData.LandingThreshold)
+        {
+           stateMachine.SwitchState(stateMachine.JumpingState); 
+        }
+    } 
 }

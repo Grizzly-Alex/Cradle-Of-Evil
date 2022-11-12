@@ -5455,7 +5455,7 @@ MonoBehaviour:
     <StandingMoveSpeed>k__BackingField: 6
     <CrouchingMoveSpeed>k__BackingField: 2
     <JumpForce>k__BackingField: 12
-    <JumpCount>k__BackingField: 2
+    <AmountOfJumps>k__BackingField: 2
     <InAirMoveSpeed>k__BackingField: 6
     <LandingThreshold>k__BackingField: -18
     <StandingColiderHeight>k__BackingField: 1.37
@@ -6181,7 +6181,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2, y: 1}
+    m_SensorSize: {x: 1.3333334, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

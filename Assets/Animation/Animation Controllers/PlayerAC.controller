@@ -423,6 +423,32 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!1102 &15760982944258048
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SecondJump
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 080ec67f57fac0f43b70e06591196b72, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &870123027186343263
 AnimatorState:
   serializedVersion: 6
@@ -512,7 +538,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JumpingState
+  m_Name: FirstJump
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -819,7 +845,7 @@ AnimatorStateMachine:
     m_Position: {x: 500, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -855231200617950851}
-    m_Position: {x: 200, y: 360, z: 0}
+    m_Position: {x: 200, y: 410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3010160593107661061}
     m_Position: {x: 200, y: 310, z: 0}
@@ -829,6 +855,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 7510910664071666276}
     m_Position: {x: 500, y: 410, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 15760982944258048}
+    m_Position: {x: 200, y: 360, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -7857299164755501039}

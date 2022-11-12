@@ -26,8 +26,8 @@ public abstract class PlayerBaseState : IState
     #region State Machine
     public virtual void Enter()
     {
-        isAnimationFinished = false;
-        DoCheck();     
+        DoCheck();
+        isAnimationFinished = false;       
     }
 
     public virtual void LogicUpdate()

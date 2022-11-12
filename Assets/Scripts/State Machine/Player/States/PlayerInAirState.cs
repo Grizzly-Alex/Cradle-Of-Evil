@@ -41,7 +41,10 @@ public class PlayerInAirState : PlayerBaseState
     }
 
     private void OnJump()
-    {        
-        stateMachine.SwitchState(stateMachine.JumpingState);
+    {  
+        if(stateMachine.JumpingState.CanJump())
+        {
+            stateMachine.SwitchState(stateMachine.JumpingState);
+        }      
     } 
 }

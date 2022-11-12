@@ -30,7 +30,8 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
             SetColliderHeight(playerData.StandingColiderHeight);
-
+            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            
             stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }

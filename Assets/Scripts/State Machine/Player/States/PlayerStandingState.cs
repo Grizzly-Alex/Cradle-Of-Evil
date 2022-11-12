@@ -13,7 +13,7 @@ public sealed class PlayerStandingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
+    
         input.SitStandEvent += OnSit;
         input.JumpEvent += OnJump;
 
@@ -37,6 +37,8 @@ public sealed class PlayerStandingState : PlayerBaseState
 
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
+            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            
             stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }

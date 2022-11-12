@@ -47,7 +47,9 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
         }
 
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
-        {
+        { 
+            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            
             stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }

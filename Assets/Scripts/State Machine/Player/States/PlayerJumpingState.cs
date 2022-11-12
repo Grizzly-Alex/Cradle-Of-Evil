@@ -2,21 +2,27 @@ using UnityEngine;
 
 public class PlayerJumpingState : PlayerInAirState
 {
-    private readonly int HashJumpingState = Animator.StringToHash("JumpingState");
-
+    private readonly int HashFirstJump = Animator.StringToHash("FirstJump");
+    private readonly int HashSecondJump = Animator.StringToHash("SecondJump");
     private int jumpsLeft;
     public PlayerJumpingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        jumpsLeft = playerData.JumpCount;
+        jumpsLeft = playerData.AmountOfJumps;
     }
 
     public override void Enter()
     {
         base.Enter();
 
-        animator.Play(HashJumpingState);
-        
+        jumpsLeft -= 1;
+       
         core.Movement.SetVelocityY(playerData.JumpForce);
+
+        switch(jumpsLeft)
+        {
+            case 1: animator.Play(HashFirstJump); break ;
+            case 0: animator.Play(HashSecondJump); break ;
+        }
     }
 
     public override void LogicUpdate()
@@ -27,6 +33,11 @@ public class PlayerJumpingState : PlayerInAirState
         {
             stateMachine.SwitchState(stateMachine.FallingState);
         }
-    } 
+    }
 
+    public bool CanJump() => jumpsLeft > 0;
+
+    public void ResetAmountOfJumpsLeft() => jumpsLeft = playerData.AmountOfJumps;
+
+    public void DecreaseAmountOfJumpsLeft() => jumpsLeft--;
 }

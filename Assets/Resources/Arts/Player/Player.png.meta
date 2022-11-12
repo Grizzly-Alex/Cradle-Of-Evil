@@ -1879,6 +1879,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Player_17: 767504831
+      Player_49: 382724556
       Player_33: -215335335
       Player_48: 2018907602
       Player_57: 1424369039
@@ -1957,11 +1958,11 @@ TextureImporter:
       Player_61: 814950511
       Player_78: 39044168
       Player_80: -1971360090
-      Player_60: 1615480768
+      Player_84: 48035079
       Player_52: 587131001
       Player_45: 382959897
+      Player_60: 1615480768
       Player_5: 1615371900
-      Player_49: 382724556
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
