@@ -31,7 +31,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         {
             SetColliderHeight(playerData.StandingColiderHeight);
 
-            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
+            stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }
 
@@ -55,8 +55,10 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     private void OnStand()
     {
         if(!core.CollisionSenses.DetectingRoof())
-        {           
-            stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: false)); 
+        {   
+            stateMachine.SitOrStandState.SetStateTransitionTo(SitOrStandTransition.Standing);   
+
+            stateMachine.SwitchState(stateMachine.SitOrStandState); 
         }      
     } 
 
@@ -66,7 +68,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         {
             SetColliderHeight(playerData.StandingColiderHeight);
             
-            stateMachine.SwitchState(new PlayerJumpingState(stateMachine)); 
-        }      
+            stateMachine.SwitchState(stateMachine.JumpingState);
+        }
     } 
 }

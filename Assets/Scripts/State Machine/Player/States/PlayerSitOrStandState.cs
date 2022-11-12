@@ -1,15 +1,16 @@
 using UnityEngine;
 
+public enum SitOrStandTransition { Standing, Crouching } 
+
 public sealed class PlayerSitOrStandState : PlayerBaseState
 {
     private readonly int HashSitDown = Animator.StringToHash("SitDown");
     private readonly int HashStandUp = Animator.StringToHash("StandUp");
-    private bool isTransitToCrouch;
+    private SitOrStandTransition transitionTo; 
 
-
-    public PlayerSitOrStandState(PlayerStateMachine stateMachine, bool isTransitToCrouch) : base(stateMachine)
+    public PlayerSitOrStandState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        this.isTransitToCrouch = isTransitToCrouch;
+
     }
 
     public override void Enter()
@@ -17,40 +18,37 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
         base.Enter();
 
         SetPhysMaterial(materialsData.Friction);
-        
-        if(isTransitToCrouch)
+
+        switch (transitionTo)
         {
-            animator.Play(HashSitDown);
-        }
-        else
-        {
-            animator.Play(HashStandUp);
-        }      
+            case SitOrStandTransition.Crouching: animator.Play(HashSitDown); break;
+            case SitOrStandTransition.Standing: animator.Play(HashStandUp); break;
+        }           
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        if(isAnimationFinished)
+        if (isAnimationFinished)
         {
-            if(isTransitToCrouch)
+            if (transitionTo == SitOrStandTransition.Crouching)
             {
                 SetColliderHeight(playerData.CrouchingColiderHeight);
 
-                stateMachine.SwitchState(new PlayerCrouchingState(stateMachine));
+                stateMachine.SwitchState(stateMachine.CrouchingState);
             }
-            else
+            else if (transitionTo == SitOrStandTransition.Standing)
             {
                 SetColliderHeight(playerData.StandingColiderHeight);
                 
-                stateMachine.SwitchState(new PlayerStandingState(stateMachine));
+                stateMachine.SwitchState(stateMachine.StandingState);
             }            
         }
 
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
+            stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }
 
@@ -61,9 +59,5 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
         core.Movement.SetVelocityZero();
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-   
-    }
+    public void SetStateTransitionTo(SitOrStandTransition state) => transitionTo = state;
 }

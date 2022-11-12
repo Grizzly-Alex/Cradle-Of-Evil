@@ -25,7 +25,7 @@ public class PlayerJumpingState : PlayerInAirState
 
         if(core.Movement.CurrentVelocity.y <= 0.0f)
         {
-            stateMachine.SwitchState(new PlayerFallingState(stateMachine));
+            stateMachine.SwitchState(stateMachine.FallingState);
         }
     } 
 

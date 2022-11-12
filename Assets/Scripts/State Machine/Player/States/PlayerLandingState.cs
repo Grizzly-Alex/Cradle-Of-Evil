@@ -1,14 +1,16 @@
 using UnityEngine;
 
+public enum LandingStandTransition { HardLanding, Crouching } 
+
 public class PlayerLandingState : PlayerBaseState
 {
     private readonly int HashHardLandingState = Animator.StringToHash("HardLanding");
     private readonly int HashSoftLandingState = Animator.StringToHash("SoftLanding");
-    private readonly float LandingForce;
+    public float LandingForce { get; set; }
 
-    public PlayerLandingState(PlayerStateMachine stateMachine, float landingForce) : base(stateMachine)
+    public PlayerLandingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
-        LandingForce = landingForce;
+        
     }
 
     public override void Enter()
@@ -36,16 +38,16 @@ public class PlayerLandingState : PlayerBaseState
         {
             if(isAnimationFinished)
             {
-                Debug.Log("HardLanding");
-                stateMachine.SwitchState(new PlayerStandingState(stateMachine));
+
+                stateMachine.SwitchState(stateMachine.StandingState);
             }           
         }
         else
         {
             if(isAnimationFinished || input.NormInputX != 0)
             {
-                Debug.Log("SoftLanding");
-                stateMachine.SwitchState(new PlayerStandingState(stateMachine));
+
+                stateMachine.SwitchState(stateMachine.StandingState);
             }  
         }
     }

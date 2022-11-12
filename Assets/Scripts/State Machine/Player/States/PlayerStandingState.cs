@@ -1,8 +1,7 @@
 using UnityEngine;
 
 public sealed class PlayerStandingState : PlayerBaseState
-{ 
-       
+{       
     private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
     private readonly int HashRun = Animator.StringToHash("RunStart");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
@@ -14,8 +13,6 @@ public sealed class PlayerStandingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
-        Debug.Log("Stand");
 
         input.SitStandEvent += OnSit;
         input.JumpEvent += OnJump;
@@ -40,7 +37,7 @@ public sealed class PlayerStandingState : PlayerBaseState
 
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            stateMachine.SwitchState(new PlayerFallingState(stateMachine));        
+            stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }
 
@@ -61,6 +58,11 @@ public sealed class PlayerStandingState : PlayerBaseState
         input.JumpEvent -= OnJump;
     }
 
-    private void OnSit() => stateMachine.SwitchState(new PlayerSitOrStandState(stateMachine, isTransitToCrouch: true));
-    private void OnJump() => stateMachine.SwitchState(new PlayerJumpingState(stateMachine));
+    private void OnSit()
+    {
+        stateMachine.SitOrStandState.SetStateTransitionTo(SitOrStandTransition.Crouching);
+        stateMachine.SwitchState(stateMachine.SitOrStandState);
+    }
+
+    private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
 }

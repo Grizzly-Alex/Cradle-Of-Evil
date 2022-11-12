@@ -21,20 +21,29 @@ public class PlayerFallingState : PlayerInAirState
     {
         base.LogicUpdate();
 
-        CheckFallingForce(core.Movement.CurrentVelocity);
+        SetFallingForce(core.Movement.CurrentVelocity);
 
         if(isGrounded)
         {
-            stateMachine.SwitchState(new PlayerLandingState(stateMachine, fallingForce));
+            stateMachine.LandingState.LandingForce = fallingForce;
+            stateMachine.SwitchState(stateMachine.LandingState);
         }     
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+        
+        ResetFallingForce();
+    }
  
-    private void CheckFallingForce(Vector2 velocity)    
+    private void SetFallingForce(Vector2 velocity)    
     {
         if (fallingForce > velocity.y)
         {            
             fallingForce = velocity.y;
         }
     }
-    
+
+    private void ResetFallingForce() => fallingForce = 0.0f;
 }
