@@ -2,6 +2,8 @@ using UnityEngine;
 
 public sealed class Movement: CoreComponent
 {
+    [field: SerializeField] public PhysicsMaterial2D Friction {get; private set;}
+    [field: SerializeField] public PhysicsMaterial2D NotFriction {get; private set;}
     public Rigidbody2D Rigidbody { get; private set; }
     public int FacingDirection { get; private set; }
     public Vector2 CurrentVelocity { get; private set; }
@@ -13,6 +15,7 @@ public sealed class Movement: CoreComponent
         base.Awake();
 
         Rigidbody = GetComponentInParent<Rigidbody2D>();
+        if(Rigidbody.sharedMaterial is null) { Rigidbody.sharedMaterial = Friction; }
         FacingDirection = 1;
     }
 
@@ -85,4 +88,33 @@ public sealed class Movement: CoreComponent
         FacingDirection *= -1;
         Rigidbody.transform.Rotate(0.0f, 180.0f, 0.0f);
     }
+
+    public void IsFriction(bool isBrake)
+    {
+        if(isBrake)
+        {
+            SetFriction(Friction);
+        }
+        else
+        {
+            SetFriction(NotFriction);
+        }
+    }
+
+    public void SwitchFriction(int InputX)
+    {
+        switch (InputX)
+        {
+            case 0: SetFriction(Friction); break;
+            default: SetFriction(NotFriction); break;
+        }
+    }
+
+    public void SetFriction(PhysicsMaterial2D frictionMaterial)
+    {
+        if(frictionMaterial.friction != Rigidbody.sharedMaterial.friction)
+        {
+            Rigidbody.sharedMaterial = frictionMaterial;
+        }
+    }   
 }

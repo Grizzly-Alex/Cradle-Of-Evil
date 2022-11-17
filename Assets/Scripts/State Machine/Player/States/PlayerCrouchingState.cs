@@ -4,6 +4,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 {
     private readonly int HashIdleCrouch = Animator.StringToHash("IdleCrouch");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
+    private bool isRoofDetected;
 
     public PlayerCrouchingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -15,8 +16,16 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
         input.SitStandEvent += OnStand;
         input.JumpEvent += OnJump;
+        input.DashEvent += OnDash;
 
         animator.Play(HashIdleCrouch);  
+    }
+
+    public override void DoCheck()
+    {
+        base.DoCheck();
+
+        isRoofDetected = core.CollisionSenses.DetectingRoof();
     }
 
     public override void LogicUpdate()
@@ -42,7 +51,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
                     
         core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
 
-        SwitchPhysMaterial(input.NormInputX);
+        core.Movement.SwitchFriction(input.NormInputX);
     }
 
     public override void Exit()
@@ -51,25 +60,32 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
         input.SitStandEvent -= OnStand;  
         input.JumpEvent -= OnJump;  
+        input.DashEvent -= OnDash;
     }
 
+    #region InputMethods
     private void OnStand()
     {
-        if(!core.CollisionSenses.DetectingRoof())
+        if(!isRoofDetected)
         {   
-            stateMachine.SitOrStandState.SetStateTransitionTo(SitOrStandTransition.Standing);   
-
+            stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;  
             stateMachine.SwitchState(stateMachine.SitOrStandState); 
         }      
     } 
 
     private void OnJump()
     {
-        if(!core.CollisionSenses.DetectingRoof())
+        if(!isRoofDetected)
         {
-            SetColliderHeight(playerData.StandingColiderHeight);
-            
+            SetColliderHeight(playerData.StandingColiderHeight);           
             stateMachine.SwitchState(stateMachine.JumpingState);
         }
     } 
+
+    private void OnDash()
+    {
+        stateMachine.DashingState.PreviousState = PreviousState.Crouching;
+        stateMachine.SwitchState(stateMachine.DashingState);
+    }        
+    #endregion
 }

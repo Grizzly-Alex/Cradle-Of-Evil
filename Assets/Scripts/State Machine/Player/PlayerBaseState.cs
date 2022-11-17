@@ -1,14 +1,13 @@
 using UnityEngine;
-using System;
+
 
 public abstract class PlayerBaseState : IState
-{
+{  
     protected bool isAnimationFinished;
     protected PlayerStateMachine stateMachine;
     protected InputReader input;
     protected Core core;
     protected Animator animator; 
-    protected MaterialsData materialsData;
     protected PlayerData playerData;
     protected bool isGrounded;
 
@@ -17,7 +16,6 @@ public abstract class PlayerBaseState : IState
     {
         this.stateMachine = stateMachine;
         playerData = stateMachine.PlayerData;
-        materialsData = stateMachine.MaterialsData;
         input = stateMachine.InputReader;
         core = stateMachine.Core;
         animator = stateMachine.Animator;
@@ -27,12 +25,17 @@ public abstract class PlayerBaseState : IState
     public virtual void Enter()
     {
         DoCheck();
-        isAnimationFinished = false;       
+        isAnimationFinished = false;      
+    }
+
+    public virtual void DoCheck()
+    {
+        isGrounded = core.CollisionSenses.DetectingGround();
     }
 
     public virtual void LogicUpdate()
     {
-        core.Movement.LogicUpdate();
+        core.Movement.LogicUpdate();      
     }
 
     public virtual void PhysicsUpdate()
@@ -42,12 +45,7 @@ public abstract class PlayerBaseState : IState
     
     public virtual void Exit()
     {
-
-    }
-
-    public virtual void DoCheck()
-    {
-        isGrounded = core.CollisionSenses.DetectingGround();
+        
     }
     #endregion 
 
@@ -66,22 +64,5 @@ public abstract class PlayerBaseState : IState
         stateMachine.BodyCollider.size = newSize;
         stateMachine.BodyCollider.offset = center;
     }
-
-    protected void SetPhysMaterial(PhysicsMaterial2D newMaterial)
-    {
-        if(stateMachine.Rigidbody.sharedMaterial.name.Equals
-        (newMaterial.name, StringComparison.Ordinal)) return;
-       
-        stateMachine.Rigidbody.sharedMaterial = newMaterial;
-    }  
-
-    protected void SwitchPhysMaterial(int InputX)
-    {
-        switch (input.NormInputX)
-        {
-            case 0: SetPhysMaterial(materialsData.Friction); break;
-            default: SetPhysMaterial(materialsData.NoFriction); break;
-        }
-    } 
-    #endregion    
+    #endregion
 }

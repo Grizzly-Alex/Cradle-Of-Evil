@@ -1,10 +1,8 @@
-public interface IState 
+public interface IState: IAnimationTriger
 {
     public void Enter();
+    public void DoCheck(); 
     public void LogicUpdate();
     public void PhysicsUpdate();
-    public void Exit(); 
-    public void DoCheck();  
-    public void AnimationTriger();
-    public void AnimationFinishTrigger();
+    public void Exit();  
 }

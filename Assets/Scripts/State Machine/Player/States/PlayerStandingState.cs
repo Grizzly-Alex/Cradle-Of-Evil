@@ -16,14 +16,12 @@ public sealed class PlayerStandingState : PlayerBaseState
     
         input.SitStandEvent += OnSit;
         input.JumpEvent += OnJump;
+        input.DashEvent += OnDash;
 
-        if(input.NormInputX != 0)
+        switch (input.NormInputX != 0)
         {
-            animator.Play(HashRun);
-        }
-        else
-        {
-            animator.Play(HashIdleStand);
+            case true : animator.Play(HashRun); break; 
+            case false: animator.Play(HashIdleStand); break; 
         }
     }
 
@@ -47,9 +45,8 @@ public sealed class PlayerStandingState : PlayerBaseState
     {
         base.PhysicsUpdate(); 
       
-        core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX);
-
-        SwitchPhysMaterial(input.NormInputX);
+        core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX); 
+        core.Movement.SwitchFriction(input.NormInputX);    
     }
 
     public override void Exit()
@@ -58,13 +55,22 @@ public sealed class PlayerStandingState : PlayerBaseState
 
         input.SitStandEvent -= OnSit;  
         input.JumpEvent -= OnJump;
+        input.DashEvent -= OnDash;
     }
 
+    #region InputMethods
     private void OnSit()
     {
-        stateMachine.SitOrStandState.SetStateTransitionTo(SitOrStandTransition.Crouching);
+        stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Crouching;
         stateMachine.SwitchState(stateMachine.SitOrStandState);
     }
 
     private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
+
+    private void OnDash()
+    {
+        stateMachine.DashingState.PreviousState = PreviousState.Standing;
+        stateMachine.SwitchState(stateMachine.DashingState);
+    }        
+    #endregion
 }

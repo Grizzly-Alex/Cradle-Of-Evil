@@ -14,7 +14,7 @@ public class PlayerInAirState : PlayerBaseState
 
         input.JumpEvent += OnJump; 
 
-        SetPhysMaterial(materialsData.NoFriction);
+        core.Movement.IsFriction(false);
     }
 
     public override void LogicUpdate()

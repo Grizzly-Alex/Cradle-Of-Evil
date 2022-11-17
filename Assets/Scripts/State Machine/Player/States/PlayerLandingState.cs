@@ -17,20 +17,17 @@ public class PlayerLandingState : PlayerBaseState
     {
         base.Enter();
 
-        input.JumpEvent += OnJump;
-
         stateMachine.JumpingState.ResetAmountOfJumpsLeft();
-        SetPhysMaterial(materialsData.Friction);
+        core.Movement.IsFriction(true);
         core.Movement.SetVelocityZero();
 
-        if(LandingForce <= playerData.LandingThreshold)
+        input.JumpEvent += OnJump;
+
+        switch(LandingForce <= playerData.LandingThreshold)
         {
-            animator.Play(HashHardLandingState);
-        }
-        else
-        {
-            animator.Play(HashSoftLandingState);
-        }
+            case true: animator.Play(HashHardLandingState); break;
+            case false: animator.Play(HashSoftLandingState); break;
+        }       
     }
 
     public override void LogicUpdate()
@@ -41,7 +38,6 @@ public class PlayerLandingState : PlayerBaseState
         {
             if(isAnimationFinished)
             {
-
                 stateMachine.SwitchState(stateMachine.StandingState);
             }           
         }
@@ -49,7 +45,6 @@ public class PlayerLandingState : PlayerBaseState
         {
             if(isAnimationFinished || input.NormInputX != 0)
             {
-
                 stateMachine.SwitchState(stateMachine.StandingState);
             }  
         }

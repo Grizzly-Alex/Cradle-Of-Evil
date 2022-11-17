@@ -6,7 +6,7 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 {
     private readonly int HashSitDown = Animator.StringToHash("SitDown");
     private readonly int HashStandUp = Animator.StringToHash("StandUp");
-    private SitOrStandTransition transitionTo; 
+    public SitOrStandTransition TransitionTo { get; set; }
 
     public PlayerSitOrStandState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -17,9 +17,9 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
     {
         base.Enter();
 
-        SetPhysMaterial(materialsData.Friction);
+        core.Movement.IsFriction(true);
 
-        switch (transitionTo)
+        switch (TransitionTo)
         {
             case SitOrStandTransition.Crouching: animator.Play(HashSitDown); break;
             case SitOrStandTransition.Standing: animator.Play(HashStandUp); break;
@@ -32,13 +32,13 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 
         if (isAnimationFinished)
         {
-            if (transitionTo == SitOrStandTransition.Crouching)
+            if (TransitionTo == SitOrStandTransition.Crouching)
             {
                 SetColliderHeight(playerData.CrouchingColiderHeight);
 
                 stateMachine.SwitchState(stateMachine.CrouchingState);
             }
-            else if (transitionTo == SitOrStandTransition.Standing)
+            else if (TransitionTo == SitOrStandTransition.Standing)
             {
                 SetColliderHeight(playerData.StandingColiderHeight);
                 
@@ -60,6 +60,4 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
               
         core.Movement.SetVelocityZero();
     }
-
-    public void SetStateTransitionTo(SitOrStandTransition state) => transitionTo = state;
 }
