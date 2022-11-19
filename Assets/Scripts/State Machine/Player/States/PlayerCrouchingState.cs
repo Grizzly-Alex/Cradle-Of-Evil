@@ -25,7 +25,10 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         base.DoCheck();
 
+        SetColliderHeight(playerData.CrouchingColiderHeight);
+
         isRoofDetected = core.CollisionSenses.DetectingRoof();
+        
     }
 
     public override void LogicUpdate()
@@ -38,7 +41,6 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
-            SetColliderHeight(playerData.StandingColiderHeight);
             stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
             
             stateMachine.SwitchState(stateMachine.FallingState);        
@@ -76,8 +78,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     private void OnJump()
     {
         if(!isRoofDetected)
-        {
-            SetColliderHeight(playerData.StandingColiderHeight);           
+        {          
             stateMachine.SwitchState(stateMachine.JumpingState);
         }
     } 

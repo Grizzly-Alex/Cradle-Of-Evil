@@ -13,6 +13,8 @@ public sealed class PlayerStandingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
+
+        SetColliderHeight(playerData.StandingColiderHeight);
     
         input.SitStandEvent += OnSit;
         input.JumpEvent += OnJump;

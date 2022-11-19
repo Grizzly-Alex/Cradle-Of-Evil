@@ -32,18 +32,15 @@ public sealed class PlayerSitOrStandState : PlayerBaseState
 
         if (isAnimationFinished)
         {
-            if (TransitionTo == SitOrStandTransition.Crouching)
+            switch (TransitionTo)
             {
-                SetColliderHeight(playerData.CrouchingColiderHeight);
-
-                stateMachine.SwitchState(stateMachine.CrouchingState);
-            }
-            else if (TransitionTo == SitOrStandTransition.Standing)
-            {
-                SetColliderHeight(playerData.StandingColiderHeight);
-                
-                stateMachine.SwitchState(stateMachine.StandingState);
-            }            
+                case SitOrStandTransition.Crouching:
+                    stateMachine.SwitchState(stateMachine.CrouchingState);
+                    break;
+                case SitOrStandTransition.Standing: 
+                    stateMachine.SwitchState(stateMachine.StandingState); 
+                    break;
+            }               
         }
 
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)

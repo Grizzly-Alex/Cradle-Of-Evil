@@ -75,12 +75,9 @@ public class PlayerDashingState : PlayerBaseState
                     switch (PreviousState)
                     {
                         case PreviousState.Standing:
-                            SetColliderHeight(playerData.StandingColiderHeight);
                             stateMachine.SwitchState(stateMachine.StandingState);
                             break;
-
                         case PreviousState.Crouching: 
-                            SetColliderHeight(playerData.CrouchingColiderHeight); 
                             stateMachine.SwitchState(stateMachine.CrouchingState); 
                             break;
                     }               

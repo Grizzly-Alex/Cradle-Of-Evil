@@ -14,6 +14,8 @@ public class PlayerInAirState : PlayerBaseState
 
         input.JumpEvent += OnJump; 
 
+        SetColliderHeight(playerData.StandingColiderHeight);
+
         core.Movement.IsFriction(false);
     }
 
