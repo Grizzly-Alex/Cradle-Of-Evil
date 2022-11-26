@@ -11,7 +11,7 @@ public class PlayerDashingState : PlayerBaseState
     public PreviousState PreviousState { get; set; }
     private float startTime;
     private bool timeOut;
-    private bool isRoofDetected;
+    private bool isCellingDetected;
 
     public PlayerDashingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -37,7 +37,7 @@ public class PlayerDashingState : PlayerBaseState
     {
         base.DoCheck();
 
-        isRoofDetected = core.CollisionSenses.DetectingRoof();
+        isCellingDetected = core.CollisionSensors.CellingDetect;
     }
 
     public override void LogicUpdate()
@@ -53,7 +53,7 @@ public class PlayerDashingState : PlayerBaseState
         {           
             timeOut = true; 
 
-            if (isRoofDetected)
+            if (isCellingDetected)
             {
                 animator.SetTrigger(HashToCrouch);
 

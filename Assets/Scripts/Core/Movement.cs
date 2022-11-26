@@ -25,24 +25,24 @@ public sealed class Movement: CoreComponent
     }
 
     public void MoveAlongSurface(float velocity)
-    {
-        if(core.CollisionSenses.GetGroundSlopeAngle() != 0.0f)
+    {      
+        if(core.CollisionSensors.GroundSlopeAngle != 0.0f)
         {
             SetVelocityOnSlope(velocity);
         }
         else
         {
             SetVelocityOnSmooth(velocity);
-        }
+        }        
     }
 
     public void SetVelocityOnSlope(float velocity)
-    {
+    {              
         workingVector.Set(
-            -velocity * core.CollisionSenses.GetPerpendicularSurface().x,
-            -velocity * core.CollisionSenses.GetPerpendicularSurface().y);
+            -velocity * core.CollisionSensors.GroundPerpendicular.x,
+            -velocity * core.CollisionSensors.GroundPerpendicular.y);
 
-        SetFinalVelocity();
+        SetFinalVelocity();       
     }
 
     public void SetVelocityOnSmooth(float velocity)

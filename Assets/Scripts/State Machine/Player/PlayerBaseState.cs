@@ -30,12 +30,13 @@ public abstract class PlayerBaseState : IState
 
     public virtual void DoCheck()
     {
-        isGrounded = core.CollisionSenses.DetectingGround();
+        isGrounded = core.CollisionSensors.GroundDetect;
+        Debug.Log(core.CollisionSensors.GrabWallDetect);
     }
 
     public virtual void LogicUpdate()
-    {
-        core.Movement.LogicUpdate();      
+    { 
+        core.LogicUpdate();            
     }
 
     public virtual void PhysicsUpdate()
@@ -44,8 +45,7 @@ public abstract class PlayerBaseState : IState
     }
     
     public virtual void Exit()
-    {
-        
+    {      
     }
     #endregion 
 

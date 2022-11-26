@@ -18,8 +18,8 @@ public class PlayerFallingState : PlayerInAirState
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();
-
+        base.LogicUpdate();  
+     
         SetFallingForce(core.Movement.CurrentVelocity);
 
         if(isGrounded)

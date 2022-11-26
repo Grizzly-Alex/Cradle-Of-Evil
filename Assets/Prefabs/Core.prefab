@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Movement>k__BackingField: {fileID: 4769231103168760029}
-  <CollisionSenses>k__BackingField: {fileID: 4140435375988997164}
+  <CollisionSensors>k__BackingField: {fileID: 4140435375988997164}
 --- !u!114 &4769231103168760029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22bcb55591b1e749ad8f574a867144c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Friction>k__BackingField: {fileID: 6200000, guid: 57921e6d345b3d649b4f3c2b8bfb1be4, type: 2}
-  <NotFriction>k__BackingField: {fileID: 6200000, guid: 2ea3183e888e96b448da5f79daf6d94e, type: 2}
+  <Friction>k__BackingField: {fileID: 0}
+  <NotFriction>k__BackingField: {fileID: 0}
 --- !u!114 &4140435375988997164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,9 +74,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bc3eddd995a2746970710a9ddf2028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GroundMask>k__BackingField:
+  ceilingCheck: {fileID: 0}
+  groundCheck: {fileID: 0}
+  wallCheck: {fileID: 0}
+  ledgeCheckHorizontal: {fileID: 0}
+  ledgeCheckVertical: {fileID: 0}
+  <GroundLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 128
-  <GroundRayDistance>k__BackingField: 0.25
-  <GroundRayYposition>k__BackingField: 0
-  <RoofRayDistance>k__BackingField: 0
+    m_Bits: 0
+  <GrabWallLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 0

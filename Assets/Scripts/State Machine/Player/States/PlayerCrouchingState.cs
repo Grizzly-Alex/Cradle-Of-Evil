@@ -4,7 +4,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 {
     private readonly int HashIdleCrouch = Animator.StringToHash("IdleCrouch");
     private readonly int HashisMove = Animator.StringToHash("isMove"); 
-    private bool isRoofDetected;
+    private bool isCellingDetected;
 
     public PlayerCrouchingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -27,7 +27,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
         SetColliderHeight(playerData.CrouchingColiderHeight);
 
-        isRoofDetected = core.CollisionSenses.DetectingRoof();
+        isCellingDetected = core.CollisionSensors.CellingDetect;
         
     }
 
@@ -68,7 +68,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     #region InputMethods
     private void OnStand()
     {
-        if(!isRoofDetected)
+        if(!isCellingDetected)
         {   
             stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;  
             stateMachine.SwitchState(stateMachine.SitOrStandState); 
@@ -77,7 +77,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
 
     private void OnJump()
     {
-        if(!isRoofDetected)
+        if(!isCellingDetected)
         {          
             stateMachine.SwitchState(stateMachine.JumpingState);
         }

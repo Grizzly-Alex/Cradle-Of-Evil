@@ -26,7 +26,4 @@ public struct PlayerData
     [field: Header("COLIDER SIZE")]
     [field: SerializeField] public float StandingColiderHeight { get; private set; }
     [field: SerializeField] public float CrouchingColiderHeight { get; private set; }
-
-    [field: Header("MATERIAL")]
-    [field: SerializeField] public int Friction { get; private set; }
 }

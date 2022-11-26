@@ -48,7 +48,7 @@ public sealed class PlayerStandingState : PlayerBaseState
         base.PhysicsUpdate(); 
       
         core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX); 
-        core.Movement.SwitchFriction(input.NormInputX);    
+        core.Movement.SwitchFriction(input.NormInputX);  
     }
 
     public override void Exit()
@@ -61,13 +61,13 @@ public sealed class PlayerStandingState : PlayerBaseState
     }
 
     #region InputMethods
+    private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
+    
     private void OnSit()
     {
         stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Crouching;
         stateMachine.SwitchState(stateMachine.SitOrStandState);
     }
-
-    private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
 
     private void OnDash()
     {
