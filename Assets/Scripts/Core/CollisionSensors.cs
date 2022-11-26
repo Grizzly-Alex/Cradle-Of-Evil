@@ -1,7 +1,4 @@
-using System.Diagnostics;
 using UnityEngine;
-using System.Linq;
-using System.Collections.Generic;
 
 public sealed class CollisionSensors : CoreComponent
 {
@@ -18,22 +15,29 @@ public sealed class CollisionSensors : CoreComponent
     [SerializeField] private float wallSensorDistance;
 
     [field: Header("LAYER MASK")]
-    [field: SerializeField] public LayerMask GroundLayer { get; private set; }
-    [field: SerializeField] public LayerMask GrabWallLayer { get; private set; }
+    [field: SerializeField] public LayerMask PlatformsLayer { get; private set; }
+
+    [field: Header("TAG MASK")]
+    [field: SerializeField] public string Ground { get; private set; }
+    [field: SerializeField] public string GrabWall { get; private set; }
 
 
-    public RaycastHit2D GroundHit => Physics2D.Raycast(groundSensor.position, Vector2.down, Mathf.Infinity, GroundLayer);
-    public RaycastHit2D WallHit => Physics2D.Raycast(wallSensor.position, Vector2.right * core.Movement.FacingDirection, wallSensorDistance, GroundLayer | GrabWallLayer);
-
+    public RaycastHit2D GroundHit => Physics2D.Raycast(groundSensor.position, Vector2.down, Mathf.Infinity, PlatformsLayer);
+    public RaycastHit2D WallHit => Physics2D.Raycast(wallSensor.position, Vector2.right * core.Movement.FacingDirection, wallSensorDistance, PlatformsLayer);
+    
     public bool GrabWallDetect
     {
-        //get => WallHit.transform?.CompareTag("GrabWall");
-        get => WallHit;
+        get => WallHit.collider is null ? false : WallHit.collider.CompareTag(GrabWall);
+    }
+
+    public bool WallDetect
+    {
+        get => WallHit.collider is null ? false : WallHit.collider.CompareTag(Ground);
     }
 
     public bool CellingDetect
     {
-        get => Physics2D.OverlapCircle(ceilingSensor.position, cellingSensorRadius, GroundLayer);
+        get => Physics2D.OverlapCircle(ceilingSensor.position, cellingSensorRadius, PlatformsLayer);
     }
 
     public bool GroundDetect
@@ -57,7 +61,6 @@ public sealed class CollisionSensors : CoreComponent
         Gizmos.DrawWireSphere(ceilingSensor.position, cellingSensorRadius); //celling ray 
         Gizmos.DrawRay(groundSensor.position, new Vector2(0, - groundSensorDistance)); //ground ray
         //Gizmos.DrawRay(wallSensor.position, new Vector2(wallSensorDistance * core.Movement.FacingDirection, 0)); //wall ray
-        //Gizmos.DrawRay(new Vector2(Collider.bounds.center.x, Collider.bounds.max.y + LedgeRayYposition), new Vector2(LedgeRayDistance * core.Movement.FacingDirection, 0)); //ledge ray1
-        
+        //Gizmos.DrawRay(new Vector2(Collider.bounds.center.x, Collider.bounds.max.y + LedgeRayYposition), new Vector2(LedgeRayDistance * core.Movement.FacingDirection, 0)); //ledge ray1     
     }       
 }
