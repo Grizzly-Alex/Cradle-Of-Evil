@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum PreviousState { Standing, Crouching } 
 
-public class PlayerDashingState : PlayerBaseState
+public sealed class PlayerDashingState : PlayerBaseState
 {
     private readonly int HashStartDash = Animator.StringToHash("StartDash");
     private readonly int HashDashing = Animator.StringToHash("Dashing");

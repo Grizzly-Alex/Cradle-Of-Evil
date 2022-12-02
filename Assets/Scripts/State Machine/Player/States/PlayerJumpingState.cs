@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerJumpingState : PlayerInAirState
+public sealed class PlayerJumpingState : PlayerInAirState
 {
     private readonly int HashFirstJump = Animator.StringToHash("FirstJump");
     private readonly int HashSecondJump = Animator.StringToHash("SecondJump");

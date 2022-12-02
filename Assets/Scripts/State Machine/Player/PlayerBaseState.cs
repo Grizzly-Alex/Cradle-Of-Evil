@@ -31,7 +31,6 @@ public abstract class PlayerBaseState : IState
     public virtual void DoCheck()
     {
         isGrounded = core.CollisionSensors.GroundDetect;
-        Debug.Log(core.CollisionSensors.WallDetect);//test
     }
 
     public virtual void LogicUpdate()

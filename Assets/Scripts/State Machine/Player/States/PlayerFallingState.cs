@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class PlayerFallingState : PlayerInAirState
+public sealed class PlayerFallingState : PlayerInAirState
 {
     private readonly int HashFallingState = Animator.StringToHash("FallingState");
     private float fallingForce;
+    private bool isLedgeDetected;
     
     public PlayerFallingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -16,16 +17,28 @@ public class PlayerFallingState : PlayerInAirState
         animator.Play(HashFallingState);       
     }
 
+    public override void DoCheck()
+    {
+        base.DoCheck();
+
+        isLedgeDetected = core.CollisionSensors.ledgeHorizontalDetect;
+    }
+
     public override void LogicUpdate()
     {
         base.LogicUpdate();  
      
         SetFallingForce(core.Movement.CurrentVelocity);
 
-        if(isGrounded)
+        if (isGrounded)
         {
             stateMachine.LandingState.LandingForce = fallingForce;
             stateMachine.SwitchState(stateMachine.LandingState);
+        }
+        else if (isLedgeDetected)
+        {
+            stateMachine.LedgeClimbState.DetectedPos = stateMachine.transform.position;
+            stateMachine.SwitchState(stateMachine.LedgeClimbState);
         }     
     }
 

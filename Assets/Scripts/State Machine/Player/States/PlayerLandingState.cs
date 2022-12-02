@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum LandingStandTransition { HardLanding, Crouching } 
 
-public class PlayerLandingState : PlayerBaseState
+public sealed class PlayerLandingState : PlayerBaseState
 {
     private readonly int HashHardLandingState = Animator.StringToHash("HardLanding");
     private readonly int HashSoftLandingState = Animator.StringToHash("SoftLanding");

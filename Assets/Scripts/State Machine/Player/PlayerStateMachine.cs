@@ -10,18 +10,20 @@ public sealed class PlayerStateMachine: StateMachine
     [field: SerializeField] public PlayerData PlayerData { get; private set; }
 
     #region States of behaviours
-    public PlayerStandingState StandingState { get; private set; }
-    public PlayerCrouchingState CrouchingState { get; private set; }
+    public PlayerLedgeClimbState LedgeClimbState { get; private set; }
     public PlayerSitOrStandState SitOrStandState { get; private set; }
-    public PlayerInAirState InAirState { get; private set; }
+    public PlayerCrouchingState CrouchingState { get; private set; }
+    public PlayerStandingState StandingState { get; private set; }
     public PlayerJumpingState JumpingState { get; private set; }
     public PlayerFallingState FallingState { get; private set; }
     public PlayerLandingState LandingState { get; private set; }
     public PlayerDashingState DashingState { get; private set; }
+    public PlayerInAirState InAirState { get; private set; }
     #endregion
 
     private void Awake()
     {
+        LedgeClimbState = new PlayerLedgeClimbState(this);
         SitOrStandState = new PlayerSitOrStandState(this);
         CrouchingState = new PlayerCrouchingState(this);
         StandingState = new PlayerStandingState(this);
