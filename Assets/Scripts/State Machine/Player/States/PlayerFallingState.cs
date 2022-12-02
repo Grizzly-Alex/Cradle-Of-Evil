@@ -22,6 +22,11 @@ public sealed class PlayerFallingState : PlayerInAirState
         base.DoCheck();
 
         isLedgeDetected = core.CollisionSensors.ledgeHorizontalDetect;
+        
+        if(isLedgeDetected)
+        {
+            stateMachine.LedgeClimbState.DetectedPos = stateMachine.transform.position;
+        }
     }
 
     public override void LogicUpdate()
@@ -36,8 +41,7 @@ public sealed class PlayerFallingState : PlayerInAirState
             stateMachine.SwitchState(stateMachine.LandingState);
         }
         else if (isLedgeDetected)
-        {
-            stateMachine.LedgeClimbState.DetectedPos = stateMachine.transform.position;
+        {            
             stateMachine.SwitchState(stateMachine.LedgeClimbState);
         }     
     }

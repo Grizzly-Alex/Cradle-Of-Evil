@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class PlayerLedgeClimbState : PlayerBaseState
@@ -17,17 +18,25 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
     {
         base.Enter();
 
+        input.JumpEvent += SitchState;
+
         core.Movement.SetVelocityZero();
+
         stateMachine.transform.position = DetectedPos;
 
         corner = GetCornerOfLedge();
-        stateMachine.transform.position = corner;
-        Debug.Log($"Corner: {corner}");
 
-        Debug.Log($"hit dictance: {core.CollisionSensors.LedgeHorizontalSensor.position.y - core.CollisionSensors.WallSensor.position.y}");
+        startPos.Set(
+            corner.x - (stateMachine.BodyCollider.size.x / 2 + defaultContactOffset) * core.Movement.FacingDirection,
+            corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) - stateMachine.BodyCollider.size.y /2);
 
-        
-  
+        stopPos.Set(
+            corner.x + (stateMachine.BodyCollider.size.x / 2) * core.Movement.FacingDirection,
+            corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) + stateMachine.BodyCollider.size.y /2 + defaultContactOffset);
+
+        stateMachine.transform.position = stopPos;   
+
+        Debug.Log(startPos);        
     }
 
     public override void DoCheck()
@@ -40,18 +49,23 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
         base.LogicUpdate();
 
         core.Movement.SetVelocityZero();
-        stateMachine.transform.position = corner;
+
+        stateMachine.transform.position = stopPos;
 
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        input.JumpEvent -= SitchState;
     }
 
     private Vector2 GetCornerOfLedge()
@@ -68,4 +82,6 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
 
         return new Vector2(positionX, positionY);
     }
+
+    public void SitchState() => stateMachine.SwitchState(stateMachine.StandingState);
 }
