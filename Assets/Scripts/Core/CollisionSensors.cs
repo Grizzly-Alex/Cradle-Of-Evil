@@ -28,14 +28,21 @@ public sealed class CollisionSensors : CoreComponent
     public RaycastHit2D ledgeVerticalHit => Physics2D.Raycast(new Vector2(LedgeVerticalSensor.position.x * core.Movement.FacingDirection, LedgeVerticalSensor.position.y), Vector2.down, groundDistance, PlatformsLayer); 
     #endregion
 
-    public bool ledgeVerticalDetect { get => !ledgeVerticalHit && GroundDetect; }
-    public bool ledgeHorizontalDetect { get => !ledgeHorizontalHit && WallDetect; }
-    public bool WallDetect { get => WallHit; }
-    public bool GrabWallDetect { get => WallHit.collider is null ? false : WallHit.collider.CompareTag(GrabWall); }
-    public bool GroundDetect { get => GroundHit; }
-    public bool CellingDetect { get => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, PlatformsLayer); }
-    public float GroundSlopeAngle { get => Vector2.Angle(GroundHit.normal, Vector2.up); }
-    public Vector2 GroundPerpendicular { get => Vector2.Perpendicular(core.CollisionSensors.GroundHit.normal).normalized; }
+    #region Bool
+    public bool ledgeVerticalDetect => !ledgeVerticalHit && GroundDetect; 
+    public bool ledgeHorizontalDetect => !ledgeHorizontalHit && WallDetect; 
+    public bool WallDetect => WallHit; 
+    public bool GrabWallDetect => WallHit.collider is null ? false : WallHit.collider.CompareTag(GrabWall); 
+    public bool GroundDetect => GroundHit; 
+    public bool CellingDetect => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, PlatformsLayer);        
+    #endregion
+
+    #region Other
+    public float GroundSlopeAngle => Vector2.Angle(GroundHit.normal, Vector2.up); 
+    public Vector2 GroundPerpendicular => Vector2.Perpendicular(core.CollisionSensors.GroundHit.normal).normalized;       
+    #endregion
+
+
 
     private void OnDrawGizmos() 
     {

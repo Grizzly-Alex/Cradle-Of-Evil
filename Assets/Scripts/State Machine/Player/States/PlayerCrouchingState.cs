@@ -13,19 +13,19 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
+        
+        SetColliderHeight(playerData.CrouchingColiderHeight);
 
         input.SitStandEvent += OnStand;
         input.JumpEvent += OnJump;
         input.DashEvent += OnDash;
 
-        animator.Play(HashIdleCrouch);  
+        animator.Play(HashIdleCrouch); 
     }
 
     public override void DoCheck()
     {
         base.DoCheck();
-
-        SetColliderHeight(playerData.CrouchingColiderHeight);
 
         isCellingDetected = core.CollisionSensors.CellingDetect;
         

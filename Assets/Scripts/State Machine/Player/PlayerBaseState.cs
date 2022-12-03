@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public abstract class PlayerBaseState : IState
+public abstract class PlayerBaseState: IState
 {  
     protected bool isAnimationFinished;
     protected PlayerStateMachine stateMachine;
@@ -9,6 +9,7 @@ public abstract class PlayerBaseState : IState
     protected Core core;
     protected Animator animator; 
     protected PlayerData playerData;
+    protected int currentHashAnimation;
     protected bool isGrounded;
 
     
@@ -49,7 +50,7 @@ public abstract class PlayerBaseState : IState
     #endregion 
 
     #region Trigers
-    public virtual void AnimationTriger() { }
+    public virtual void AnimationTrigger() { }
 
     public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
     #endregion

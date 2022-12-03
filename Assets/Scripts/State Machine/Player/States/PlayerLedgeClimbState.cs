@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public sealed class PlayerLedgeClimbState : PlayerBaseState
@@ -8,7 +7,13 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
     private Vector2 stopPos;
     private Vector2 corner;
     private Vector2 workspace;
+    private bool isHanging;
+    private bool isClimbing;
     private readonly float defaultContactOffset = Physics2D.defaultContactOffset;
+    private readonly int HashLedgeGrab = Animator.StringToHash("LedgeGrab");
+    private readonly int HashLedgeClimb = Animator.StringToHash("LedgeClimb");
+    private readonly int isClimbingHash = Animator.StringToHash("isClimbing");
+
 
     public PlayerLedgeClimbState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -18,10 +23,9 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
     {
         base.Enter();
 
-        input.JumpEvent += SitchState;
+        stateMachine.JumpingState.ResetAmountOfJumpsLeft();
 
         core.Movement.SetVelocityZero();
-
         stateMachine.transform.position = DetectedPos;
 
         corner = GetCornerOfLedge();
@@ -34,9 +38,9 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
             corner.x + (stateMachine.BodyCollider.size.x / 2) * core.Movement.FacingDirection,
             corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) + stateMachine.BodyCollider.size.y /2 + defaultContactOffset);
 
-        stateMachine.transform.position = stopPos;   
-
-        Debug.Log(startPos);        
+        stateMachine.transform.position = startPos;   
+ 
+        animator.Play(HashLedgeGrab);
     }
 
     public override void DoCheck()
@@ -48,25 +52,44 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
     {
         base.LogicUpdate();
 
-        core.Movement.SetVelocityZero();
+        if (isAnimationFinished)
+        {
+            stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;
+            stateMachine.SwitchState(stateMachine.SitOrStandState);
+        }
+        else
+        {
+            core.Movement.SetVelocityZero();
+            stateMachine.transform.position = startPos;
 
-        stateMachine.transform.position = stopPos;
-
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-
-
+            if (core.Movement.FacingDirection == input.NormInputX && isHanging && !isClimbing)
+            {
+                //CheckForSpace();
+                isClimbing = true;
+                animator.SetBool(isClimbingHash, true);
+            }
+            else if (input.NormInputY == -1 && isHanging && !isClimbing)
+            {
+                stateMachine.SwitchState(stateMachine.FallingState);
+            }
+        }
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        input.JumpEvent -= SitchState;
+        isHanging = false;
+        animator.SetBool(isClimbingHash, false);
+
+        if (isClimbing)
+        {
+            stateMachine.transform.position = stopPos;
+            isClimbing = false;
+        }
     }
+
+    public override void AnimationTrigger() => isHanging = true;
 
     private Vector2 GetCornerOfLedge()
     {
@@ -81,7 +104,5 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
         float positionY = core.CollisionSensors.LedgeHorizontalSensor.position.y - hitDown.distance;
 
         return new Vector2(positionX, positionY);
-    }
-
-    public void SitchState() => stateMachine.SwitchState(stateMachine.StandingState);
+    }    
 }

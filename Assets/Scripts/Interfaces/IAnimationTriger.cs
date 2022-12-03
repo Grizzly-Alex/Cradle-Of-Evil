@@ -1,5 +1,5 @@
 public interface IAnimationTriger 
 {
-    public void AnimationTriger();
+    public void AnimationTrigger();
     public void AnimationFinishTrigger();
 }
