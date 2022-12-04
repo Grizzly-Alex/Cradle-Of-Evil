@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class SwitchAnimationExtension
+public static class AnimatorExtension
 {
     public static void SwitchAnimation(this Animator animator, int hashNextAnimation, ref int currentHashAnimation)
     {

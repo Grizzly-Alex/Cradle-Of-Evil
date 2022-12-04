@@ -9,7 +9,6 @@ public abstract class PlayerBaseState: IState
     protected Core core;
     protected Animator animator; 
     protected PlayerData playerData;
-    protected int currentHashAnimation;
     protected bool isGrounded;
 
     

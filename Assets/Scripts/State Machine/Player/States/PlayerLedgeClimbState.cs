@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public sealed class PlayerLedgeClimbState : PlayerBaseState
+public sealed class PlayerLedgeClimbState: PlayerBaseState
 {
     public Vector2 DetectedPos {get; set;}
     private Vector2 startPos;
@@ -11,7 +11,6 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
     private bool isClimbing;
     private readonly float defaultContactOffset = Physics2D.defaultContactOffset;
     private readonly int HashLedgeGrab = Animator.StringToHash("LedgeGrab");
-    private readonly int HashLedgeClimb = Animator.StringToHash("LedgeClimb");
     private readonly int isClimbingHash = Animator.StringToHash("isClimbing");
 
 
@@ -35,7 +34,7 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
             corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) - stateMachine.BodyCollider.size.y /2);
 
         stopPos.Set(
-            corner.x + (stateMachine.BodyCollider.size.x / 2) * core.Movement.FacingDirection,
+            corner.x + stateMachine.BodyCollider.size.x * core.Movement.FacingDirection,
             corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) + stateMachine.BodyCollider.size.y /2 + defaultContactOffset);
 
         stateMachine.transform.position = startPos;   
@@ -70,6 +69,7 @@ public sealed class PlayerLedgeClimbState : PlayerBaseState
             }
             else if (input.NormInputY == -1 && isHanging && !isClimbing)
             {
+                stateMachine.FallingState.ResetGrabLedge();
                 stateMachine.SwitchState(stateMachine.FallingState);
             }
         }
