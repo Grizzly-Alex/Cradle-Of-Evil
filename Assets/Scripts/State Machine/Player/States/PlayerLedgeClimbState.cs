@@ -5,10 +5,11 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
     public Vector2 DetectedPos {get; set;}
     private Vector2 startPos;
     private Vector2 stopPos;
-    private Vector2 corner;
+    private Vector2 cornerPos;
     private Vector2 workspace;
     private bool isHanging;
     private bool isClimbing;
+    private bool isTouchingCeiling;
     private readonly float defaultContactOffset = Physics2D.defaultContactOffset;
     private readonly int HashLedgeGrab = Animator.StringToHash("LedgeGrab");
     private readonly int isClimbingHash = Animator.StringToHash("isClimbing");
@@ -27,15 +28,15 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
         core.Movement.SetVelocityZero();
         stateMachine.transform.position = DetectedPos;
 
-        corner = GetCornerOfLedge();
+        cornerPos = GetCornerOfLedge();
 
         startPos.Set(
-            corner.x - (stateMachine.BodyCollider.size.x / 2 + defaultContactOffset) * core.Movement.FacingDirection,
-            corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) - stateMachine.BodyCollider.size.y /2);
+            cornerPos.x - (stateMachine.BodyCollider.size.x / 2 + defaultContactOffset) * core.Movement.FacingDirection,
+            cornerPos.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) - stateMachine.BodyCollider.size.y /2);
 
         stopPos.Set(
-            corner.x + stateMachine.BodyCollider.size.x * core.Movement.FacingDirection,
-            corner.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) + stateMachine.BodyCollider.size.y /2 + defaultContactOffset);
+            cornerPos.x + stateMachine.BodyCollider.size.x * core.Movement.FacingDirection,
+            cornerPos.y + Mathf.Abs(stateMachine.BodyCollider.offset.y) + stateMachine.BodyCollider.size.y /2 + defaultContactOffset);
 
         stateMachine.transform.position = startPos;   
  
@@ -45,6 +46,10 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
     public override void DoCheck()
     {
         base.DoCheck();
+
+        isTouchingCeiling = CheckForSpace();
+
+        Debug.Log(isTouchingCeiling);
     }
 
     public override void LogicUpdate()
@@ -53,8 +58,16 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
 
         if (isAnimationFinished)
         {
-            stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;
-            stateMachine.SwitchState(stateMachine.SitOrStandState);
+            if(isTouchingCeiling)
+            {
+                stateMachine.SwitchState(stateMachine.CrouchingState);
+            }
+            else
+            {
+                stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;
+                stateMachine.SwitchState(stateMachine.SitOrStandState);
+            }
+
         }
         else
         {
@@ -63,7 +76,6 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
 
             if (core.Movement.FacingDirection == input.NormInputX && isHanging && !isClimbing)
             {
-                //CheckForSpace();
                 isClimbing = true;
                 animator.SetBool(isClimbingHash, true);
             }
@@ -82,6 +94,11 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
         isHanging = false;
         animator.SetBool(isClimbingHash, false);
 
+        if (isTouchingCeiling)
+        {
+            SetColliderHeight(playerData.CrouchingColiderHeight);
+        }
+
         if (isClimbing)
         {
             stateMachine.transform.position = stopPos;
@@ -90,6 +107,15 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
     }
 
     public override void AnimationTrigger() => isHanging = true;
+
+    private bool CheckForSpace()
+    {
+        return Physics2D.Raycast(
+            cornerPos + (Vector2.up * defaultContactOffset) + (Vector2.right * core.Movement.FacingDirection * defaultContactOffset),
+            Vector2.up,
+            playerData.StandingColiderHeight,
+            core.CollisionSensors.PlatformsLayer);
+    }
 
     private Vector2 GetCornerOfLedge()
     {
