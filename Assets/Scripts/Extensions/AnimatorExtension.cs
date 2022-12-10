@@ -2,13 +2,10 @@ using UnityEngine;
 
 public static class AnimatorExtension
 {
-    public static void SwitchAnimation(this Animator animator, int hashNextAnimation, ref int currentHashAnimation)
+    public static void SwitchAnimation(this Animator animator, int hashNextAnimation, ref int hashCurrentAnimation)
     {
-        if (currentHashAnimation != hashNextAnimation)
-        {
-            animator.Play(hashNextAnimation);
-        }
-        
-        currentHashAnimation = hashNextAnimation;      
+        if (hashCurrentAnimation.Equals(hashNextAnimation)) return;     
+        animator.Play(hashNextAnimation);
+        hashCurrentAnimation = hashNextAnimation;      
     }
 }

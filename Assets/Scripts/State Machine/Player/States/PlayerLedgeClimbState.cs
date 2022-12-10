@@ -48,8 +48,6 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
         base.DoCheck();
 
         isTouchingCeiling = CheckForSpace();
-
-        Debug.Log(isTouchingCeiling);
     }
 
     public override void LogicUpdate()
@@ -67,7 +65,6 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
                 stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;
                 stateMachine.SwitchState(stateMachine.SitOrStandState);
             }
-
         }
         else
         {
