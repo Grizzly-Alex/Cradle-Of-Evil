@@ -22,19 +22,42 @@ public sealed class CollisionSensors : CoreComponent
     [field: SerializeField] public string GrabWall { get; private set; }
 
     #region Raycasts
-    public RaycastHit2D GroundHit => Physics2D.Raycast(GroundSensor.position, Vector2.down, groundDistance, PlatformsLayer);
-    public RaycastHit2D WallHit => Physics2D.Raycast(WallSensor.position, Vector2.right * core.Movement.FacingDirection, wallDistance, PlatformsLayer);
-    public RaycastHit2D ledgeHorizontalHit => Physics2D.Raycast(LedgeHorizontalSensor.position, Vector2.right * core.Movement.FacingDirection, wallDistance, PlatformsLayer); 
-    public RaycastHit2D ledgeVerticalHit => Physics2D.Raycast(new Vector2(LedgeVerticalSensor.position.x * core.Movement.FacingDirection, LedgeVerticalSensor.position.y), Vector2.down, groundDistance, PlatformsLayer); 
+    public RaycastHit2D GroundHit => Physics2D.Raycast(
+        GroundSensor.position,
+        Vector2.down,
+        groundDistance,
+        PlatformsLayer);
+
+    public RaycastHit2D WallHit => Physics2D.Raycast(
+        WallSensor.position,
+        Vector2.right * core.Movement.FacingDirection,
+        wallDistance,
+        PlatformsLayer);
+
+    public RaycastHit2D ledgeHorizontalHit => Physics2D.Raycast(
+        LedgeHorizontalSensor.position,
+        Vector2.right * core.Movement.FacingDirection,
+        wallDistance,
+        PlatformsLayer); 
+
+    public RaycastHit2D ledgeVerticalHit => Physics2D.Raycast(
+        new Vector2(LedgeVerticalSensor.position.x * core.Movement.FacingDirection, LedgeVerticalSensor.position.y),
+        Vector2.down,
+        groundDistance,
+        PlatformsLayer); 
     #endregion
 
     #region Bool
-    public bool ledgeVerticalDetect => !ledgeVerticalHit && GroundDetect; 
-    public bool ledgeHorizontalDetect => !ledgeHorizontalHit && WallDetect; 
     public bool WallDetect => WallHit; 
     public bool GrabWallDetect => WallHit.collider is null ? false : WallHit.collider.CompareTag(GrabWall); 
     public bool GroundDetect => GroundHit; 
-    public bool CellingDetect => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, PlatformsLayer);        
+    public bool CellingDetect => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, PlatformsLayer); 
+    public bool ledgeVerticalDetect => !ledgeVerticalHit && GroundDetect; 
+    public bool ledgeHorizontalDetect => !Physics2D.Raycast(
+        LedgeHorizontalSensor.position,
+        Vector2.down,
+        LedgeHorizontalSensor.position.y - WallSensor.position.y,
+        PlatformsLayer) && !ledgeHorizontalHit && WallDetect;        
     #endregion
 
     #region Other
