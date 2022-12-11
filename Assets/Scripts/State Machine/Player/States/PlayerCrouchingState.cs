@@ -66,12 +66,22 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     }
 
     #region InputMethods
+    /*
     private void OnStand()
     {
         if(!isCellingDetected)
         {   
             stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;  
             stateMachine.SwitchState(stateMachine.SitOrStandState); 
+        }      
+    } 
+    */
+
+    private void OnStand()
+    {
+        if(!isCellingDetected)
+        {   
+            stateMachine.SwitchState(stateMachine.StandUpState); 
         }      
     } 
 

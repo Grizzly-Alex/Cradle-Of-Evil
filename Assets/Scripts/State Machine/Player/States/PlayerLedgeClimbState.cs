@@ -62,8 +62,7 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
             }
             else
             {
-                stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;
-                stateMachine.SwitchState(stateMachine.SitOrStandState);
+                stateMachine.SwitchState(stateMachine.StandUpState);
             }
         }
         else

@@ -62,11 +62,10 @@ public sealed class PlayerStandingState : PlayerBaseState
 
     #region InputMethods
     private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
-    
+
     private void OnSit()
     {
-        stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Crouching;
-        stateMachine.SwitchState(stateMachine.SitOrStandState);
+        stateMachine.SwitchState(stateMachine.SitDownState);   
     }
 
     private void OnDash()

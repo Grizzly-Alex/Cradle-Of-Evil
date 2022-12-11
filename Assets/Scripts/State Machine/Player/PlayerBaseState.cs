@@ -35,7 +35,7 @@ public abstract class PlayerBaseState: IState
 
     public virtual void LogicUpdate()
     { 
-        core.LogicUpdate();            
+        core.LogicUpdate();   
     }
 
     public virtual void PhysicsUpdate()

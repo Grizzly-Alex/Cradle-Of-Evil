@@ -50,26 +50,26 @@ public sealed class PlayerDashingState : PlayerBaseState
         }
 
         if (Time.time >= startTime + playerData.DashingTime)
-        {           
+        {         
             timeOut = true; 
-
+          
             if (isCellingDetected)
             {
                 animator.SetTrigger(HashToCrouch);
-
+               
                 if (isAnimationFinished)
                 {
                     stateMachine.SwitchState(stateMachine.CrouchingState);
                 }   
             }
-            else
-            {
+            else 
+            {               
                 switch (PreviousState)
                 {
                     case PreviousState.Standing: animator.SetTrigger(HashToStand); break;
                     case PreviousState.Crouching: animator.SetTrigger(HashToCrouch); break;
                 } 
-
+                
                 if (isAnimationFinished)
                 {
                     switch (PreviousState)
@@ -81,8 +81,8 @@ public sealed class PlayerDashingState : PlayerBaseState
                             stateMachine.SwitchState(stateMachine.CrouchingState); 
                             break;
                     }               
-                } 
-            }    
+                }                
+            }             
         }           
     }
 
