@@ -27,8 +27,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         base.DoCheck();
 
-        isCellingDetected = core.CollisionSensors.CellingDetect;
-        
+        isCellingDetected = core.CollisionSensors.CellingDetect;        
     }
 
     public override void LogicUpdate()
@@ -42,7 +41,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
         {
             stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
-            
+                        
             stateMachine.SwitchState(stateMachine.FallingState);        
         }
     }
@@ -52,8 +51,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         base.PhysicsUpdate();
                     
         core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
-
-        core.Movement.SwitchFriction(input.NormInputX);
+        core.Movement.SwitchRbConstraints(input.NormInputX);
     }
 
     public override void Exit()
@@ -63,20 +61,11 @@ public sealed class PlayerCrouchingState : PlayerBaseState
         input.SitStandEvent -= OnStand;  
         input.JumpEvent -= OnJump;  
         input.DashEvent -= OnDash;
+
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     #region InputMethods
-    /*
-    private void OnStand()
-    {
-        if(!isCellingDetected)
-        {   
-            stateMachine.SitOrStandState.TransitionTo = SitOrStandTransition.Standing;  
-            stateMachine.SwitchState(stateMachine.SitOrStandState); 
-        }      
-    } 
-    */
-
     private void OnStand()
     {
         if(!isCellingDetected)

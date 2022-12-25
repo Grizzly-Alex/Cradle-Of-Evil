@@ -25,7 +25,8 @@ public abstract class PlayerBaseState: IState
     public virtual void Enter()
     {
         DoCheck();
-        isAnimationFinished = false;      
+        
+        isAnimationFinished = false; 
     }
 
     public virtual void DoCheck()
@@ -44,7 +45,8 @@ public abstract class PlayerBaseState: IState
     }
     
     public virtual void Exit()
-    {      
+    {  
+           
     }
     #endregion 
 

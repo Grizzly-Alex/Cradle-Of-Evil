@@ -15,7 +15,7 @@ public sealed class Movement: CoreComponent
         base.Awake();
 
         Rigidbody = GetComponentInParent<Rigidbody2D>();
-        if(Rigidbody.sharedMaterial is null) { Rigidbody.sharedMaterial = Friction; }
+        if (Rigidbody.sharedMaterial is null) { Rigidbody.sharedMaterial = NotFriction; }
         FacingDirection = 1;
     }
 
@@ -25,15 +25,10 @@ public sealed class Movement: CoreComponent
     }
 
     public void MoveAlongSurface(float velocity)
-    {      
-        if(core.CollisionSensors.GroundSlopeAngle != 0.0f)
-        {
-            SetVelocityOnSlope(velocity);
-        }
-        else
-        {
-            SetVelocityOnSmooth(velocity);
-        }        
+    {     
+        if(core.CollisionSensors.GroundSlopeAngle != 0.0f) { SetVelocityOnSlope(velocity); }
+        else { SetVelocityOnSmooth(velocity); }
+    
     }
 
     public void SetVelocityOnSlope(float velocity)
@@ -77,10 +72,7 @@ public sealed class Movement: CoreComponent
 
     public void CheckIfShouldFlip(int xInput)
     {
-        if(xInput != 0 && xInput != FacingDirection)
-        {
-            Flip();
-        }
+        if(xInput != 0 && xInput != FacingDirection) { Flip(); }
     }
 
     public void Flip()
@@ -89,16 +81,22 @@ public sealed class Movement: CoreComponent
         Rigidbody.transform.Rotate(0.0f, 180.0f, 0.0f);
     }
 
+
+    public void SetRbConstraints(RigidbodyConstraints2D constraint) => Rigidbody.constraints = constraint;
+
+    public void SwitchRbConstraints(int InputX)
+    {
+        switch (InputX)
+        {
+            case 0: Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll; break;
+            default: Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation; break;
+        }
+    }
+
     public void IsFriction(bool isBrake)
     {
-        if(isBrake)
-        {
-            SetFriction(Friction);
-        }
-        else
-        {
-            SetFriction(NotFriction);
-        }
+        if(isBrake) { SetFriction(Friction); }
+        else { SetFriction(NotFriction); }
     }
 
     public void SwitchFriction(int InputX)
@@ -116,5 +114,5 @@ public sealed class Movement: CoreComponent
         {
             Rigidbody.sharedMaterial = frictionMaterial;
         }
-    }   
+    }
 }

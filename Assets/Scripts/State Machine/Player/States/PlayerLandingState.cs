@@ -4,9 +4,10 @@ public enum LandingStandTransition { HardLanding, Crouching }
 
 public sealed class PlayerLandingState : PlayerBaseState
 {
+    private Vector2 _holdPosition;
+    public float LandingForce { get; set; }
     private readonly int HashHardLandingState = Animator.StringToHash("HardLanding");
     private readonly int HashSoftLandingState = Animator.StringToHash("SoftLanding");
-    public float LandingForce { get; set; }
 
     public PlayerLandingState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -17,8 +18,10 @@ public sealed class PlayerLandingState : PlayerBaseState
     {
         base.Enter();
 
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);  
+
         stateMachine.JumpingState.ResetAmountOfJumpsLeft();
-        core.Movement.IsFriction(true);
+
         core.Movement.SetVelocityZero();
 
         input.JumpEvent += OnJump;
@@ -60,6 +63,8 @@ public sealed class PlayerLandingState : PlayerBaseState
         base.Exit();
 
         input.JumpEvent -= OnJump;
+
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     private void OnJump()

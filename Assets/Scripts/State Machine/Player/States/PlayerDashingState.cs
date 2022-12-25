@@ -20,10 +20,10 @@ public sealed class PlayerDashingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
+ 
         timeOut = false;
-        startTime = Time.time;       
-        core.Movement.IsFriction(false); 
+        startTime = Time.time;
+
         SetColliderHeight(playerData.CrouchingColiderHeight);
 
         switch (PreviousState)
@@ -49,10 +49,10 @@ public sealed class PlayerDashingState : PlayerBaseState
             stateMachine.SwitchState(stateMachine.FallingState);
         }
 
-        if (Time.time >= startTime + playerData.DashingTime)
+        if (Time.fixedTime >= startTime + playerData.DashingTime)
         {         
             timeOut = true; 
-          
+
             if (isCellingDetected)
             {
                 animator.SetTrigger(HashToCrouch);
@@ -60,15 +60,15 @@ public sealed class PlayerDashingState : PlayerBaseState
                 if (isAnimationFinished)
                 {
                     stateMachine.SwitchState(stateMachine.CrouchingState);
-                }   
+                }                   
             }
             else 
-            {               
+            {             
                 switch (PreviousState)
                 {
                     case PreviousState.Standing: animator.SetTrigger(HashToStand); break;
                     case PreviousState.Crouching: animator.SetTrigger(HashToCrouch); break;
-                } 
+                }                 
                 
                 if (isAnimationFinished)
                 {
@@ -96,13 +96,13 @@ public sealed class PlayerDashingState : PlayerBaseState
         }
         else
         {
-            core.Movement.IsFriction(true);
+            core.Movement.SetVelocityZero();
         }
     }
 
     public override void Exit()
     {
-        base.Exit();
+        base.Exit(); 
 
         animator.ResetTrigger(HashToStand);
         animator.ResetTrigger(HashToCrouch);

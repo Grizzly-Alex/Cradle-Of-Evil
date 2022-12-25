@@ -13,7 +13,7 @@ public sealed class PlayerStandingState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
+   
         SetColliderHeight(playerData.StandingColiderHeight);
     
         input.SitStandEvent += OnSit;
@@ -48,7 +48,7 @@ public sealed class PlayerStandingState : PlayerBaseState
         base.PhysicsUpdate(); 
       
         core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX); 
-        core.Movement.SwitchFriction(input.NormInputX);  
+        core.Movement.SwitchRbConstraints(input.NormInputX);  
     }
 
     public override void Exit()
@@ -58,6 +58,8 @@ public sealed class PlayerStandingState : PlayerBaseState
         input.SitStandEvent -= OnSit;  
         input.JumpEvent -= OnJump;
         input.DashEvent -= OnDash;
+
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     #region InputMethods

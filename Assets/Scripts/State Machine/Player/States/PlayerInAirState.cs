@@ -11,12 +11,10 @@ public class PlayerInAirState : PlayerBaseState
     public override void Enter()
     {
         base.Enter();
-
+        
         input.JumpEvent += OnJump; 
 
         SetColliderHeight(playerData.StandingColiderHeight);
-
-        core.Movement.IsFriction(false);
     }
 
     public override void LogicUpdate()

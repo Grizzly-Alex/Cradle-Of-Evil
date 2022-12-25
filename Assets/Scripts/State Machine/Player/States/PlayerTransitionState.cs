@@ -5,6 +5,7 @@ public sealed class PlayerTransitionState : PlayerBaseState
 {
     private readonly int _hashAnimation;
     private readonly PlayerBaseState _nextState;
+    
     public PlayerTransitionState(PlayerStateMachine stateMachine, string animimation, PlayerBaseState nextState) : base(stateMachine)
     {
         _hashAnimation = Animator.StringToHash(animimation);
@@ -14,11 +15,12 @@ public sealed class PlayerTransitionState : PlayerBaseState
     public override void Enter()
     {
         base.Enter(); 
-
-        core.Movement.IsFriction(true);
+     
         core.Movement.SetVelocityZero();
+        
+        animator.Play(_hashAnimation);  
 
-        animator.Play(_hashAnimation);               
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);             
     }
 
     public override void LogicUpdate()
@@ -36,5 +38,12 @@ public sealed class PlayerTransitionState : PlayerBaseState
             
             stateMachine.SwitchState(stateMachine.FallingState);        
         }     
+    }
+
+    public override void Exit()
+    {   
+        base.Exit();
+
+        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 }
