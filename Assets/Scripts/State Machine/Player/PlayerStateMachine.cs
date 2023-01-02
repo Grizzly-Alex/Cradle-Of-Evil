@@ -20,7 +20,7 @@ public sealed class PlayerStateMachine: StateMachine
     public PlayerLandingState LandingState { get; private set; }
     public PlayerDashingState DashingState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
-    public PlayerGrabWallState GrabWallState { get; private set; }
+    public PlayerOnWallState GrabWallState { get; private set; }
     #endregion
 
     private void Awake()
@@ -33,7 +33,7 @@ public sealed class PlayerStateMachine: StateMachine
         LandingState = new PlayerLandingState(this); 
         DashingState = new PlayerDashingState(this);  
         InAirState = new PlayerInAirState(this);
-        GrabWallState = new PlayerGrabWallState(this);
+        GrabWallState = new PlayerOnWallState(this);
         SitDownState = new PlayerTransitionState(this, "SitDown", CrouchingState); 
         StandUpState = new PlayerTransitionState(this, "StandUp", StandingState); 
     }

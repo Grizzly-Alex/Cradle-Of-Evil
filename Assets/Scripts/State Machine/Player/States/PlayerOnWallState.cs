@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class PlayerGrabWallState : PlayerBaseState
+public class PlayerOnWallState : PlayerBaseState
 {
     public Vector2 DetectedPointWall {get; set;}
     private Vector2 _holdPosition;
     private readonly int _landingOnWall = Animator.StringToHash("LandingOnWall");
     
-    public PlayerGrabWallState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerOnWallState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
     }
 
@@ -19,7 +19,7 @@ public class PlayerGrabWallState : PlayerBaseState
         DetectedPointWall.y);
 
         playerSm.transform.position = _holdPosition;
-        
+
         playerSm.Animator.Play(_landingOnWall);
     }
 
@@ -32,7 +32,12 @@ public class PlayerGrabWallState : PlayerBaseState
     {
         base.LogicUpdate();
 
-        playerSm.transform.position = _holdPosition;       
+        playerSm.transform.position = _holdPosition;  
+
+        if (_isAnimationFinished)
+        {
+            //TODO
+        }     
     }
 
     public override void PhysicsUpdate()
