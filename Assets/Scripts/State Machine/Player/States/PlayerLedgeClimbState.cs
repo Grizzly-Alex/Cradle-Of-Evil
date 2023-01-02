@@ -9,9 +9,8 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
     private bool _isHanging;
     private bool _isClimbing;
     private bool _isTouchingCeiling;
-    private readonly float _defaultContactOffset = Physics2D.defaultContactOffset;
     private readonly int _hashLedgeGrab = Animator.StringToHash("LedgeGrab");
-    private readonly int _isClimbingHash = Animator.StringToHash("_isClimbing");
+    private readonly int _isClimbingHash = Animator.StringToHash("isClimbing");
 
 
     public PlayerLedgeClimbState(PlayerStateMachine playerSm) : base(playerSm)
@@ -30,12 +29,12 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
         _cornerPos = GetCornerOfLedge();
 
         _startPos.Set(
-            _cornerPos.x - (playerSm.BodyCollider.size.x / 2 + _defaultContactOffset) * playerSm.Core.Movement.FacingDirection,
+            _cornerPos.x - (playerSm.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * playerSm.Core.Movement.FacingDirection,
             _cornerPos.y + Mathf.Abs(playerSm.BodyCollider.offset.y) - playerSm.BodyCollider.size.y /2);
 
         _stopPos.Set(
             _cornerPos.x + playerSm.BodyCollider.size.x * playerSm.Core.Movement.FacingDirection,
-            _cornerPos.y + Mathf.Abs(playerSm.BodyCollider.offset.y) + playerSm.BodyCollider.size.y /2 + _defaultContactOffset);
+            _cornerPos.y + Mathf.Abs(playerSm.BodyCollider.offset.y) + playerSm.BodyCollider.size.y /2 + Physics2D.defaultContactOffset);
 
         playerSm.transform.position = _startPos;   
  
@@ -106,7 +105,7 @@ public sealed class PlayerLedgeClimbState: PlayerBaseState
     private bool CheckForSpace()
     {
         return Physics2D.Raycast(
-            _cornerPos + (Vector2.up * _defaultContactOffset) + (Vector2.right * playerSm.Core.Movement.FacingDirection * _defaultContactOffset),
+            _cornerPos + (Vector2.up * Physics2D.defaultContactOffset) + (Vector2.right * playerSm.Core.Movement.FacingDirection * Physics2D.defaultContactOffset),
             Vector2.up,
             playerSm.Data.StandingColiderHeight,
             playerSm.Core.CollisionSensors.PlatformsLayer);

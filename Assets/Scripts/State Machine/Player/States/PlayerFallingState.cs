@@ -4,8 +4,9 @@ public sealed class PlayerFallingState: PlayerInAirState
 {
     private bool _canGrabLedge = true;
     private float _fallingForce;
-    private bool _isLedgeDetected;
     private float _startTime;
+    private bool _isLedgeDetected;
+    private bool _isWallDetected;
     private readonly int _hashFallingState = Animator.StringToHash("FallingState");
     
     public PlayerFallingState(PlayerStateMachine playerSm) : base(playerSm)
@@ -26,10 +27,15 @@ public sealed class PlayerFallingState: PlayerInAirState
         base.DoCheck();
 
         _isLedgeDetected = playerSm.Core.CollisionSensors.ledgeHorizontalDetect;
-        
+        _isWallDetected = playerSm.Core.CollisionSensors.GrabWallDetect;
+      
         if (_isLedgeDetected)
         {
             playerSm.LedgeClimbState.DetectedPos = playerSm.transform.position;
+        }
+        else if (_isWallDetected)
+        {
+            playerSm.GrabWallState.DetectedPointWall = playerSm.Core.CollisionSensors.WallHit.point;
         }
     }
 
@@ -43,11 +49,15 @@ public sealed class PlayerFallingState: PlayerInAirState
         {
             playerSm.LandingState.LandingForce = _fallingForce;
             playerSm.SwitchState(playerSm.LandingState);
-        }
+        }   
+        else if (_isWallDetected)
+        {
+            playerSm.SwitchState(playerSm.GrabWallState);
+        }  
         else if (_isLedgeDetected && CheckCanGrabLedge())
         {            
             playerSm.SwitchState(playerSm.LedgeClimbState);
-        }     
+        }      
     }
 
     public override void Exit()

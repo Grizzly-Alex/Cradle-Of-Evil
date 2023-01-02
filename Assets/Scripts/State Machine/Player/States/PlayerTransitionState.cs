@@ -6,7 +6,7 @@ public sealed class PlayerTransitionState : PlayerBaseState
     private readonly int _hashAnimation;
     private readonly PlayerBaseState _nextState;
     
-    public PlayerTransitionState(PlayerStateMachine stateMachine, string animimation, PlayerBaseState nextState) : base(stateMachine)
+    public PlayerTransitionState(PlayerStateMachine playerSm, string animimation, PlayerBaseState nextState) : base(playerSm)
     {
         _hashAnimation = Animator.StringToHash(animimation);
         _nextState = nextState;    

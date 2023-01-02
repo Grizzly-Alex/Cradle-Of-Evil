@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerInAirState : PlayerBaseState
 {
     protected readonly int _hashVelocityY = Animator.StringToHash("velocityY");
-    
+ 
     public PlayerInAirState(PlayerStateMachine playerSm) : base(playerSm)
     {
     }
@@ -17,13 +17,21 @@ public class PlayerInAirState : PlayerBaseState
         SetColliderHeight(playerSm.Data.StandingColiderHeight);
     }
 
+    public override void DoCheck()
+    {
+        base.DoCheck();
+                    
+    }
+
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
+
         playerSm.Core.Movement.CheckIfShouldFlip(playerSm.Input.NormInputX);
 
-        playerSm.Animator.SetFloat(_hashVelocityY, playerSm.Core.Movement.CurrentVelocity.y);  
+        playerSm.Animator.SetFloat(_hashVelocityY, playerSm.Core.Movement.CurrentVelocity.y);
+        
     }
 
     public override void PhysicsUpdate()
@@ -47,4 +55,5 @@ public class PlayerInAirState : PlayerBaseState
             playerSm.SwitchState(playerSm.JumpingState);
         }      
     } 
+
 }

@@ -7,7 +7,6 @@ public abstract class PlayerBaseState: IState
     protected PlayerStateMachine playerSm;
     protected bool _isGrounded;
 
-    
     public PlayerBaseState(PlayerStateMachine playerSm)
     {
         this.playerSm = playerSm;
