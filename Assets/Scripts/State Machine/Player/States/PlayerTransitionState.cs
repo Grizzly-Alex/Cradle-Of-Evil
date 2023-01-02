@@ -16,27 +16,27 @@ public sealed class PlayerTransitionState : PlayerBaseState
     {
         base.Enter(); 
      
-        core.Movement.SetVelocityZero();
+        playerSm.Core.Movement.SetVelocityZero();
         
-        animator.Play(_hashAnimation);  
+        playerSm.Animator.Play(_hashAnimation);  
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);             
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);             
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        if (isAnimationFinished)
+        if (_isAnimationFinished)
         { 
-            stateMachine.SwitchState(_nextState);     
+            playerSm.SwitchState(_nextState);     
         }
 
-        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
+        if(!_isGrounded && playerSm.Core.Movement.CurrentVelocity.y < 0.0f)
         { 
-            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            playerSm.JumpingState.DecreaseAmountOfJumpsLeft();
             
-            stateMachine.SwitchState(stateMachine.FallingState);        
+            playerSm.SwitchState(playerSm.FallingState);        
         }     
     }
 
@@ -44,6 +44,6 @@ public sealed class PlayerTransitionState : PlayerBaseState
     {   
         base.Exit();
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 }

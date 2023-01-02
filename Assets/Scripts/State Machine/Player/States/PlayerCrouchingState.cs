@@ -2,11 +2,11 @@ using UnityEngine;
 
 public sealed class PlayerCrouchingState : PlayerBaseState
 {
-    private readonly int HashIdleCrouch = Animator.StringToHash("IdleCrouch");
-    private readonly int HashisMove = Animator.StringToHash("isMove"); 
+    private readonly int _hashIdleCrouch = Animator.StringToHash("IdleCrouch");
+    private readonly int _hashisMove = Animator.StringToHash("isMove"); 
     private bool isCellingDetected;
 
-    public PlayerCrouchingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerCrouchingState(PlayerStateMachine playerSM) : base(playerSM)
     {
     }
 
@@ -14,35 +14,35 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         base.Enter();
         
-        SetColliderHeight(playerData.CrouchingColiderHeight);
+        SetColliderHeight(playerSm.Data.CrouchingColiderHeight);
 
-        input.SitStandEvent += OnStand;
-        input.JumpEvent += OnJump;
-        input.DashEvent += OnDash;
+        playerSm.Input.SitStandEvent += OnStand;
+        playerSm.Input.JumpEvent += OnJump;
+        playerSm.Input.DashEvent += OnDash;
 
-        animator.Play(HashIdleCrouch); 
+        playerSm.Animator.Play(_hashIdleCrouch); 
     }
 
     public override void DoCheck()
     {
         base.DoCheck();
 
-        isCellingDetected = core.CollisionSensors.CellingDetect;        
+        isCellingDetected = playerSm.Core.CollisionSensors.CellingDetect;        
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
+        playerSm.Core.Movement.CheckIfShouldFlip(playerSm.Input.NormInputX);
 
-        animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
+        playerSm.Animator.SetBool(_hashisMove, playerSm.Input.NormInputX != 0 ? true : false);
     
-        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
+        if(!_isGrounded && playerSm.Core.Movement.CurrentVelocity.y < 0.0f)
         {
-            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            playerSm.JumpingState.DecreaseAmountOfJumpsLeft();
                         
-            stateMachine.SwitchState(stateMachine.FallingState);        
+            playerSm.SwitchState(playerSm.FallingState);        
         }
     }
 
@@ -50,19 +50,19 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         base.PhysicsUpdate();
                     
-        core.Movement.MoveAlongSurface(playerData.CrouchingMoveSpeed * input.NormInputX);
-        core.Movement.SwitchRbConstraints(input.NormInputX);
+        playerSm.Core.Movement.MoveAlongSurface(playerSm.Data.CrouchingMoveSpeed * playerSm.Input.NormInputX);
+        playerSm.Core.Movement.SwitchRbConstraints(playerSm.Input.NormInputX);
     }
 
     public override void Exit()
     {
         base.Exit();
 
-        input.SitStandEvent -= OnStand;  
-        input.JumpEvent -= OnJump;  
-        input.DashEvent -= OnDash;
+        playerSm.Input.SitStandEvent -= OnStand;  
+        playerSm.Input.JumpEvent -= OnJump;  
+        playerSm.Input.DashEvent -= OnDash;
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     #region InputMethods
@@ -70,7 +70,7 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         if(!isCellingDetected)
         {   
-            stateMachine.SwitchState(stateMachine.StandUpState); 
+            playerSm.SwitchState(playerSm.StandUpState); 
         }      
     } 
 
@@ -78,14 +78,14 @@ public sealed class PlayerCrouchingState : PlayerBaseState
     {
         if(!isCellingDetected)
         {          
-            stateMachine.SwitchState(stateMachine.JumpingState);
+            playerSm.SwitchState(playerSm.JumpingState);
         }
     } 
 
     private void OnDash()
     {
-        stateMachine.DashingState.PreviousState = PreviousState.Crouching;
-        stateMachine.SwitchState(stateMachine.DashingState);
+        playerSm.DashingState.PreviousState = PreviousState.Crouching;
+        playerSm.SwitchState(playerSm.DashingState);
     }        
     #endregion
 }

@@ -2,12 +2,12 @@ using UnityEngine;
 
 public sealed class PlayerJumpingState : PlayerInAirState
 {
-    private readonly int HashFirstJump = Animator.StringToHash("FirstJump");
-    private readonly int HashSecondJump = Animator.StringToHash("SecondJump");
+    private readonly int _hashFirstJump = Animator.StringToHash("FirstJump");
+    private readonly int _hashSecondJump = Animator.StringToHash("SecondJump");
     private int jumpsLeft;
-    public PlayerJumpingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerJumpingState(PlayerStateMachine playerSm) : base(playerSm)
     {
-        jumpsLeft = playerData.AmountOfJumps;
+        jumpsLeft = playerSm.Data.AmountOfJumps;
     }
 
     public override void Enter()
@@ -16,12 +16,12 @@ public sealed class PlayerJumpingState : PlayerInAirState
 
         jumpsLeft -= 1;
        
-        core.Movement.SetVelocityY(playerData.JumpForce);
+        playerSm.Core.Movement.SetVelocityY(playerSm.Data.JumpForce);
 
         switch(jumpsLeft)
         {
-            case 1: animator.Play(HashFirstJump); break ;
-            case 0: animator.Play(HashSecondJump); break ;
+            case 1: playerSm.Animator.Play(_hashFirstJump); break ;
+            case 0: playerSm.Animator.Play(_hashSecondJump); break ;
         }
     }
 
@@ -29,15 +29,15 @@ public sealed class PlayerJumpingState : PlayerInAirState
     {
         base.LogicUpdate();
 
-        if(core.Movement.CurrentVelocity.y <= 0.0f)
+        if(playerSm.Core.Movement.CurrentVelocity.y <= 0.0f)
         {
-            stateMachine.SwitchState(stateMachine.FallingState);
+            playerSm.SwitchState(playerSm.FallingState);
         }
     }
 
     public bool CanJump() => jumpsLeft > 0;
 
-    public void ResetAmountOfJumpsLeft() => jumpsLeft = playerData.AmountOfJumps;
+    public void ResetAmountOfJumpsLeft() => jumpsLeft = playerSm.Data.AmountOfJumps;
 
     public void DecreaseAmountOfJumpsLeft() => jumpsLeft--;
 }

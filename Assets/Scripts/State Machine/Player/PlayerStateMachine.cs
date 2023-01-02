@@ -5,9 +5,9 @@ public sealed class PlayerStateMachine: StateMachine
     [field: SerializeField] public Rigidbody2D Rigidbody { get; private set; }
     [field: SerializeField] public CapsuleCollider2D BodyCollider { get; private set; }
     [field: SerializeField] public Animator Animator { get; private set; }
-    [field: SerializeField] public InputReader InputReader { get; private set; }
+    [field: SerializeField] public InputReader Input { get; private set; }
     [field: SerializeField] public Core Core { get; private set; }
-    [field: SerializeField] public PlayerData PlayerData { get; private set; }
+    [field: SerializeField] public PlayerData Data { get; private set; }
 
     #region States of behaviours
     public PlayerLedgeClimbState LedgeClimbState { get; private set; }
@@ -20,6 +20,7 @@ public sealed class PlayerStateMachine: StateMachine
     public PlayerLandingState LandingState { get; private set; }
     public PlayerDashingState DashingState { get; private set; }
     public PlayerInAirState InAirState { get; private set; }
+    public PlayerGrabWallState GrabWallState { get; private set; }
     #endregion
 
     private void Awake()
@@ -32,6 +33,7 @@ public sealed class PlayerStateMachine: StateMachine
         LandingState = new PlayerLandingState(this); 
         DashingState = new PlayerDashingState(this);  
         InAirState = new PlayerInAirState(this);
+        GrabWallState = new PlayerGrabWallState(this);
         SitDownState = new PlayerTransitionState(this, "SitDown", CrouchingState); 
         StandUpState = new PlayerTransitionState(this, "StandUp", StandingState); 
     }

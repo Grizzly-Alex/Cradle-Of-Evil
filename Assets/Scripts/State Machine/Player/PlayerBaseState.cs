@@ -3,22 +3,14 @@ using UnityEngine;
 
 public abstract class PlayerBaseState: IState
 {  
-    protected bool isAnimationFinished;
-    protected PlayerStateMachine stateMachine;
-    protected InputReader input;
-    protected Core core;
-    protected Animator animator; 
-    protected PlayerData playerData;
-    protected bool isGrounded;
+    protected bool _isAnimationFinished;
+    protected PlayerStateMachine playerSm;
+    protected bool _isGrounded;
 
     
-    public PlayerBaseState(PlayerStateMachine stateMachine)
+    public PlayerBaseState(PlayerStateMachine playerSm)
     {
-        this.stateMachine = stateMachine;
-        playerData = stateMachine.PlayerData;
-        input = stateMachine.InputReader;
-        core = stateMachine.Core;
-        animator = stateMachine.Animator;
+        this.playerSm = playerSm;
     }
     
     #region State Machine
@@ -26,17 +18,17 @@ public abstract class PlayerBaseState: IState
     {
         DoCheck();
         
-        isAnimationFinished = false; 
+        _isAnimationFinished = false; 
     }
 
     public virtual void DoCheck()
     {
-        isGrounded = core.CollisionSensors.GroundDetect;
+        _isGrounded = playerSm.Core.CollisionSensors.GroundDetect;
     }
 
     public virtual void LogicUpdate()
     { 
-        core.LogicUpdate();   
+        playerSm.Core.LogicUpdate();   
     }
 
     public virtual void PhysicsUpdate()
@@ -53,17 +45,17 @@ public abstract class PlayerBaseState: IState
     #region Trigers
     public virtual void AnimationTrigger() { }
 
-    public virtual void AnimationFinishTrigger() => isAnimationFinished = true;
+    public virtual void AnimationFinishTrigger() => _isAnimationFinished = true;
     #endregion
 
     #region Methods
     protected void SetColliderHeight(float height)
     {
-        Vector2 center = stateMachine.BodyCollider.offset;
-        Vector2 newSize = new(stateMachine.BodyCollider.size.x, height); 
-        center.y += (height - stateMachine.BodyCollider.size.y) / 2;
-        stateMachine.BodyCollider.size = newSize;
-        stateMachine.BodyCollider.offset = center;
+        Vector2 center = playerSm.BodyCollider.offset;
+        Vector2 newSize = new(playerSm.BodyCollider.size.x, height); 
+        center.y += (height - playerSm.BodyCollider.size.y) / 2;
+        playerSm.BodyCollider.size = newSize;
+        playerSm.BodyCollider.offset = center;
     }
     #endregion
 }

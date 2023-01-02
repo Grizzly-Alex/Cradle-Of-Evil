@@ -2,13 +2,13 @@ using UnityEngine;
 
 public sealed class PlayerFallingState: PlayerInAirState
 {
-    private readonly int HashFallingState = Animator.StringToHash("FallingState");
-    private float fallingForce;
-    private bool isLedgeDetected;
-    public bool canGrabLedge = true;
-    private float startTime;
+    private bool _canGrabLedge = true;
+    private float _fallingForce;
+    private bool _isLedgeDetected;
+    private float _startTime;
+    private readonly int _hashFallingState = Animator.StringToHash("FallingState");
     
-    public PlayerFallingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerFallingState(PlayerStateMachine playerSm) : base(playerSm)
     {       
     }
 
@@ -16,20 +16,20 @@ public sealed class PlayerFallingState: PlayerInAirState
     {
         base.Enter();
 
-        startTime = Time.time;
+        _startTime = Time.time;
 
-        animator.Play(HashFallingState);                 
+        playerSm.Animator.Play(_hashFallingState);                 
     }
 
     public override void DoCheck()
     {
         base.DoCheck();
 
-        isLedgeDetected = core.CollisionSensors.ledgeHorizontalDetect;
+        _isLedgeDetected = playerSm.Core.CollisionSensors.ledgeHorizontalDetect;
         
-        if (isLedgeDetected)
+        if (_isLedgeDetected)
         {
-            stateMachine.LedgeClimbState.DetectedPos = stateMachine.transform.position;
+            playerSm.LedgeClimbState.DetectedPos = playerSm.transform.position;
         }
     }
 
@@ -37,16 +37,16 @@ public sealed class PlayerFallingState: PlayerInAirState
     {
         base.LogicUpdate();  
     
-        SetFallingForce(core.Movement.CurrentVelocity);
+        SetFallingForce(playerSm.Core.Movement.CurrentVelocity);
 
-        if (isGrounded)
+        if (_isGrounded)
         {
-            stateMachine.LandingState.LandingForce = fallingForce;
-            stateMachine.SwitchState(stateMachine.LandingState);
+            playerSm.LandingState.LandingForce = _fallingForce;
+            playerSm.SwitchState(playerSm.LandingState);
         }
-        else if (isLedgeDetected && CheckCanGrabLedge())
+        else if (_isLedgeDetected && CheckCanGrabLedge())
         {            
-            stateMachine.SwitchState(stateMachine.LedgeClimbState);
+            playerSm.SwitchState(playerSm.LedgeClimbState);
         }     
     }
 
@@ -55,22 +55,22 @@ public sealed class PlayerFallingState: PlayerInAirState
         base.Exit();
         
         ResetFallingForce();
-        canGrabLedge = true;       
+        _canGrabLedge = true;       
     }
 
-    public void ResetGrabLedge() => canGrabLedge = false;
+    public void ResetGrabLedge() => _canGrabLedge = false;
 
-    private bool CheckCanGrabLedge() => !canGrabLedge ? canGrabLedge = Cooldown(playerData.GrabLedgeCooldown) : true;
+    private bool CheckCanGrabLedge() => !_canGrabLedge ? _canGrabLedge = Cooldown(playerSm.Data.GrabLedgeCooldown) : true;
 
-    private bool Cooldown(float finishTime) => Time.time >= finishTime + startTime;
+    private bool Cooldown(float finishTime) => Time.time >= finishTime + _startTime;
 
-    private void ResetFallingForce() => fallingForce = 0.0f;
+    private void ResetFallingForce() => _fallingForce = 0.0f;
 
     private void SetFallingForce(Vector2 velocity)    
     {
-        if (fallingForce > velocity.y)
+        if (_fallingForce > velocity.y)
         {            
-            fallingForce = velocity.y;
+            _fallingForce = velocity.y;
         }
     }
 }

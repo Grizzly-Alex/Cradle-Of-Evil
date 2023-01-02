@@ -4,16 +4,16 @@ public enum PreviousState { Standing, Crouching }
 
 public sealed class PlayerDashingState : PlayerBaseState
 {
-    private readonly int HashStartDash = Animator.StringToHash("StartDash");
-    private readonly int HashDashing = Animator.StringToHash("Dashing");
-    private readonly int HashToStand = Animator.StringToHash("toStand");
-    private readonly int HashToCrouch = Animator.StringToHash("toCrouch");
     public PreviousState PreviousState { get; set; }
-    private float startTime;
-    private bool timeOut;
-    private bool isCellingDetected;
+    private float _startTime;
+    private bool _timeOut;
+    private bool _isCellingDetected;
+    private readonly int _hashStartDash = Animator.StringToHash("StartDash");
+    private readonly int _hashDashing = Animator.StringToHash("Dashing");
+    private readonly int _hashToStand = Animator.StringToHash("toStand");
+    private readonly int _hashToCrouch = Animator.StringToHash("toCrouch");
 
-    public PlayerDashingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerDashingState(PlayerStateMachine playerSm) : base(playerSm)
     {
     }
 
@@ -21,15 +21,15 @@ public sealed class PlayerDashingState : PlayerBaseState
     {
         base.Enter();
  
-        timeOut = false;
-        startTime = Time.time;
+        _timeOut = false;
+        _startTime = Time.time;
 
-        SetColliderHeight(playerData.CrouchingColiderHeight);
+        SetColliderHeight(playerSm.Data.CrouchingColiderHeight);
 
         switch (PreviousState)
         {
-            case PreviousState.Standing: animator.Play(HashStartDash); break;
-            case PreviousState.Crouching: animator.Play(HashDashing); break;
+            case PreviousState.Standing: playerSm.Animator.Play(_hashStartDash); break;
+            case PreviousState.Crouching: playerSm.Animator.Play(_hashDashing); break;
         }
     }
 
@@ -37,48 +37,48 @@ public sealed class PlayerDashingState : PlayerBaseState
     {
         base.DoCheck();
 
-        isCellingDetected = core.CollisionSensors.CellingDetect;
+        _isCellingDetected = playerSm.Core.CollisionSensors.CellingDetect;
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        if(!isGrounded)
+        if(!_isGrounded)
         {
-            stateMachine.SwitchState(stateMachine.FallingState);
+            playerSm.SwitchState(playerSm.FallingState);
         }
 
-        if (Time.fixedTime >= startTime + playerData.DashingTime)
+        if (Time.fixedTime >= _startTime + playerSm.Data.DashingTime)
         {         
-            timeOut = true; 
+            _timeOut = true; 
 
-            if (isCellingDetected)
+            if (_isCellingDetected)
             {
-                animator.SetTrigger(HashToCrouch);
+                playerSm.Animator.SetTrigger(_hashToCrouch);
                
-                if (isAnimationFinished)
+                if (_isAnimationFinished)
                 {
-                    stateMachine.SwitchState(stateMachine.CrouchingState);
+                    playerSm.SwitchState(playerSm.CrouchingState);
                 }                   
             }
             else 
             {             
                 switch (PreviousState)
                 {
-                    case PreviousState.Standing: animator.SetTrigger(HashToStand); break;
-                    case PreviousState.Crouching: animator.SetTrigger(HashToCrouch); break;
+                    case PreviousState.Standing: playerSm.Animator.SetTrigger(_hashToStand); break;
+                    case PreviousState.Crouching: playerSm.Animator.SetTrigger(_hashToCrouch); break;
                 }                 
                 
-                if (isAnimationFinished)
+                if (_isAnimationFinished)
                 {
                     switch (PreviousState)
                     {
                         case PreviousState.Standing:
-                            stateMachine.SwitchState(stateMachine.StandingState);
+                            playerSm.SwitchState(playerSm.StandingState);
                             break;
                         case PreviousState.Crouching: 
-                            stateMachine.SwitchState(stateMachine.CrouchingState); 
+                            playerSm.SwitchState(playerSm.CrouchingState); 
                             break;
                     }               
                 }                
@@ -90,13 +90,13 @@ public sealed class PlayerDashingState : PlayerBaseState
     {
         base.PhysicsUpdate();
 
-        if (!timeOut)
+        if (!_timeOut)
         {
-            core.Movement.MoveAlongSurface(playerData.DashingSpeed * core.Movement.FacingDirection);
+            playerSm.Core.Movement.MoveAlongSurface(playerSm.Data.DashingSpeed * playerSm.Core.Movement.FacingDirection);
         }
         else
         {
-            core.Movement.SetVelocityZero();
+            playerSm.Core.Movement.SetVelocityZero();
         }
     }
 
@@ -104,9 +104,9 @@ public sealed class PlayerDashingState : PlayerBaseState
     {
         base.Exit(); 
 
-        animator.ResetTrigger(HashToStand);
-        animator.ResetTrigger(HashToCrouch);
+        playerSm.Animator.ResetTrigger(_hashToStand);
+        playerSm.Animator.ResetTrigger(_hashToCrouch);
 
-        input.DashInputCooldown = playerData.DashingCooldown;          
+        playerSm.Input.DashInputCooldown = playerSm.Data.DashingCooldown;          
     }
 }

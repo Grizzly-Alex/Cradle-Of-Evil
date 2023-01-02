@@ -2,11 +2,11 @@ using UnityEngine;
 
 public sealed class PlayerStandingState : PlayerBaseState
 {       
-    private readonly int HashIdleStand = Animator.StringToHash("IdleStand");
-    private readonly int HashRun = Animator.StringToHash("RunStart");
-    private readonly int HashisMove = Animator.StringToHash("isMove"); 
+    private readonly int _hashIdleStand = Animator.StringToHash("IdleStand");
+    private readonly int _hashRun = Animator.StringToHash("RunStart");
+    private readonly int _hashisMove = Animator.StringToHash("isMove"); 
 
-    public PlayerStandingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerStandingState(PlayerStateMachine playerSm) : base(playerSm)
     {
     }
 
@@ -14,16 +14,16 @@ public sealed class PlayerStandingState : PlayerBaseState
     {
         base.Enter();
    
-        SetColliderHeight(playerData.StandingColiderHeight);
+        SetColliderHeight(playerSm.Data.StandingColiderHeight);
     
-        input.SitStandEvent += OnSit;
-        input.JumpEvent += OnJump;
-        input.DashEvent += OnDash;
+        playerSm.Input.SitStandEvent += OnSit;
+        playerSm.Input.JumpEvent += OnJump;
+        playerSm.Input.DashEvent += OnDash;
 
-        switch (input.NormInputX != 0)
+        switch (playerSm.Input.NormInputX != 0)
         {
-            case true : animator.Play(HashRun); break; 
-            case false: animator.Play(HashIdleStand); break; 
+            case true : playerSm.Animator.Play(_hashRun); break; 
+            case false: playerSm.Animator.Play(_hashIdleStand); break; 
         }
     }
 
@@ -31,15 +31,15 @@ public sealed class PlayerStandingState : PlayerBaseState
     {
         base.LogicUpdate();
 
-        stateMachine.Core.Movement.CheckIfShouldFlip(input.NormInputX);
+        playerSm.Core.Movement.CheckIfShouldFlip(playerSm.Input.NormInputX);
 
-        animator.SetBool(HashisMove, input.NormInputX != 0 ? true : false);
+        playerSm.Animator.SetBool(_hashisMove, playerSm.Input.NormInputX != 0 ? true : false);
 
-        if(!isGrounded && core.Movement.CurrentVelocity.y < 0.0f)
+        if(!_isGrounded && playerSm.Core.Movement.CurrentVelocity.y < 0.0f)
         {
-            stateMachine.JumpingState.DecreaseAmountOfJumpsLeft();
+            playerSm.JumpingState.DecreaseAmountOfJumpsLeft();
             
-            stateMachine.SwitchState(stateMachine.FallingState);        
+            playerSm.SwitchState(playerSm.FallingState);        
         }
     }
 
@@ -47,33 +47,33 @@ public sealed class PlayerStandingState : PlayerBaseState
     {
         base.PhysicsUpdate(); 
       
-        core.Movement.MoveAlongSurface(playerData.StandingMoveSpeed * input.NormInputX); 
-        core.Movement.SwitchRbConstraints(input.NormInputX);  
+        playerSm.Core.Movement.MoveAlongSurface(playerSm.Data.StandingMoveSpeed * playerSm.Input.NormInputX); 
+        playerSm.Core.Movement.SwitchRbConstraints(playerSm.Input.NormInputX);  
     }
 
     public override void Exit()
     {   
         base.Exit();
 
-        input.SitStandEvent -= OnSit;  
-        input.JumpEvent -= OnJump;
-        input.DashEvent -= OnDash;
+        playerSm.Input.SitStandEvent -= OnSit;  
+        playerSm.Input.JumpEvent -= OnJump;
+        playerSm.Input.DashEvent -= OnDash;
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     #region InputMethods
-    private void OnJump() => stateMachine.SwitchState(stateMachine.JumpingState);
+    private void OnJump() => playerSm.SwitchState(playerSm.JumpingState);
 
     private void OnSit()
     {
-        stateMachine.SwitchState(stateMachine.SitDownState);   
+        playerSm.SwitchState(playerSm.SitDownState);   
     }
 
     private void OnDash()
     {
-        stateMachine.DashingState.PreviousState = PreviousState.Standing;
-        stateMachine.SwitchState(stateMachine.DashingState);
+        playerSm.DashingState.PreviousState = PreviousState.Standing;
+        playerSm.SwitchState(playerSm.DashingState);
     }        
     #endregion
 }

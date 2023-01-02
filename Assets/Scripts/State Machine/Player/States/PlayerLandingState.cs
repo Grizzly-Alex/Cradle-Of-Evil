@@ -4,12 +4,12 @@ public enum LandingStandTransition { HardLanding, Crouching }
 
 public sealed class PlayerLandingState : PlayerBaseState
 {
-    private Vector2 _holdPosition;
     public float LandingForce { get; set; }
-    private readonly int HashHardLandingState = Animator.StringToHash("HardLanding");
-    private readonly int HashSoftLandingState = Animator.StringToHash("SoftLanding");
+    private Vector2 _holdPosition;
+    private readonly int _hashHardLandingState = Animator.StringToHash("HardLanding");
+    private readonly int _hashSoftLandingState = Animator.StringToHash("SoftLanding");
 
-    public PlayerLandingState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerLandingState(PlayerStateMachine playerSm) : base(playerSm)
     {
         
     }
@@ -18,18 +18,18 @@ public sealed class PlayerLandingState : PlayerBaseState
     {
         base.Enter();
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);  
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeAll);  
 
-        stateMachine.JumpingState.ResetAmountOfJumpsLeft();
+        playerSm.JumpingState.ResetAmountOfJumpsLeft();
 
-        core.Movement.SetVelocityZero();
+        playerSm.Core.Movement.SetVelocityZero();
 
-        input.JumpEvent += OnJump;
+        playerSm.Input.JumpEvent += OnJump;
 
-        switch(LandingForce <= playerData.LandingThreshold)
+        switch(LandingForce <= playerSm.Data.LandingThreshold)
         {
-            case true: animator.Play(HashHardLandingState); break;
-            case false: animator.Play(HashSoftLandingState); break;
+            case true: playerSm.Animator.Play(_hashHardLandingState); break;
+            case false: playerSm.Animator.Play(_hashSoftLandingState); break;
         }       
     }
 
@@ -37,18 +37,18 @@ public sealed class PlayerLandingState : PlayerBaseState
     {
         base.LogicUpdate();
 
-        if(LandingForce <= playerData.LandingThreshold)
+        if(LandingForce <= playerSm.Data.LandingThreshold)
         {
-            if(isAnimationFinished)
+            if(_isAnimationFinished)
             {
-                stateMachine.SwitchState(stateMachine.StandingState);
+                playerSm.SwitchState(playerSm.StandingState);
             }           
         }
         else
         {
-            if(isAnimationFinished || input.NormInputX != 0)
+            if(_isAnimationFinished || playerSm.Input.NormInputX != 0)
             {
-                stateMachine.SwitchState(stateMachine.StandingState);
+                playerSm.SwitchState(playerSm.StandingState);
             }  
         }
     }
@@ -62,16 +62,16 @@ public sealed class PlayerLandingState : PlayerBaseState
     {
         base.Exit();
 
-        input.JumpEvent -= OnJump;
+        playerSm.Input.JumpEvent -= OnJump;
 
-        core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
+        playerSm.Core.Movement.SetRbConstraints(RigidbodyConstraints2D.FreezeRotation); 
     }
 
     private void OnJump()
     {
-        if(LandingForce > playerData.LandingThreshold)
+        if(LandingForce > playerSm.Data.LandingThreshold)
         {
-           stateMachine.SwitchState(stateMachine.JumpingState); 
+           playerSm.SwitchState(playerSm.JumpingState); 
         }
     } 
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class PlayerInAirState : PlayerBaseState
 {
-    protected readonly int HashVelocityY = Animator.StringToHash("velocityY");
+    protected readonly int _hashVelocityY = Animator.StringToHash("velocityY");
     
-    public PlayerInAirState(PlayerStateMachine stateMachine) : base(stateMachine)
+    public PlayerInAirState(PlayerStateMachine playerSm) : base(playerSm)
     {
     }
 
@@ -12,39 +12,39 @@ public class PlayerInAirState : PlayerBaseState
     {
         base.Enter();
         
-        input.JumpEvent += OnJump; 
+        playerSm.Input.JumpEvent += OnJump; 
 
-        SetColliderHeight(playerData.StandingColiderHeight);
+        SetColliderHeight(playerSm.Data.StandingColiderHeight);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        core.Movement.CheckIfShouldFlip(input.NormInputX);
+        playerSm.Core.Movement.CheckIfShouldFlip(playerSm.Input.NormInputX);
 
-        animator.SetFloat(HashVelocityY, core.Movement.CurrentVelocity.y);  
+        playerSm.Animator.SetFloat(_hashVelocityY, playerSm.Core.Movement.CurrentVelocity.y);  
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate(); 
 
-        core.Movement.SetVelocityX(input.NormInputX * playerData.InAirMoveSpeed);      
+        playerSm.Core.Movement.SetVelocityX(playerSm.Input.NormInputX * playerSm.Data.InAirMoveSpeed);      
     }
 
     public override void Exit()
     {
         base.Exit(); 
          
-        input.JumpEvent -= OnJump;
+        playerSm.Input.JumpEvent -= OnJump;
     }
 
     private void OnJump()
     {  
-        if(stateMachine.JumpingState.CanJump())
+        if(playerSm.JumpingState.CanJump())
         {
-            stateMachine.SwitchState(stateMachine.JumpingState);
+            playerSm.SwitchState(playerSm.JumpingState);
         }      
     } 
 }
