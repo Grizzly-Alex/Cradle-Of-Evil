@@ -4,6 +4,7 @@ public class PlayerGrabWallState : PlayerBaseState
 {
     public Vector2 DetectedPointWall {get; set;}
     private Vector2 _holdPosition;
+    private readonly int _landingOnWall = Animator.StringToHash("LandingOnWall");
     
     public PlayerGrabWallState(PlayerStateMachine stateMachine) : base(stateMachine)
     {
@@ -18,6 +19,8 @@ public class PlayerGrabWallState : PlayerBaseState
         DetectedPointWall.y);
 
         playerSm.transform.position = _holdPosition;
+        
+        playerSm.Animator.Play(_landingOnWall);
     }
 
     public override void DoCheck()
