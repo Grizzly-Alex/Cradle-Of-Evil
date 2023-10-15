@@ -46,6 +46,7 @@ namespace Entities
         public PlayerLedgeClimbState LedgeClimbState { get; private set; }
         public PlayerWallJumpState WallJumpState { get; private set; }
         public PlayerOnWallState OnWallState { get; private set; }
+        public PlayerLevitationDashState LevitationDashState { get; private set; }
         #endregion
 
         public InputReader Input { get; private set; }
@@ -63,7 +64,7 @@ namespace Entities
             LedgeClimbState = new PlayerLedgeClimbState(stateMachine, this);
             WallJumpState = new PlayerWallJumpState(stateMachine, this);
             OnWallState = new PlayerOnWallState(stateMachine, this);
-
+            LevitationDashState = new PlayerLevitationDashState(stateMachine, this);
         }
 
         protected override void Start()
