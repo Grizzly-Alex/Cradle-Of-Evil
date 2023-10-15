@@ -1,8 +1,9 @@
-public interface IState: IAnimationTriger
+namespace Interfaces
 {
-    public void Enter();
-    public void DoCheck(); 
-    public void LogicUpdate();
-    public void PhysicsUpdate();
-    public void Exit();  
+    public interface IState : ITriggerAnimation
+    {
+        public void Enter();
+        public void Update();
+        public void Exit();
+    }
 }
