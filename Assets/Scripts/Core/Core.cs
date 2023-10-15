@@ -1,12 +1,23 @@
+using CoreSystem.Components;
+using Interfaces;
 using UnityEngine;
 
-public sealed class Core : MonoBehaviour
+namespace CoreSystem
 {
-    [field: SerializeField] public Movement Movement { get; private set; }
-    [field: SerializeField] public CollisionSensors CollisionSensors { get; private set; }
-
-    public void LogicUpdate()
+    public sealed class Core : MonoBehaviour, ILogicUpdate
     {
-        Movement.LogicUpdate();
+        public Movement Movement { get; private set; }
+        public Sensor Sensor { get; private set; }
+
+        public void Awake()
+        {
+            Sensor = GetComponent<Sensor>();
+            Movement = GetComponent<Movement>();
+        }
+
+        public void LogicUpdate()
+        {
+            Movement.LogicUpdate();
+        }
     }
 }
