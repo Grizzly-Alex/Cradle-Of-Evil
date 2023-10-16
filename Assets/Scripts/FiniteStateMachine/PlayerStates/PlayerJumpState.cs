@@ -10,7 +10,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public PlayerJumpState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
-            AmountOfJumpsLeft = player.AmountOfJump;
+            AmountOfJumpsLeft = player.Data.AmountOfJump;
         }
 
         public override void Enter()
@@ -19,8 +19,8 @@ namespace FiniteStateMachine.PlayerStates
 
             switch (AmountOfJumpsLeft)
             {
-                case 2: player.Core.Movement.SetVelocityY(player.FirstJumpForce); break;
-                case 1: player.Core.Movement.SetVelocityY(player.SecondJumpForce); break;
+                case 2: player.Core.Movement.SetVelocityY(player.Data.FirstJumpForce); break;
+                case 1: player.Core.Movement.SetVelocityY(player.Data.SecondJumpForce); break;
             }
         }
 
@@ -40,7 +40,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public int GetHashAnimDoubleJump() => hashDoubleJump;
         public bool CanJum() => AmountOfJumpsLeft > 0;
-        public void ResetAmountOfJumpsLeft() => AmountOfJumpsLeft = player.AmountOfJump;
+        public void ResetAmountOfJumpsLeft() => AmountOfJumpsLeft = player.Data.AmountOfJump;
         public void DecreaseAmountOfJumpsLeft() => AmountOfJumpsLeft--;
     }
 }

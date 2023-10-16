@@ -18,10 +18,10 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            finishTime = Time.time + player.WallJumpTime;
+            finishTime = Time.time + player.Data.WallJumpTime;
             player.Animator.Play(hashInAir);
             player.Core.Movement.Flip();
-            player.Core.Movement.SetVelocity(player.FirstJumpForce, new Vector2(1,2), player.Core.Movement.FacingDirection);
+            player.Core.Movement.SetVelocity(player.Data.FirstJumpForce, new Vector2(1,2), player.Core.Movement.FacingDirection);
         }
 
         public override void Update()

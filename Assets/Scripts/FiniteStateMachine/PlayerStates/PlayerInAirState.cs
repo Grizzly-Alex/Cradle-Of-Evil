@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
 
             startTime = Time.time;
             player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.StandColiderHeight);
+            player.SetColliderHeight(player.Data.StandColiderHeight);
             DefaultJumpCount();
 
             player.Animator.Play(
@@ -42,14 +42,14 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Animator.SetFloat(hashVelocityY, сuгrentVelocityY);
             player.Core.Movement.FlipToMovement(player.Input.NormInputX);
-            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.InAirMoveSpeed);
+            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
 
             if (isGrounded)
             {
                 player.LandingState.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.LandingState);
             }
-            else if (isLedgeDetected && Cooldown(player.GrabLedgeCooldown) && сuгrentVelocityY <= 0.0f) 
+            else if (isLedgeDetected && Cooldown(player.Data.GrabLedgeCooldown) && сuгrentVelocityY <= 0.0f) 
             {
                 stateMachine.ChangeState(player.LedgeClimbState);
             }
@@ -98,7 +98,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private void DefaultJumpCount()
         {
-            if (player.JumpState.AmountOfJumpsLeft != player.AmountOfJump) return;
+            if (player.JumpState.AmountOfJumpsLeft != player.Data.AmountOfJump) return;
             player.JumpState.DecreaseAmountOfJumpsLeft();
         }
 

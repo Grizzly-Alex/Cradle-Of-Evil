@@ -82,7 +82,7 @@ namespace FiniteStateMachine.PlayerStates
             isHanging = false;
             player.Animator.SetBool(isClimbingHash, false);
 
-            if (isTouchingCeiling) player.SetColliderHeight(player.CrouchColiderHeight);
+            if (isTouchingCeiling) player.SetColliderHeight(player.Data.CrouchColiderHeight);
 
             if (isClimbing)
             {
@@ -109,7 +109,7 @@ namespace FiniteStateMachine.PlayerStates
             return Physics2D.Raycast(
                 cornerPos + (Vector2.up * Physics2D.defaultContactOffset) + (Physics2D.defaultContactOffset * player.Core.Movement.FacingDirection * Vector2.right),
                 Vector2.up,
-                player.StandColiderHeight,
+                player.Data.StandColiderHeight,
                 player.Core.Sensor.PlatformsLayer);
         }
 

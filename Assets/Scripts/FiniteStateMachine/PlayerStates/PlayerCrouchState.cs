@@ -20,7 +20,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
 
-            player.SetColliderHeight(player.CrouchColiderHeight);
+            player.SetColliderHeight(player.Data.CrouchColiderHeight);
             player.Animator.Play(hashIdle);
         }
 
@@ -28,7 +28,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Update();
 
-            player.Core.Movement.Move(player.CrouchMoveSpeed, player.Input.NormInputX);
+            player.Core.Movement.Move(player.Data.CrouchMoveSpeed, player.Input.NormInputX);
         }
 
         public override void Exit()

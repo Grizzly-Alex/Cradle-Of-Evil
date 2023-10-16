@@ -1,9 +1,12 @@
 ﻿using Entities;
+using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
     public class PlayerLevitationDashState : PlayerAbilityState
     {
+        private readonly int hashLevitationDash = Animator.StringToHash("LevitationDash");
+
         public PlayerLevitationDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }

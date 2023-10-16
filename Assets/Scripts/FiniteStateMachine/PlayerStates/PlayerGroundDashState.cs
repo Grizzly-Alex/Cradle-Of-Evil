@@ -19,10 +19,10 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
-            finishTime = Time.time + player.GroundDashTime;
+            finishTime = Time.time + player.Data.GroundDashTime;
 
             player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.CrouchColiderHeight);
+            player.SetColliderHeight(player.Data.CrouchColiderHeight);
 
             switch (stateMachine.PreviousState)
             {
@@ -58,7 +58,7 @@ namespace FiniteStateMachine.PlayerStates
                 }
                 else isAbilityDone = true;
             }
-            else player.Core.Movement.MoveAlongSurface(player.GroundDashSpeed, player.Core.Movement.FacingDirection);
+            else player.Core.Movement.MoveAlongSurface(player.Data.GroundDashSpeed, player.Core.Movement.FacingDirection);
         }
 
         public override void Exit()
@@ -68,7 +68,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.ResetTrigger(hashToStand);
             player.Animator.ResetTrigger(hashToCrouch);
             player.Core.Movement.ResetFreezePos();
-            player.Input.DashInputCooldown = player.GroundDashCooldown;
+            player.Input.DashInputCooldown = player.Data.GroundDashCooldown;
         }
     }
 }

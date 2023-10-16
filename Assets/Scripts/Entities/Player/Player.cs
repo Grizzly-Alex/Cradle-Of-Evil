@@ -1,40 +1,11 @@
 using FiniteStateMachine.PlayerStates;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Entities
 {
     public sealed class Player : Entity
     {
-        #region Data
-        [field: Header("MOVEMENT")]
-        [field: SerializeField] public float StandMoveSpeed { get; private set; }
-        [field: SerializeField] public float CrouchMoveSpeed { get; private set; }
-        [field: SerializeField] public float InAirMoveSpeed { get; private set; }
-
-        [field: Header("JUMPING")]
-        [field: SerializeField] public float FirstJumpForce { get; private set; }
-        [field: SerializeField] public float SecondJumpForce { get; private set; }
-        [field: SerializeField] public float WallJumpTime { get; private set; }
-        public int AmountOfJump => 2;
-
-        [field: Header("GRAB LEDGE")]
-        [field: SerializeField] public float GrabLedgeCooldown { get; private set; }
-
-        [field: Header("LANDING")]
-        [field: SerializeField] public float LandingThreshold { get; private set; }
-
-        [field: Header("DASHING")]
-        [field: SerializeField] public float GroundDashSpeed { get; private set; }
-        [field: SerializeField] public float GroundDashTime { get; private set; }
-        [field: SerializeField] public float GroundDashCooldown { get; private set; }
-        [field: SerializeField] public float AirDashSpeed { get; private set; }
-        [field: SerializeField] public float AirDashTime { get; private set; }
-
-        [field: Header("COLIDER SIZE")]
-        [field: SerializeField] public float StandColiderHeight { get; private set; }
-        [field: SerializeField] public float CrouchColiderHeight { get; private set; }
-        #endregion
-
         #region States of behaviours
         public PlayerInAirState InAirState { get; private set; }
         public PlayerJumpState JumpState { get; private set; }
@@ -49,6 +20,8 @@ namespace Entities
         public PlayerLevitationDashState LevitationDashState { get; private set; }
         #endregion
 
+        [field: SerializeField]
+        public PlayerData Data { get; private set; }
         public InputReader Input { get; private set; }
 
         protected override void Awake()
