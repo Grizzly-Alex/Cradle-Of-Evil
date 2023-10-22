@@ -8,17 +8,18 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashIdle = Animator.StringToHash("IdleStand");
         private readonly int hashRun = Animator.StringToHash("RunStart");
 
-        public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
-        { 
-        }
+        protected override float MoveSpeed => player.Data.StandMoveSpeed;
+
+		public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+        {
+			
+		}
 
         public override void Enter()
         {
             base.Enter();
             
             player.Input.SitStandEvent += OnSit;
-            player.Input.JumpEvent += OnJump;
-            player.Input.DashEvent += OnDash;
 
             player.SetColliderHeight(player.Data.StandColiderHeight);
 
@@ -35,16 +36,13 @@ namespace FiniteStateMachine.PlayerStates
         public override void Update()
         {
             base.Update();
-
-            player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.NormInputX);
         }
 
         public override void Exit()
         {
             base.Exit();
+
             player.Input.SitStandEvent -= OnSit;
-            player.Input.JumpEvent -= OnJump;
-            player.Input.DashEvent -= OnDash;
         }
 
         #region Input
@@ -53,15 +51,15 @@ namespace FiniteStateMachine.PlayerStates
             stateMachine.ChangeState(player.SitStandState);
         }
 
-        private void OnJump()
-        {
-            stateMachine.ChangeState(player.JumpState);            
+		protected override void OnJump()
+		{
+            stateMachine.ChangeState(player.JumpState);
         }
 
-        private void OnDash()
-        {
-            stateMachine.ChangeState(player.GroundDashState);
-        }
-        #endregion
-    }
+		protected override void OnSlide()
+		{
+			stateMachine.ChangeState(player.SlideState);
+		}
+		#endregion
+	}
 }

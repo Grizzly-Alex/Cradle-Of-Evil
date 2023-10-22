@@ -4,7 +4,7 @@ using UnityEngine;
 namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerLandingState : PlayerBaseState
-    {
+	{
         private readonly int hashSoftLanding = Animator.StringToHash("SoftLanding");
         private readonly int hashHardLanding = Animator.StringToHash("HardLanding");
 
@@ -28,8 +28,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.Core.Movement.SetVelocityZero();
-            player.JumpState.ResetAmountOfJumpsLeft();
+			player.JumpState.ResetAmountOfJump();
+			player.Core.Movement.SetVelocityZero();
 
             if (player.Core.Sensor.GetGroundSlopeAngle() != 0.0f)
             {

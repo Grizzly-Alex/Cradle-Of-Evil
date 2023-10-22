@@ -22,7 +22,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.SetVelocityZero();
             player.Core.Movement.FreezePosOnSlope();
 
-            switch (stateMachine.PreviousState)
+            switch (player.PreviousState)
             {
                 case PlayerCrouchState: player.Animator.Play(hashStandUp); break;
                 case PlayerStandState: player.Animator.Play(hashSitDown); break;
@@ -36,7 +36,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isAnimFinished)
             {
-                switch (stateMachine.PreviousState)
+                switch (player.PreviousState)
                 {
                     case PlayerCrouchState: stateMachine.ChangeState(player.StandState); break;
                     case PlayerStandState: stateMachine.ChangeState(player.CrouchState); break;

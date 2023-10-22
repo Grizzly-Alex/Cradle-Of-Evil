@@ -396,7 +396,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StartDash
+  m_Name: StartSlide
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -462,7 +462,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DashToStand
+  m_Name: SlideToStand
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -515,7 +515,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GroundDashState
+  m_Name: SlideState
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -4611340084603491627}
@@ -561,7 +561,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DashToCrouch
+  m_Name: SlideToCrouch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -963,7 +963,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dashing
+  m_Name: Sliding
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1222,7 +1222,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LevitationDash
+  m_Name: Dash
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

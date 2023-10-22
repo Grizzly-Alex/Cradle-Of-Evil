@@ -26,8 +26,9 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.JumpState.ResetAmountOfJumpsLeft();
-            player.Core.Movement.SetVelocityZero();
+			player.JumpState.ResetAmountOfJump();
+
+			player.Core.Movement.SetVelocityZero();
 
             player.transform.position = DetectedPos;
             cornerPos = GetCornerOfLedge();
@@ -99,7 +100,7 @@ namespace FiniteStateMachine.PlayerStates
         private void OnJump()
         {
             if (!isClimbing && isHanging) 
-                stateMachine.ChangeState(player.WallJumpState);
+                stateMachine.ChangeState(player.JumpState);
         }
 
         public override void AnimationTrigger() => isHanging = true;

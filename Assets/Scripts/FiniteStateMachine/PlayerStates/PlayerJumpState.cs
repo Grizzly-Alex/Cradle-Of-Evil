@@ -1,4 +1,5 @@
 ﻿using Entities;
+using System;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -6,41 +7,80 @@ namespace FiniteStateMachine.PlayerStates
     public sealed class PlayerJumpState : PlayerAbilityState
     {
         private readonly int hashDoubleJump = Animator.StringToHash("DoubleJump");
-        public int AmountOfJumpsLeft { get; private set; }
+		private readonly int hashVelocityY = Animator.StringToHash("velocityY");
+		private readonly int hashInAir = Animator.StringToHash("InAirState");
+		private readonly int amountOfJump = 2;
+		private int amountOfJumpLeft;
+		private float finishTime;
+		private Action JumpUpdate;
 
         public PlayerJumpState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
-            AmountOfJumpsLeft = player.Data.AmountOfJump;
-        }
+			amountOfJumpLeft = amountOfJump;
+		}
 
         public override void Enter()
         {
             base.Enter();
 
-            switch (AmountOfJumpsLeft)
-            {
-                case 2: player.Core.Movement.SetVelocityY(player.Data.FirstJumpForce); break;
-                case 1: player.Core.Movement.SetVelocityY(player.Data.SecondJumpForce); break;
-            }
+			if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
+			{
+				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+				JumpUpdate = UpdateJumpFromGround;
+			}
+			else if (player.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
+			{
+				finishTime = Time.time + player.Data.WallJumpTime;
+				player.Animator.Play(hashInAir);
+				player.Core.Movement.Flip();
+				player.Core.Movement.SetVelocity(player.Data.JumpForce, new Vector2(1, 2), player.Core.Movement.FacingDirection);
+				JumpUpdate = UpdateJumpFromWall;
+			}
+			else if (player.PreviousState is PlayerInAirState)
+			{
+				player.InAirState.UseDoubleJump = true;
+				player.Animator.Play(hashDoubleJump);
+				player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
+				JumpUpdate = UpdateJumpFromAir;
+			}
         }
 
         public override void Update()
         {
             base.Update();
 
-            if (!isGrounded) isAbilityDone = true;
+			JumpUpdate.Invoke();
         }
 
         public override void Exit()
         {
             base.Exit();
 
-            AmountOfJumpsLeft--;
-        }
+			DecreaseAmountOfJump();
+		}
 
-        public int GetHashAnimDoubleJump() => hashDoubleJump;
-        public bool CanJum() => AmountOfJumpsLeft > 0;
-        public void ResetAmountOfJumpsLeft() => AmountOfJumpsLeft = player.Data.AmountOfJump;
-        public void DecreaseAmountOfJumpsLeft() => AmountOfJumpsLeft--;
-    }
+		#region Update
+		private void UpdateJumpFromGround()
+		{
+			if (!isGrounded) isAbilityDone = true;
+		}
+
+		private void UpdateJumpFromWall()
+		{			
+			player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
+			if (Time.time >= finishTime) isAbilityDone = true;
+		}
+
+		private void UpdateJumpFromAir()
+		{	
+			isAbilityDone = true;
+		}
+		#endregion
+
+
+		public void ResetAmountOfJump() => amountOfJumpLeft = amountOfJump;
+		public void DecreaseAmountOfJump() => amountOfJumpLeft--;
+		public bool CanJump() => amountOfJumpLeft > 0;
+		public int GetDoubleJumpHashAnim() => hashDoubleJump;
+	}
 }
