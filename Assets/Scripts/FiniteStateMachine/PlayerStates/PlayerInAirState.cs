@@ -101,8 +101,10 @@ namespace FiniteStateMachine.PlayerStates
 
         private void TrackingFallingForce() 
         {
-            if (сuгrentVelocityY < 0.0f)
-                fallingForce = сuгrentVelocityY;           
+            if (сuгrentVelocityY < fallingForce)
+            {
+                fallingForce = сuгrentVelocityY;
+            }
         }
 
         private bool Cooldown(float finishTime) => Time.time >= finishTime + startTime;
