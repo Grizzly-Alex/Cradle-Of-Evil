@@ -3,15 +3,15 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public sealed class PlayerGroundDashState : PlayerAbilityState
+    public sealed class PlayerSlideState : PlayerAbilityState
     {
-        private readonly int hashStartDash = Animator.StringToHash("StartDash");
-        private readonly int hashDashing = Animator.StringToHash("Dashing");
+        private readonly int hashStartDash = Animator.StringToHash("StartSlide");
+        private readonly int hashDashing = Animator.StringToHash("Sliding");
         private readonly int hashToCrouch = Animator.StringToHash("toCrouch");
         private readonly int hashToStand = Animator.StringToHash("toStand");
         private float finishTime;
 
-        public PlayerGroundDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+        public PlayerSlideState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
 
         }
@@ -19,12 +19,13 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
-            finishTime = Time.time + player.GroundDashTime;
+
+            finishTime = Time.time + player.Data.SlideTime;
 
             player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.CrouchColiderHeight);
+            player.SetColliderHeight(player.Data.CrouchColiderHeight);
 
-            switch (stateMachine.PreviousState)
+            switch (player.PreviousState)
             {
                 case PlayerCrouchState: player.Animator.Play(hashDashing); break;
                 case PlayerStandState: player.Animator.Play(hashStartDash); break;
@@ -48,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
 
                     if (!isCellingDetected)
                     {
-                        switch (stateMachine.PreviousState)
+                        switch (player.PreviousState)
                         {
                             case PlayerCrouchState: player.Animator.SetTrigger(hashToCrouch); break;
                             case PlayerStandState: player.Animator.SetTrigger(hashToStand); break;
@@ -58,7 +59,7 @@ namespace FiniteStateMachine.PlayerStates
                 }
                 else isAbilityDone = true;
             }
-            else player.Core.Movement.MoveAlongSurface(player.GroundDashSpeed, player.Core.Movement.FacingDirection);
+            else player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
         }
 
         public override void Exit()
@@ -68,7 +69,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.ResetTrigger(hashToStand);
             player.Animator.ResetTrigger(hashToCrouch);
             player.Core.Movement.ResetFreezePos();
-            player.Input.DashInputCooldown = player.GroundDashCooldown;
+            player.Input.DashInputCooldown = player.Data.SlideCooldown;
         }
     }
 }

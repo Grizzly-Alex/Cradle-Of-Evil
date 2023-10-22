@@ -33,7 +33,7 @@ namespace FiniteStateMachine.PlayerStates
                     }
                     else
                     {
-                        stateMachine.ChangeState(stateMachine.PreviousState);
+                        stateMachine.ChangeState(player.PreviousState);
                     }
                 }
                 else

@@ -8,27 +8,26 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashIdle = Animator.StringToHash("IdleCrouch");
         private bool isTouchedRoof;
 
-        public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+		protected override float MoveSpeed => player.Data.CrouchMoveSpeed;
+
+		public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
-        }
+			
+		}
 
         public override void Enter()
         {
             base.Enter();
 
             player.Input.SitStandEvent += OnStand;
-            player.Input.JumpEvent += OnJump;
-            player.Input.DashEvent += OnDash;
 
-            player.SetColliderHeight(player.CrouchColiderHeight);
+            player.SetColliderHeight(player.Data.CrouchColiderHeight);
             player.Animator.Play(hashIdle);
         }
 
         public override void Update()
         {
             base.Update();
-
-            player.Core.Movement.Move(player.CrouchMoveSpeed, player.Input.NormInputX);
         }
 
         public override void Exit()
@@ -36,8 +35,6 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.SitStandEvent -= OnStand;
-            player.Input.JumpEvent -= OnJump;
-            player.Input.DashEvent -= OnDash;
         }
 
         public override void DoCheck()
@@ -52,14 +49,14 @@ namespace FiniteStateMachine.PlayerStates
             if (!isTouchedRoof) stateMachine.ChangeState(player.SitStandState);            
         }
 
-        private void OnJump()
+		protected override void OnJump()
         {
             if (!isTouchedRoof) stateMachine.ChangeState(player.JumpState);
         }
 
-        private void OnDash()
+		protected override void OnSlide()
         {
-            stateMachine.ChangeState(player.GroundDashState);
+            stateMachine.ChangeState(player.SlideState);
         }
         #endregion
     }

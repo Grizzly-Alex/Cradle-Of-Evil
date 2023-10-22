@@ -4,7 +4,7 @@ using UnityEngine;
 namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerLandingState : PlayerBaseState
-    {
+	{
         private readonly int hashSoftLanding = Animator.StringToHash("SoftLanding");
         private readonly int hashHardLanding = Animator.StringToHash("HardLanding");
 
@@ -28,15 +28,16 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.Core.Movement.SetVelocityZero();
-            player.JumpState.ResetAmountOfJumpsLeft();
+            player.DashState.ResetAmountOfDash();
+			player.JumpState.ResetAmountOfJump();
+			player.Core.Movement.SetVelocityZero();
 
             if (player.Core.Sensor.GetGroundSlopeAngle() != 0.0f)
             {
                 player.Core.Movement.FreezePosX();
             }
 
-            switch (LandingForce >= player.LandingThreshold)
+            switch (LandingForce >= player.Data.LandingThreshold)
             {
                 case true: player.Animator.Play(hashHardLanding); break;
                 case false: player.Animator.Play(hashSoftLanding); break;
@@ -48,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (!isGrounded) stateMachine.ChangeState(player.InAirState); 
 
-            if (LandingForce >= player.LandingThreshold)
+            if (LandingForce >= player.Data.LandingThreshold)
             {
                 if (isAnimFinished) 
                     stateMachine.ChangeState(player.StandState);
@@ -74,7 +75,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (LandingForce < player.LandingThreshold)
+            if (LandingForce < player.Data.LandingThreshold)
                 stateMachine.ChangeState(player.JumpState);
         }
     }

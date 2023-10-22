@@ -8465,7 +8465,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360191213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -2.4375, z: 0}
+  m_LocalPosition: {x: -17, y: 6.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8611,21 +8611,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 167bdd72d74b12c4ea8cb4ac7bf40227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <StandMoveSpeed>k__BackingField: 6
-  <CrouchMoveSpeed>k__BackingField: 2
-  <InAirMoveSpeed>k__BackingField: 6
-  <FirstJumpForce>k__BackingField: 12
-  <SecondJumpForce>k__BackingField: 8
-  <WallJumpTime>k__BackingField: 0.15
-  <GrabLedgeCooldown>k__BackingField: 0.1
-  <LandingThreshold>k__BackingField: 18
-  <GroundDashSpeed>k__BackingField: 13
-  <GroundDashTime>k__BackingField: 0.25
-  <GroundDashCooldown>k__BackingField: 0.2
-  <AirDashSpeed>k__BackingField: 0
-  <AirDashTime>k__BackingField: 0
-  <StandColiderHeight>k__BackingField: 1.37
-  <CrouchColiderHeight>k__BackingField: 0.85
+  <Data>k__BackingField:
+    <StandMoveSpeed>k__BackingField: 6
+    <CrouchMoveSpeed>k__BackingField: 2
+    <InAirMoveSpeed>k__BackingField: 6
+    <JumpForce>k__BackingField: 12
+    <DoubleJumpForce>k__BackingField: 8
+    <WallJumpTime>k__BackingField: 0.15
+    <GrabLedgeCooldown>k__BackingField: 0.1
+    <LandingThreshold>k__BackingField: 18
+    <DashSpeed>k__BackingField: 12
+    <DashTime>k__BackingField: 0.3
+    <SlideSpeed>k__BackingField: 12
+    <SlideTime>k__BackingField: 0.25
+    <SlideCooldown>k__BackingField: 0.2
+    <StandColiderHeight>k__BackingField: 1.37
+    <CrouchColiderHeight>k__BackingField: 0.85
 --- !u!1 &695144397
 GameObject:
   m_ObjectHideFlags: 0
@@ -9565,7 +9566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444150607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -2.4375, z: -10}
+  m_LocalPosition: {x: -17, y: 6.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9731,7 +9732,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892614046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.9999998, y: -2.09375, z: -10}
+  m_LocalPosition: {x: -17, y: 6.09375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

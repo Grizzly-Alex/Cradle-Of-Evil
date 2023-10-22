@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Interfaces;
-using UnityEngine;
 
 namespace FiniteStateMachine
 {
@@ -18,7 +17,7 @@ namespace FiniteStateMachine
 
         public virtual void Enter()
         {
-            isAnimFinished = false;          
+            isAnimFinished = false;    
             DoCheck();
         }
 
@@ -29,7 +28,7 @@ namespace FiniteStateMachine
 
         public virtual void Exit()
         {
-
+            player.PreviousState = this;           
         }
 
         public abstract void DoCheck();
