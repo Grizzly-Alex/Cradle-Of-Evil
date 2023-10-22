@@ -1888,6 +1888,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Player_85
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.55}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c86bcabf9bb03b24cac3d74d06fd9a71
+      internalID: -578175735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_86
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 0
+        width: 100
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.55}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f745a66573917b45a94fa77fdda06af
+      internalID: 1390440829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1900,90 +1942,92 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Player_17: 767504831
-      Player_84: 48035079
       Player_33: -215335335
       Player_48: 2018907602
       Player_57: 1424369039
-      Player_2: -1796859138
       Player_18: -2028475370
       Player_62: -1944759152
       Player_70: -1709680637
-      Player_36: -264572707
-      Player_34: -1907820774
       Player_71: -2042580620
       Player_12: -213848692
-      Player_81: 1517276161
-      Player_29: 438481156
       Player_51: -1677388021
-      Player_1: 1011903360
       Player_56: 160160306
+      Player_72: 212448709
       Player_9: -1188268091
       Player_14: -138001689
-      Player_72: 212448709
+      Player_83: -1987562477
       Player_54: -519536984
       Player_55: 1742514027
+      Player_67: 1365745728
+      Player_74: 1656813165
+      Player_82: 787474463
+      Player_27: 904872691
+      Player_77: -990209596
+      Player_13: 1502921819
+      Player_42: 1954085488
+      Player_38: 626314864
+      Player_63: 600493323
+      Player_19: 2053561536
+      Player_30: -1094167991
+      Player_4: 1340561387
+      Player_66: 268496351
+      Player_75: -608009893
+      Player_65: -2063273740
+      Player_25: 1620390767
+      Player_59: -255976205
+      Player_6: -884510866
+      Player_44: 1101585013
+      Player_31: 2116160001
+      Player_0: 1162979872
+      Player_50: -418702503
+      Player_69: 1727423691
+      Player_26: 578784874
+      Player_78: 39044168
+      Player_80: -1971360090
+      Player_60: 1615480768
+      Player_52: 587131001
+      Player_49: 382724556
+      Player_2: -1796859138
+      Player_36: -264572707
+      Player_34: -1907820774
+      Player_81: 1517276161
+      Player_29: 438481156
+      Player_1: 1011903360
       Player_7: -18189936
       Player_16: -821797141
-      Player_67: 1365745728
-      Player_83: -1987562477
       Player_40: 1796656967
       Player_8: -1224465211
       Player_73: 1449139972
       Player_39: 733140651
-      Player_74: 1656813165
       Player_10: 1489978223
-      Player_27: 904872691
-      Player_82: 787474463
-      Player_77: -990209596
       Player_15: -1027979763
-      Player_13: 1502921819
-      Player_21: -1720256141
       Player_32: -1017133632
-      Player_38: 626314864
+      Player_21: -1720256141
+      Player_43: -1167471461
       Player_24: -397853237
       Player_37: -1960555454
-      Player_42: 1954085488
-      Player_43: -1167471461
       Player_35: 1940972418
       Player_11: 993452046
-      Player_19: 2053561536
       Player_20: 2039092943
-      Player_63: 600493323
-      Player_30: -1094167991
-      Player_4: 1340561387
-      Player_66: 268496351
       Player_46: -2076116368
       Player_23: 1147264731
       Player_79: 2138027654
-      Player_75: -608009893
       Player_22: -4943093
-      Player_25: 1620390767
-      Player_65: -2063273740
-      Player_59: -255976205
-      Player_6: -884510866
-      Player_44: 1101585013
       Player_47: 591084142
       Player_53: 2073903014
-      Player_31: 2116160001
-      Player_0: 1162979872
-      Player_50: -418702503
+      Player_85: -578175735
       Player_68: -829193811
-      Player_69: 1727423691
       Player_64: 146340861
       Player_41: -891435665
       Player_76: 300840347
       Player_3: 970697595
       Player_58: 1858393421
-      Player_26: 578784874
+      Player_86: 1390440829
       Player_28: -650412013
       Player_61: 814950511
-      Player_78: 39044168
-      Player_80: -1971360090
-      Player_60: 1615480768
-      Player_52: 587131001
+      Player_84: 48035079
       Player_45: 382959897
       Player_5: 1615371900
-      Player_49: 382724556
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

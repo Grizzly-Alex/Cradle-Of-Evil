@@ -5,8 +5,10 @@ namespace FiniteStateMachine.PlayerStates
 {
     public class PlayerDashState : PlayerAbilityState
     {
-        private readonly int hashDash = Animator.StringToHash("Dash");
+        private readonly int hashDash = Animator.StringToHash("Dashing");
+        private readonly int hashIsDashing = Animator.StringToHash("isDashing");
 		private readonly int amountOfDash = 1;
+        private bool isDashing;
 		private int amountOfDashLeft;
         private float finishTime;
 
@@ -20,7 +22,9 @@ namespace FiniteStateMachine.PlayerStates
             base.Enter();
 
             finishTime = Time.time + player.Data.DashTime;
-            player.Animator.Play(hashDash);
+            isDashing = true;
+			player.Animator.SetBool(hashIsDashing, true);
+			player.Animator.Play(hashDash);
         }
 
         public override void Update()
@@ -29,7 +33,17 @@ namespace FiniteStateMachine.PlayerStates
 
             if (Time.time >= finishTime)
             {
-                isAbilityDone = true;
+                if (isDashing)
+                {
+                    player.Core.Movement.SetVelocityZero();
+                    isDashing = false;
+					player.Animator.SetBool(hashIsDashing, false);
+				}
+
+                if(isAnimFinished) 
+                {
+                    isAbilityDone = true;
+                }
             }
             else
             {
