@@ -8,6 +8,7 @@ namespace CoreSystem.Components
         public int FacingDirection { get; private set; }
         public Vector2 CurrentVelocity { get; private set; }
         private Vector2 workingVector;
+        private float defaultGravityScale; 
 
         protected override void Awake()
         {
@@ -19,7 +20,9 @@ namespace CoreSystem.Components
         {
             base.Start();
             Rigidbody = GetComponentInParent<Rigidbody2D>();
-        }
+            defaultGravityScale = Rigidbody.gravityScale;
+
+		}
 
         public override void LogicUpdate() => CurrentVelocity = Rigidbody.velocity;
 
@@ -124,5 +127,10 @@ namespace CoreSystem.Components
             Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         #endregion
-    }
+
+        #region Gravitation
+        public void GravitationOn() => Rigidbody.gravityScale = defaultGravityScale;
+		public void GravitationOff() => Rigidbody.gravityScale = 0.0f;
+		#endregion
+	}
 }

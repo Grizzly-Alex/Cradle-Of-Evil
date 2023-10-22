@@ -8621,7 +8621,7 @@ MonoBehaviour:
     <GrabLedgeCooldown>k__BackingField: 0.1
     <LandingThreshold>k__BackingField: 18
     <DashSpeed>k__BackingField: 12
-    <DashTime>k__BackingField: 0.3
+    <DashTime>k__BackingField: 0.4
     <SlideSpeed>k__BackingField: 12
     <SlideTime>k__BackingField: 0.25
     <SlideCooldown>k__BackingField: 0.2

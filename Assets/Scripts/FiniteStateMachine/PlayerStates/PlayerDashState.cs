@@ -23,6 +23,8 @@ namespace FiniteStateMachine.PlayerStates
 
             finishTime = Time.time + player.Data.DashTime;
             isDashing = true;
+            player.Core.Movement.FreezePosY();
+            player.Core.Movement.GravitationOff();
 			player.Animator.SetBool(hashIsDashing, true);
 			player.Animator.Play(hashDash);
         }
@@ -56,6 +58,8 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
 			DecreaseAmountOfDash();
+			player.Core.Movement.ResetFreezePos();
+			player.Core.Movement.GravitationOn();
 		}
 
         public bool CanDash() => amountOfDashLeft > 0;
