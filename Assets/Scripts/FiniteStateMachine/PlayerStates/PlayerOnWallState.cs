@@ -22,7 +22,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.JumpState.ResetAmountOfJump();
+			player.DashState.ResetAmountOfDash();
+			player.JumpState.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
             holdPosition.Set(DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset)

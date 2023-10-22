@@ -6,11 +6,13 @@ namespace FiniteStateMachine.PlayerStates
     public class PlayerDashState : PlayerAbilityState
     {
         private readonly int hashDash = Animator.StringToHash("Dash");
+		private readonly int amountOfDash = 1;
+		private int amountOfDashLeft;
         private float finishTime;
-        private bool isGrabWall;
 
-        public PlayerDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+		public PlayerDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
+            amountOfDashLeft = amountOfDash;
         }
 
         public override void Enter()
@@ -25,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Update();
 
-            if (isGrounded || isGrabWall || Time.time >= finishTime)
+            if (Time.time >= finishTime)
             {
                 isAbilityDone = true;
             }
@@ -38,13 +40,12 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
-        }
 
-        public override void DoCheck()
-        {
-            base.DoCheck();
+			DecreaseAmountOfDash();
+		}
 
-            isGrabWall = player.Core.Sensor.IsGrabWallDetect();
-        }
-    }
+        public bool CanDash() => amountOfDashLeft > 0;
+		public void ResetAmountOfDash() => amountOfDashLeft = amountOfDash;
+		public void DecreaseAmountOfDash() => amountOfDashLeft--;
+	}
 }

@@ -117,7 +117,8 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnDash()
         {
-            stateMachine.ChangeState(player.DashState);
+			if (player.DashState.CanDash())
+				stateMachine.ChangeState(player.DashState);
         }
     }
 }

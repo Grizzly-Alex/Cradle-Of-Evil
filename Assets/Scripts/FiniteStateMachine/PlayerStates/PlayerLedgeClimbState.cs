@@ -26,6 +26,7 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
+			player.DashState.ResetAmountOfDash();
 			player.JumpState.ResetAmountOfJump();
 
 			player.Core.Movement.SetVelocityZero();
