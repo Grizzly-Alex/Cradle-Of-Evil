@@ -8620,8 +8620,8 @@ MonoBehaviour:
     <WallJumpTime>k__BackingField: 0.15
     <GrabLedgeCooldown>k__BackingField: 0.1
     <LandingThreshold>k__BackingField: 18
-    <DashSpeed>k__BackingField: 12
-    <DashTime>k__BackingField: 0.35
+    <DashSpeed>k__BackingField: 16
+    <DashTime>k__BackingField: 0.25
     <SlideSpeed>k__BackingField: 12
     <SlideTime>k__BackingField: 0.25
     <SlideCooldown>k__BackingField: 0.2
@@ -9842,6 +9842,7 @@ GameObject:
   - component: {fileID: 8286286697664591477}
   - component: {fileID: 8286286697664591482}
   - component: {fileID: 694877861282120331}
+  - component: {fileID: 8286286697664591484}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -9876,3 +9877,18 @@ Transform:
   m_Father: {fileID: 360191214}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8286286697664591484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286286697664591480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdb1c1e47b5ee448a91ca4bbb91eb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afterImagePrefab: {fileID: 6883955611880892879, guid: b8c182106ccb3be4987f012580f17847, type: 3}
+  colorLooseRate: 1
+  afterImageCooldown: 0.035
