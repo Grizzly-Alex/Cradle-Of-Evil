@@ -12,7 +12,7 @@ namespace FiniteStateMachine.PlayerStates
 		private readonly int amountOfJump = 2;
 		private int amountOfJumpLeft;
 		private float finishTime;
-		private Action JumpUpdate;
+		private Action jumpUpdate;
 
         public PlayerJumpState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -26,7 +26,7 @@ namespace FiniteStateMachine.PlayerStates
 			if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
 				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
-				JumpUpdate = UpdateJumpFromGround;
+                jumpUpdate = UpdateJumpFromGround;
 			}
 			else if (player.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
 			{
@@ -34,14 +34,14 @@ namespace FiniteStateMachine.PlayerStates
 				player.Animator.Play(hashInAir);
 				player.Core.Movement.Flip();
 				player.Core.Movement.SetVelocity(player.Data.JumpForce, new Vector2(1, 2), player.Core.Movement.FacingDirection);
-				JumpUpdate = UpdateJumpFromWall;
+                jumpUpdate = UpdateJumpFromWall;
 			}
 			else if (player.PreviousState is PlayerInAirState)
 			{
 				player.InAirState.UseDoubleJump = true;
 				player.Animator.Play(hashDoubleJump);
 				player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
-				JumpUpdate = UpdateJumpFromAir;
+                jumpUpdate = UpdateJumpFromAir;
 			}
         }
 
@@ -49,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Update();
 
-			JumpUpdate.Invoke();
+            jumpUpdate.Invoke();
         }
 
         public override void Exit()

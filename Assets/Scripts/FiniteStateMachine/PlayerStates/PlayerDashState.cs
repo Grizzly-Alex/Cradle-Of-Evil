@@ -6,9 +6,7 @@ namespace FiniteStateMachine.PlayerStates
     public class PlayerDashState : PlayerAbilityState
     {
         private readonly int hashDash = Animator.StringToHash("Dashing");
-        private readonly int hashIsDashing = Animator.StringToHash("isDashing");
 		private readonly int amountOfDash = 1;
-        private bool isDashing;
 		private int amountOfDashLeft;
         private float finishTime;
 
@@ -22,10 +20,8 @@ namespace FiniteStateMachine.PlayerStates
             base.Enter();
 
             finishTime = Time.time + player.Data.DashTime;
-            isDashing = true;
             player.Core.Movement.FreezePosY();
             player.Core.Movement.GravitationOff();
-			player.Animator.SetBool(hashIsDashing, true);
 			player.Animator.Play(hashDash);
         }
 
@@ -35,17 +31,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (Time.time >= finishTime)
             {
-                if (isDashing)
-                {
-                    player.Core.Movement.SetVelocityZero();
-                    isDashing = false;
-					player.Animator.SetBool(hashIsDashing, false);
-				}
-
-                if(isAnimFinished) 
-                {
-                    isAbilityDone = true;
-                }
+                isAbilityDone = true;
             }
             else
             {
@@ -58,7 +44,8 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
 			DecreaseAmountOfDash();
-			player.Core.Movement.ResetFreezePos();
+            player.Core.Movement.SetVelocityZero();
+            player.Core.Movement.ResetFreezePos();
 			player.Core.Movement.GravitationOn();
 		}
 

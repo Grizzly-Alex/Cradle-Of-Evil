@@ -8465,7 +8465,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360191213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17, y: 6.5, z: 0}
+  m_LocalPosition: {x: -19.15625, y: 5.5625, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8621,7 +8621,7 @@ MonoBehaviour:
     <GrabLedgeCooldown>k__BackingField: 0.1
     <LandingThreshold>k__BackingField: 18
     <DashSpeed>k__BackingField: 12
-    <DashTime>k__BackingField: 0.4
+    <DashTime>k__BackingField: 0.35
     <SlideSpeed>k__BackingField: 12
     <SlideTime>k__BackingField: 0.25
     <SlideCooldown>k__BackingField: 0.2
@@ -9566,7 +9566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1444150607}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17, y: 6.5, z: -10}
+  m_LocalPosition: {x: -19.15625, y: 5.5625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9732,7 +9732,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1892614046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17, y: 6.09375, z: -10}
+  m_LocalPosition: {x: -19.15625, y: 5.5625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

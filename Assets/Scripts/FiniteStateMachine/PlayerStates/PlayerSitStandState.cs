@@ -1,4 +1,5 @@
 ﻿using Entities;
+using System;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -9,6 +10,7 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashSitDown = Animator.StringToHash("SitDown");
 
         private bool isGrounded;
+        private Action changeState;
 
         public PlayerSitStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -24,9 +26,14 @@ namespace FiniteStateMachine.PlayerStates
 
             switch (player.PreviousState)
             {
-                case PlayerCrouchState: player.Animator.Play(hashStandUp); break;
-                case PlayerStandState: player.Animator.Play(hashSitDown); break;
-                case PlayerLedgeClimbState: player.Animator.Play(hashStandUp); break;
+                case PlayerCrouchState or PlayerLedgeClimbState:
+                    player.Animator.Play(hashStandUp);
+                    changeState = () => stateMachine.ChangeState(player.StandState);
+                    break;
+                case PlayerStandState:
+                    player.Animator.Play(hashSitDown);
+                    changeState = () => stateMachine.ChangeState(player.CrouchState);
+                    break;
             }
         }
 
@@ -36,12 +43,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isAnimFinished)
             {
-                switch (player.PreviousState)
-                {
-                    case PlayerCrouchState: stateMachine.ChangeState(player.StandState); break;
-                    case PlayerStandState: stateMachine.ChangeState(player.CrouchState); break;
-                    case PlayerLedgeClimbState: stateMachine.ChangeState(player.StandState); break;
-                }
+                changeState.Invoke();
             }
 
             if (!isGrounded)

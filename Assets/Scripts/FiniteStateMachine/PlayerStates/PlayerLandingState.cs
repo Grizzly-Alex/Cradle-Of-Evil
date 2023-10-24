@@ -1,4 +1,5 @@
 ﻿using Entities;
+using System;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -10,6 +11,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private bool isGrounded;
         private float landingForce;
+        private Action updateLogic;
 
         public float LandingForce
         {
@@ -20,7 +22,6 @@ namespace FiniteStateMachine.PlayerStates
         public PlayerLandingState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
-
 
         public override void Enter()
         {
@@ -37,28 +38,39 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Movement.FreezePosX();
             }
 
-            switch (LandingForce >= player.Data.LandingThreshold)
+            if (LandingForce >= player.Data.LandingThreshold)
             {
-                case true: player.Animator.Play(hashHardLanding); break;
-                case false: player.Animator.Play(hashSoftLanding); break;
+                player.Animator.Play(hashHardLanding);
+                updateLogic = () =>
+                {
+                    if (isAnimFinished) 
+                        stateMachine.ChangeState(player.StandState);                    
+                };                               
+            }
+            else
+            {
+                player.Animator.Play(hashSoftLanding);
+                updateLogic = () =>
+                {
+                    if (isAnimFinished || player.Input.NormInputX != 0) 
+                        stateMachine.ChangeState(player.StandState);
+                };
             }
         }
+
         public override void Update()
         {
             base.Update();
 
-            if (!isGrounded) stateMachine.ChangeState(player.InAirState); 
-
-            if (LandingForce >= player.Data.LandingThreshold)
+            if (!isGrounded)
             {
-                if (isAnimFinished) 
-                    stateMachine.ChangeState(player.StandState);
+                stateMachine.ChangeState(player.InAirState);
             }
             else
             {
-                if (isAnimFinished || player.Input.NormInputX != 0) 
-                    stateMachine.ChangeState(player.StandState);
+                updateLogic.Invoke();
             }
+
         }
 
         public override void Exit()

@@ -1,4 +1,5 @@
 ﻿using Entities;
+using System;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -10,6 +11,7 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashToCrouch = Animator.StringToHash("toCrouch");
         private readonly int hashToStand = Animator.StringToHash("toStand");
         private float finishTime;
+        private Action trigger;
 
         public PlayerSlideState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -27,8 +29,14 @@ namespace FiniteStateMachine.PlayerStates
 
             switch (player.PreviousState)
             {
-                case PlayerCrouchState: player.Animator.Play(hashDashing); break;
-                case PlayerStandState: player.Animator.Play(hashStartDash); break;
+                case PlayerCrouchState: 
+                    player.Animator.Play(hashDashing);
+                    trigger = () => player.Animator.SetTrigger(hashToCrouch);
+                    break;
+                case PlayerStandState: 
+                    player.Animator.Play(hashStartDash);
+                    trigger = () => player.Animator.SetTrigger(hashToStand);
+                    break;
             }
         }
 
@@ -49,11 +57,7 @@ namespace FiniteStateMachine.PlayerStates
 
                     if (!isCellingDetected)
                     {
-                        switch (player.PreviousState)
-                        {
-                            case PlayerCrouchState: player.Animator.SetTrigger(hashToCrouch); break;
-                            case PlayerStandState: player.Animator.SetTrigger(hashToStand); break;
-                        }
+                        trigger.Invoke();
                     }
                     else player.Animator.SetTrigger(hashToCrouch);
                 }
