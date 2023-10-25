@@ -1,5 +1,4 @@
-﻿using CoreSystem.Components;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CoreSystem.Components
 {

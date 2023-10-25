@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Assets.Scripts;
+using Entities;
 using System;
 using UnityEngine;
 
@@ -63,7 +64,11 @@ namespace FiniteStateMachine.PlayerStates
                 }
                 else isAbilityDone = true;
             }
-            else player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
+            else
+            {
+                AfterImagePoolTest.Instance.GetFromPool();
+                player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
+            }
         }
 
         public override void Exit()
