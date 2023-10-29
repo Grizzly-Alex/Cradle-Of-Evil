@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using Entities;
+﻿using Entities;
 using System;
 using UnityEngine;
 
@@ -66,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                AfterImagePoolTest.Instance.GetFromPool();
+                player.Core.VisualFx.CreateAfterImage(0.05f);  
                 player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
             }
         }
