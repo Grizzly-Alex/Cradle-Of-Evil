@@ -1,4 +1,4 @@
-﻿using ObjectPool.ContainersPool;
+﻿using Pool.ContainersPool;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -10,6 +10,11 @@ namespace CoreSystem.Components
         [Header("AFTER IMAGE")]
         [SerializeField] private AfterImageContainer afterImageContainer;
         private float afterImageCooldownTimer;
+        //[Range(0, 1)]
+        //[SerializeField]
+        //private float alphaBegin = 1;
+        //[SerializeField]
+        //private float colorLooseRate = 1;
 
 
         protected override void Awake()
@@ -34,7 +39,7 @@ namespace CoreSystem.Components
             {
                 afterImageCooldownTimer = cooldown;
                 var obj = afterImageContainer.Pool.Get();
-                obj.Relise = afterImageContainer.Pool.Release;
+                obj.Release = afterImageContainer.Pool.Release;
             }
         }
     }

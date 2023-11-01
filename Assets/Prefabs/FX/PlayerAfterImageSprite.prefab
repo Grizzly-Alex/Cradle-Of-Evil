@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8259799843888217261}
   - component: {fileID: 5761588458477073537}
   m_Layer: 0
-  m_Name: AfterImageSprite
+  m_Name: PlayerAfterImageSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,5 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ea8c853f53aec42b68c60fadf6aa66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alphaBegin: 1
+  alphaBegin: 0.399
   colorLooseRate: 1
+  tagMask: Player

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ObjectPool.ItemsPool
+namespace Pool.ItemsPool
 {
     public sealed class AfterImageSprite : ItemPool<Action<AfterImageSprite>>
     {
@@ -11,6 +11,9 @@ namespace ObjectPool.ItemsPool
         private float alphaUpdate;
         [SerializeField]
         private float colorLooseRate = 1;
+        [SerializeField]
+        private string tagMask;
+
 
         private Transform entity;
         private SpriteRenderer spriteRenderer;
@@ -21,7 +24,7 @@ namespace ObjectPool.ItemsPool
         private void OnEnable()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            entity = GameObject.FindGameObjectWithTag("Player").transform;
+            entity = GameObject.FindGameObjectWithTag(tagMask).transform;
             entitySpriteRenderer = entity.GetComponent<SpriteRenderer>();
             alphaUpdate = alphaBegin;
             color = spriteRenderer.color;
@@ -37,7 +40,7 @@ namespace ObjectPool.ItemsPool
 
             if(spriteRenderer.color.a <= 0)
             {               
-                Relise.Invoke(this);
+                Release.Invoke(this);
             }
         }
     }

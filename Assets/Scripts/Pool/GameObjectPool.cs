@@ -1,34 +1,25 @@
+using Interfaces;
 using UnityEngine;
-using UnityEngine.Pool;
 
-namespace ObjectPool
+namespace Pool
 {
-    public class GameObjectPool<T> : IObjectPool<T>
+    public class GameObjectPool<T> : IPool<T>
     where T : MonoBehaviour
     {
         private readonly T gameObj;
         private readonly ObjectPool<T> pool;
         private readonly Transform container;
 
-        public int CountActive => pool.CountActive;
-        public int CountInactive => pool.CountInactive;
-
-        public GameObjectPool(T gameObj, Transform container, int defaultCapacity, int maxSize)
+        public GameObjectPool(T gameObj, Transform container, int defaultCapacity, bool preload)
         {
             this.gameObj = gameObj;
             this.container = container;
-            pool = new ObjectPool<T>(OnCreate, OnGet, OnRelease, OnDestroy, true, defaultCapacity, maxSize);
-
-            for (int i = 0; i < defaultCapacity; i++)
-            {
-                pool.Release(ObjectCreate());
-            }
+            pool = new ObjectPool<T>(OnCreate, OnGet, OnRelease, OnDestroy, defaultCapacity, preload);
         }
 
         #region Public methods
         public T Get() => pool.Get();
         public void Release(T monoObj) => pool.Release(monoObj);
-        public PooledObject<T> Get(out T v) => pool.Get(out v);
         public void Clear() => pool.Clear();
         #endregion
 

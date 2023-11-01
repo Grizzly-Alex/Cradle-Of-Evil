@@ -8899,8 +8899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 783eccb09100652458e00a9ec970da69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultCapacity: 10
-  maxCapcity: 50
+  defaultCapacity: 5
+  preload: 1
   itemPrefab: {fileID: 5761588458477073537, guid: 33d79e7dd72e6a2469c1eae00490d786, type: 3}
 --- !u!1 &1272582145
 GameObject:
@@ -9968,6 +9968,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdb1c1e47b5ee448a91ca4bbb91eb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorLooseRate: 0
-  afterImageCooldown: 0.03
   afterImageContainer: {fileID: 1089151623}
