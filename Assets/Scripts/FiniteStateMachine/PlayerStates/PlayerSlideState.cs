@@ -63,7 +63,11 @@ namespace FiniteStateMachine.PlayerStates
                 }
                 else isAbilityDone = true;
             }
-            else player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
+            else
+            {
+                player.Core.VisualFx.CreateAfterImage(0.05f);  
+                player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
+            }
         }
 
         public override void Exit()

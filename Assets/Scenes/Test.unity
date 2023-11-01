@@ -8475,7 +8475,7 @@ Transform:
   - {fileID: 1825631405}
   - {fileID: 1601576706}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &360191215
 SpriteRenderer:
@@ -8620,8 +8620,8 @@ MonoBehaviour:
     <WallJumpTime>k__BackingField: 0.15
     <GrabLedgeCooldown>k__BackingField: 0.1
     <LandingThreshold>k__BackingField: 18
-    <DashSpeed>k__BackingField: 12
-    <DashTime>k__BackingField: 0.35
+    <DashSpeed>k__BackingField: 16
+    <DashTime>k__BackingField: 0.25
     <SlideSpeed>k__BackingField: 12
     <SlideTime>k__BackingField: 0.25
     <SlideCooldown>k__BackingField: 0.2
@@ -8790,7 +8790,7 @@ Transform:
   - {fileID: 125516615}
   - {fileID: 1272582146}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1051338546
 GameObject:
@@ -8823,6 +8823,85 @@ Transform:
   m_Father: {fileID: 360191214}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1085000285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085000286}
+  m_Layer: 0
+  m_Name: ObjectContainers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1085000286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085000285}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1089151622}
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1089151621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1089151622}
+  - component: {fileID: 1089151623}
+  m_Layer: 0
+  m_Name: PlayerAfterImageContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1089151622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089151621}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1085000286}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1089151623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089151621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 783eccb09100652458e00a9ec970da69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultCapacity: 5
+  preload: 1
+  itemPrefab: {fileID: 5761588458477073537, guid: 33d79e7dd72e6a2469c1eae00490d786, type: 3}
 --- !u!1 &1272582145
 GameObject:
   m_ObjectHideFlags: 0
@@ -9842,6 +9921,7 @@ GameObject:
   - component: {fileID: 8286286697664591477}
   - component: {fileID: 8286286697664591482}
   - component: {fileID: 694877861282120331}
+  - component: {fileID: 8286286697664591484}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -9876,3 +9956,16 @@ Transform:
   m_Father: {fileID: 360191214}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8286286697664591484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286286697664591480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bdb1c1e47b5ee448a91ca4bbb91eb2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  afterImageContainer: {fileID: 1089151623}

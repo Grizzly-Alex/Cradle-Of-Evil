@@ -35,6 +35,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
+                player.Core.VisualFx.CreateAfterImage(0.03f);
                 player.Core.Movement.SetVelocity(player.Data.DashSpeed, new Vector2(1, 0), player.Core.Movement.FacingDirection);
             }
         }
