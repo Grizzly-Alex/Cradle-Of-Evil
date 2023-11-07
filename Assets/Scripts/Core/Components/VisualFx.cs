@@ -1,4 +1,4 @@
-﻿using Pool.ContainersPool;
+﻿using Pool;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -8,7 +8,7 @@ namespace CoreSystem.Components
         private SpriteRenderer spriteRenderer;
 
         [Header("AFTER IMAGE")]
-        [SerializeField] private AfterImageContainer afterImageContainer;
+        [SerializeField] private SpawnContainer afterImageContainer;
         private float afterImageCooldownTimer;
         //[Range(0, 1)]
         //[SerializeField]
@@ -38,8 +38,7 @@ namespace CoreSystem.Components
             if (afterImageCooldownTimer < 0)
             {
                 afterImageCooldownTimer = cooldown;
-                var obj = afterImageContainer.Pool.Get();
-                obj.Release = afterImageContainer.Pool.Release;
+                afterImageContainer.Spawner.Spawn();
             }
         }
     }

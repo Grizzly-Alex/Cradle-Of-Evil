@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public sealed class AfterImageSprite : ItemPool<Action<AfterImageSprite>>
+    public class AfterImageSprite : PoolItem
     {
         [Range(0, 1)]
         [SerializeField]
@@ -39,8 +39,8 @@ namespace Pool.ItemsPool
             spriteRenderer.color = new Color(color.r, color.g, color.b, alphaUpdate);
 
             if(spriteRenderer.color.a <= 0)
-            {               
-                Release.Invoke(this);
+            {
+                gameObject.SetActive(false);    
             }
         }
     }

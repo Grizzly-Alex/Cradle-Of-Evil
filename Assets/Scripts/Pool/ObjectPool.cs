@@ -19,7 +19,7 @@ namespace Pool
             Action<T> getAction = null,
             Action<T> releaseAction = null,
             Action<T> destroyAction = null,
-            int defaultCapacity = 10, bool preload = false)
+            int defaultCapacity = 10)
         {
             _getAction = getAction;
             _releaseAction = releaseAction;
@@ -28,7 +28,7 @@ namespace Pool
 
             _storage = new Queue<T>(defaultCapacity);
 
-            if (preload) Preload(defaultCapacity);
+            Preload(defaultCapacity);
         }
 
         public T Get()
