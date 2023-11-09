@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public class AfterImageSprite : PoolItem
+    public class AfterImageSprite : PoolObject
     {
         [Range(0, 1)]
         [SerializeField]
@@ -29,7 +29,7 @@ namespace Pool.ItemsPool
             alphaUpdate = alphaBegin;
             color = spriteRenderer.color;
             spriteRenderer.sprite = entitySpriteRenderer.sprite;
-            transform.SetPositionAndRotation(entity.position, entity.rotation);
+            //transform.SetPositionAndRotation(entity.position, entity.rotation);
         }
 
 
@@ -42,6 +42,11 @@ namespace Pool.ItemsPool
             {
                 gameObject.SetActive(false);    
             }
+        }
+
+        public override void OnObjectReuse()
+        {
+            
         }
     }
 }

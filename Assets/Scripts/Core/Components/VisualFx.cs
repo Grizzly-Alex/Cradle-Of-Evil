@@ -5,10 +5,12 @@ namespace CoreSystem.Components
 {
     public sealed class VisualFx : CoreComponent
     {
-        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer _masterSpriteRenderer;
+        private Transform _masterTransform;
+
 
         [Header("AFTER IMAGE")]
-        [SerializeField] private SpawnContainer afterImageContainer;
+        [SerializeField] private GameObject afterImagePrefab;
         private float afterImageCooldownTimer;
         //[Range(0, 1)]
         //[SerializeField]
@@ -25,7 +27,9 @@ namespace CoreSystem.Components
 
         protected override void Start()
         {
-            spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            _masterSpriteRenderer = GetComponentInParent<SpriteRenderer>();
+            _masterTransform = GetComponentInParent<Transform>();
+            PoolManger.Instance.CreatePool(afterImagePrefab, 10);
         }
 
         public override void LogicUpdate() 
@@ -38,7 +42,7 @@ namespace CoreSystem.Components
             if (afterImageCooldownTimer < 0)
             {
                 afterImageCooldownTimer = cooldown;
-                afterImageContainer.Spawner.Spawn();
+                PoolManger.Instance.ReuseObject(afterImagePrefab, transform.position, transform.rotation);
             }
         }
     }
