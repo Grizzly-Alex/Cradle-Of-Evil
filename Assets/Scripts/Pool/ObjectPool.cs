@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Pool
 { 
     public class ObjectPool<T> : IPool<T> where T : class
@@ -35,7 +34,7 @@ namespace Pool
         {
             T item = _storage.Count > 0 
                 ? _storage.Dequeue() 
-                : _createFunc.Invoke();
+                : _createFunc.Invoke();         
 
             _getAction?.Invoke(item);
 
@@ -64,7 +63,7 @@ namespace Pool
         {
             for (int i = 0; i < capacity; i++)
             {
-                Release(_createFunc.Invoke());
+                _storage.Enqueue(_createFunc.Invoke());
             }
         }
     }

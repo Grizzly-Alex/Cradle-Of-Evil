@@ -29,24 +29,22 @@ namespace Pool.ItemsPool
             alphaUpdate = alphaBegin;
             color = spriteRenderer.color;
             spriteRenderer.sprite = entitySpriteRenderer.sprite;
-            //transform.SetPositionAndRotation(entity.position, entity.rotation);
         }
-
 
         private void Update()
         {
             alphaUpdate -= colorLooseRate * Time.deltaTime;
             spriteRenderer.color = new Color(color.r, color.g, color.b, alphaUpdate);
-
-            if(spriteRenderer.color.a <= 0)
+            if (spriteRenderer.color.a <= 0)
             {
-                gameObject.SetActive(false);    
+                PoolManger.Instance.ReturnToPool(gameObject);
             }
         }
 
-        public override void OnObjectReuse()
+        public override GameObject Create(Transform container)
         {
-            
+            gameObject.SetActive(false);
+            return base.Create(container);
         }
     }
 }

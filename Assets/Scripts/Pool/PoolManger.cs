@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using Pool.ItemsPool;
 
 namespace Pool
 {
     public class PoolManger : MonoBehaviour
     {
-        Dictionary<int, Queue<ObjectInstance>> _poolDictionary = new Dictionary<int, Queue<ObjectInstance>>();
+        private Dictionary<int, GameObjectPool> _poolDictionary = new Dictionary<int, GameObjectPool>();
+        
 
         static PoolManger _instance;
         public static PoolManger Instance => _instance ??= FindObjectOfType<PoolManger>();
@@ -14,71 +14,41 @@ namespace Pool
         public void CreatePool(GameObject prefab, int poolSize)
         {
             int poolKey = prefab.GetInstanceID();
-
-            GameObject poolHolder = new GameObject(prefab.name + " pool");
-            poolHolder.transform.parent = transform;
+            Transform container = GetContainer(prefab.name);
 
             if (!_poolDictionary.ContainsKey(poolKey))
-            {
-                _poolDictionary.Add(poolKey, new Queue<ObjectInstance>());
-
-                for (int i = 0; i < poolSize; i++)
-                {
-                    ObjectInstance newObject = new ObjectInstance(Instantiate(prefab) as GameObject);
-                    _poolDictionary[poolKey].Enqueue(newObject);
-                    newObject.SetParent(poolHolder.transform);
-                }
+            {               
+                _poolDictionary.Add(poolKey, new GameObjectPool(prefab, container, poolSize));
             }
         }
 
-        public void ReuseObject(GameObject prefab, Vector2 position, Quaternion rotation)
+        public void GetFromPool(GameObject prefab, Vector2 position, Quaternion rotation)
         {
             int poolKey = prefab.GetInstanceID();
-            if (_poolDictionary.ContainsKey(poolKey))
-            {
-                ObjectInstance objectToReuse = _poolDictionary[poolKey].Dequeue();
-                _poolDictionary[poolKey].Enqueue(objectToReuse);
 
-                objectToReuse.Reuse(position, rotation);
+            if (_poolDictionary.ContainsKey(poolKey))
+            {               
+                GameObject obj = _poolDictionary[poolKey].Get();
+                obj.transform.SetPositionAndRotation(position, rotation);                                 
             }
         }
 
-        public class ObjectInstance
+        public void ReturnToPool(GameObject prefab)
         {
-            private GameObject gameObject;
-            private Transform transform;
-
-            private bool hasPoolObjectComponent;
-            private PoolObject poolObjectScript;
-
-            public ObjectInstance(GameObject objectInstance)
+            if (int.TryParse(prefab.name, out int poolKey))
             {
-                gameObject = objectInstance;
-                transform = gameObject.transform;
-                gameObject.SetActive(false);
-
-                if (gameObject.GetComponent<PoolObject>())
+                if (_poolDictionary.ContainsKey(poolKey))
                 {
-                    hasPoolObjectComponent = true;
-                    poolObjectScript = gameObject.GetComponent<PoolObject>();
+                    _poolDictionary[int.Parse(prefab.name)].Release(prefab);
                 }
             }
+        }
 
-            public void Reuse(Vector2 position, Quaternion rotation)
-            {
-                if(hasPoolObjectComponent)
-                {
-                    poolObjectScript.OnObjectReuse();
-                }
-
-                gameObject.SetActive(true);
-                gameObject.transform.SetPositionAndRotation(position, rotation);
-            }
-
-            public void SetParent(Transform parent)
-            {
-                transform.parent = parent;
-            }
+        private Transform GetContainer(string name)
+        {
+            GameObject poolHolder = new GameObject($"Container [{name}]");
+            poolHolder.transform.parent = transform;
+            return poolHolder.transform;
         }
     }
 }

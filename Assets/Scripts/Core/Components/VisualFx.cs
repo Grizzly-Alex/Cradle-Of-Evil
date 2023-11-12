@@ -22,14 +22,13 @@ namespace CoreSystem.Components
         protected override void Awake()
         {
             base.Awake();
-
         }
 
         protected override void Start()
         {
             _masterSpriteRenderer = GetComponentInParent<SpriteRenderer>();
             _masterTransform = GetComponentInParent<Transform>();
-            PoolManger.Instance.CreatePool(afterImagePrefab, 10);
+            PoolManger.Instance.CreatePool(afterImagePrefab, 4);
         }
 
         public override void LogicUpdate() 
@@ -42,7 +41,7 @@ namespace CoreSystem.Components
             if (afterImageCooldownTimer < 0)
             {
                 afterImageCooldownTimer = cooldown;
-                PoolManger.Instance.ReuseObject(afterImagePrefab, transform.position, transform.rotation);
+                PoolManger.Instance.GetFromPool(afterImagePrefab, transform.position, transform.rotation);
             }
         }
     }
