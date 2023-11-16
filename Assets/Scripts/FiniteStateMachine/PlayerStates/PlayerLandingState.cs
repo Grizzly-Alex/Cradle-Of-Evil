@@ -70,7 +70,6 @@ namespace FiniteStateMachine.PlayerStates
             {
                 updateLogic.Invoke();
             }
-
         }
 
         public override void Exit()
@@ -78,13 +77,13 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.JumpEvent -= OnJump;
-        }
+        }     
 
         public override void DoCheck()
         {
             isGrounded = player.Core.Sensor.IsGroundDetect();
         }
-
+       
         private void OnJump()
         {
             if (LandingForce < player.Data.LandingThreshold)

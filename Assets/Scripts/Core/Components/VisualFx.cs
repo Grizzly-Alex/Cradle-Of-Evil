@@ -5,18 +5,13 @@ namespace CoreSystem.Components
 {
     public sealed class VisualFx : CoreComponent
     {
-        private SpriteRenderer _masterSpriteRenderer;
-        private Transform _masterTransform;
-
-
         [Header("AFTER IMAGE")]
-        [SerializeField] private GameObject afterImagePrefab;
+        [SerializeField] 
+        private GameObject afterImagePrefab;
+        [SerializeField]
+        private int afterImagePreload;
         private float afterImageCooldownTimer;
-        //[Range(0, 1)]
-        //[SerializeField]
-        //private float alphaBegin = 1;
-        //[SerializeField]
-        //private float colorLooseRate = 1;
+
 
 
         protected override void Awake()
@@ -26,9 +21,7 @@ namespace CoreSystem.Components
 
         protected override void Start()
         {
-            _masterSpriteRenderer = GetComponentInParent<SpriteRenderer>();
-            _masterTransform = GetComponentInParent<Transform>();
-            PoolManger.Instance.CreatePool(afterImagePrefab, 4);
+            PoolManger.Instance.CreatePool(afterImagePrefab, afterImagePreload);
         }
 
         public override void LogicUpdate() 

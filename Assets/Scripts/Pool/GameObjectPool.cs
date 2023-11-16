@@ -6,7 +6,6 @@ namespace Pool
 {
     public class GameObjectPool : IPool<GameObject>
     {
-        private readonly int _instanceID;
         private readonly bool _hasPoolObjectComponent;
         private readonly PoolObject _poolObjectScript;
         private readonly GameObject _gameObject;
@@ -15,7 +14,6 @@ namespace Pool
 
         public GameObjectPool(GameObject gameObject, Transform container, int defaultPoolCapacity)
         {
-            _instanceID = gameObject.GetHashCode();
             _gameObject = gameObject;
             _container = container;
             _poolObjectScript = gameObject.GetComponent<PoolObject>();
@@ -32,13 +30,14 @@ namespace Pool
         #region On methods
         private GameObject OnCreate()
         {
-            GameObject gameObject = _hasPoolObjectComponent 
-                ? _poolObjectScript.Create(_container)
-                : GameObject.Instantiate(_gameObject, _container);
-
-            gameObject.name = _instanceID.ToString();
-
-            return gameObject;
+            if (_hasPoolObjectComponent)
+            {
+                return _poolObjectScript.Create(_container);
+            }
+            else
+            {
+                return GameObject.Instantiate(_gameObject, _container);
+            }
         }
 
         private void OnDestroy(GameObject obj)

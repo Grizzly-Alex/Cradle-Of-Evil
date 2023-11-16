@@ -6,7 +6,7 @@ namespace Pool
     public class PoolManger : MonoBehaviour
     {
         private Dictionary<int, GameObjectPool> _poolDictionary = new Dictionary<int, GameObjectPool>();
-        
+        private Dictionary<int, int> _keyValuePairs = new Dictionary<int, int>();
 
         static PoolManger _instance;
         public static PoolManger Instance => _instance ??= FindObjectOfType<PoolManger>();
@@ -26,20 +26,26 @@ namespace Pool
         {
             int poolKey = prefab.GetInstanceID();
 
-            if (_poolDictionary.ContainsKey(poolKey))
-            {               
-                GameObject obj = _poolDictionary[poolKey].Get();
-                obj.transform.SetPositionAndRotation(position, rotation);                                 
+            if (_poolDictionary.TryGetValue(poolKey, out GameObjectPool pool))
+            {
+                GameObject obj = pool.Get();
+                obj.transform.SetPositionAndRotation(position, rotation);
+                int keyValuePair = obj.GetInstanceID();
+
+                if (!_keyValuePairs.ContainsKey(keyValuePair))
+                {
+                    _keyValuePairs.Add(keyValuePair, poolKey);
+                }
             }
         }
 
         public void ReturnToPool(GameObject prefab)
         {
-            if (int.TryParse(prefab.name, out int poolKey))
+            if (_keyValuePairs.TryGetValue(prefab.GetInstanceID(), out int poolKey))
             {
                 if (_poolDictionary.ContainsKey(poolKey))
                 {
-                    _poolDictionary[int.Parse(prefab.name)].Release(prefab);
+                    _poolDictionary[poolKey].Release(prefab);
                 }
             }
         }

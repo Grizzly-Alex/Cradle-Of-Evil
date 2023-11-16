@@ -9934,3 +9934,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   afterImagePrefab: {fileID: 4904042723666194125, guid: 33d79e7dd72e6a2469c1eae00490d786, type: 3}
+  afterImagePreload: 7
