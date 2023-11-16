@@ -1,22 +1,28 @@
 ﻿using Pool;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace CoreSystem.Components
 {
     public sealed class VisualFx : CoreComponent
     {
+        private SpriteRenderer spriteRenderer;
+
         [Header("AFTER IMAGE")]
         [SerializeField] 
         private GameObject afterImagePrefab;
         [SerializeField]
         private int afterImagePreload;
-        private float afterImageCooldownTimer;
+
+        private float lastImageXpos;
 
 
 
         protected override void Awake()
         {
             base.Awake();
+            //spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            //afterImagePrefab.GetComponent<AfterImageSprite>().Instance(spriteRenderer);
         }
 
         protected override void Start()
@@ -24,17 +30,12 @@ namespace CoreSystem.Components
             PoolManger.Instance.CreatePool(afterImagePrefab, afterImagePreload);
         }
 
-        public override void LogicUpdate() 
-        { 
-            afterImageCooldownTimer -= Time.deltaTime;
-        }
-
-        public void CreateAfterImage(float cooldown)
+        public void CreateAfterImage(float distanceBetweenImages)
         {
-            if (afterImageCooldownTimer < 0)
+            if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                afterImageCooldownTimer = cooldown;
                 PoolManger.Instance.GetFromPool(afterImagePrefab, transform.position, transform.rotation);
+                lastImageXpos = transform.position.x;
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using UnityEngine;
 
 namespace Pool.ItemsPool
@@ -15,17 +16,19 @@ namespace Pool.ItemsPool
         private string tagMask;
 
 
-        private Transform entity;
         private SpriteRenderer spriteRenderer;
         private SpriteRenderer entitySpriteRenderer;
         private Color color;
 
 
-        private void OnEnable()
+        private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
-            entity = GameObject.FindGameObjectWithTag(tagMask).transform;
-            entitySpriteRenderer = entity.GetComponent<SpriteRenderer>();
+            entitySpriteRenderer = GameObject.FindGameObjectWithTag(tagMask).GetComponent<SpriteRenderer>();
+        }
+
+        private void OnEnable()
+        {
             alphaUpdate = alphaBegin;
             color = spriteRenderer.color;
             spriteRenderer.sprite = entitySpriteRenderer.sprite;
@@ -45,6 +48,11 @@ namespace Pool.ItemsPool
         {
             gameObject.SetActive(false);
             return base.Create(container);
+        }
+
+        public void Instance(SpriteRenderer spriteRenderer)
+        {
+            entitySpriteRenderer = spriteRenderer;
         }
     }
 }

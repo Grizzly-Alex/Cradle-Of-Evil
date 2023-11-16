@@ -65,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateAfterImage(0.05f);  
+                player.Core.VisualFx.CreateAfterImage(0.5f);  
                 player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
             }
         }
