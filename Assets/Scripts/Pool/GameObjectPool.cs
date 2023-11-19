@@ -6,45 +6,45 @@ namespace Pool
 {
     public class GameObjectPool : IPool<GameObject>
     {
-        private readonly bool _hasPoolObjectComponent;
-        private readonly PoolObject _poolObjectScript;
-        private readonly GameObject _gameObject;
-        private readonly Transform _container;
-        private readonly ObjectPool<GameObject> _pool;
+        private readonly bool hasPoolObjectComponent;
+        private readonly PoolObject poolObjectScript;
+        private readonly GameObject gameObject;
+        private readonly Transform container;
+        private readonly ObjectPool<GameObject> pool;
 
         public GameObjectPool(GameObject gameObject, Transform container, int defaultPoolCapacity)
         {
-            _gameObject = gameObject;
-            _container = container;
-            _poolObjectScript = gameObject.GetComponent<PoolObject>();
-            _hasPoolObjectComponent = gameObject.TryGetComponent(out _poolObjectScript);
-            _pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy, defaultPoolCapacity);
+            this.gameObject = gameObject;
+            this.container = container;
+            this.poolObjectScript = gameObject.GetComponent<PoolObject>();
+            this.hasPoolObjectComponent = gameObject.TryGetComponent(out poolObjectScript);
+            this.pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy, defaultPoolCapacity);
         }
 
         #region Public methods
-        public GameObject Get() => _pool.Get();
-        public void Release(GameObject gameObject) => _pool.Release(gameObject);
-        public void Clear() => _pool.Clear();
+        public GameObject Get() => pool.Get();
+        public void Release(GameObject gameObject) => pool.Release(gameObject);
+        public void Clear() => pool.Clear();
         #endregion
 
         #region On methods
         private GameObject OnCreate()
         {
-            if (_hasPoolObjectComponent)
+            if (hasPoolObjectComponent)
             {
-                return _poolObjectScript.Create(_container);
+                return poolObjectScript.Create(container);
             }
             else
             {
-                return GameObject.Instantiate(_gameObject, _container);
+                return GameObject.Instantiate(gameObject, container);
             }
         }
 
         private void OnDestroy(GameObject obj)
         {
-            if (_hasPoolObjectComponent)
+            if (hasPoolObjectComponent)
             {
-                _poolObjectScript.Destroy(obj);
+                poolObjectScript.Destroy(obj);
             }
             else
             {
@@ -54,9 +54,9 @@ namespace Pool
 
         private void OnGet(GameObject obj)
         {
-            if (_hasPoolObjectComponent)
+            if (hasPoolObjectComponent)
             {               
-                _poolObjectScript.Get(obj);
+                poolObjectScript.Get(obj);
             }
             else
             {
@@ -66,9 +66,9 @@ namespace Pool
 
         private void OnRelease(GameObject obj)
         {
-            if (_hasPoolObjectComponent)
+            if (hasPoolObjectComponent)
             {
-                _poolObjectScript.Release(obj);
+                poolObjectScript.Release(obj);
             }
             else
             {

@@ -97,6 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ea8c853f53aec42b68c60fadf6aa66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alphaBegin: 0.342
-  colorLooseRate: 1
-  tagMask: Player
+  alphaBegin: 0.414
+  colorLooseRate: 1.5
+  entityName: 

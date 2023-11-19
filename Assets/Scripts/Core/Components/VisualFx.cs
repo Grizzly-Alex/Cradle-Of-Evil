@@ -13,17 +13,21 @@ namespace CoreSystem.Components
         private GameObject afterImagePrefab;
         [SerializeField]
         private int afterImagePreload;
-
+        [SerializeField]
+        private float colorLooseRate;
+        [Range(0, 1)]
+        [SerializeField]
+        private float alphaBegin;
         private float lastImageXpos;
-
 
 
         protected override void Awake()
         {
             base.Awake();
-            //spriteRenderer = GetComponentInParent<SpriteRenderer>();
-            //afterImagePrefab.GetComponent<AfterImageSprite>().Instance(spriteRenderer);
+            spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            afterImagePrefab.GetComponent<AfterImageSprite>().SetValues(spriteRenderer, alphaBegin, colorLooseRate); ;
         }
+
 
         protected override void Start()
         {

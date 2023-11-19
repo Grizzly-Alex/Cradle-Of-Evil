@@ -1,5 +1,4 @@
-﻿using Entities;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Pool.ItemsPool
@@ -8,23 +7,23 @@ namespace Pool.ItemsPool
     {
         [Range(0, 1)]
         [SerializeField]
-        private float alphaBegin = 1;
+        private float alphaBegin;
         private float alphaUpdate;
-        [SerializeField]
-        private float colorLooseRate = 1;
-        [SerializeField]
-        private string tagMask;
 
+        [SerializeField]
+        private float colorLooseRate;
+
+        [SerializeField]
+        private SpriteRenderer entitySpriteRenderer;
 
         private SpriteRenderer spriteRenderer;
-        private SpriteRenderer entitySpriteRenderer;
+
         private Color color;
 
 
         private void Awake()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            entitySpriteRenderer = GameObject.FindGameObjectWithTag(tagMask).GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();          
         }
 
         private void OnEnable()
@@ -50,9 +49,11 @@ namespace Pool.ItemsPool
             return base.Create(container);
         }
 
-        public void Instance(SpriteRenderer spriteRenderer)
+        public void SetValues(SpriteRenderer spriteRendarer, float alphaBegin, float colorLooseRate)
         {
-            entitySpriteRenderer = spriteRenderer;
+            this.entitySpriteRenderer = spriteRendarer;
+            this.alphaBegin = alphaBegin;
+            this.colorLooseRate = colorLooseRate;
         }
     }
 }

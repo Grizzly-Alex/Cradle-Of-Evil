@@ -5,8 +5,8 @@ namespace Pool
 {
     public class PoolManger : MonoBehaviour
     {
-        private Dictionary<int, GameObjectPool> _poolDictionary = new Dictionary<int, GameObjectPool>();
-        private Dictionary<int, int> _keyValuePairs = new Dictionary<int, int>();
+        private Dictionary<int, GameObjectPool> poolDictionary = new Dictionary<int, GameObjectPool>();
+        private Dictionary<int, int> keyValuePairs = new Dictionary<int, int>();
 
         static PoolManger _instance;
         public static PoolManger Instance => _instance ??= FindObjectOfType<PoolManger>();
@@ -16,9 +16,9 @@ namespace Pool
             int poolKey = prefab.GetInstanceID();
             Transform container = GetContainer(prefab.name);
 
-            if (!_poolDictionary.ContainsKey(poolKey))
-            {               
-                _poolDictionary.Add(poolKey, new GameObjectPool(prefab, container, poolSize));
+            if (!poolDictionary.ContainsKey(poolKey))
+            {
+                poolDictionary.Add(poolKey, new GameObjectPool(prefab, container, poolSize));
             }
         }
 
@@ -26,26 +26,26 @@ namespace Pool
         {
             int poolKey = prefab.GetInstanceID();
 
-            if (_poolDictionary.TryGetValue(poolKey, out GameObjectPool pool))
+            if (poolDictionary.TryGetValue(poolKey, out GameObjectPool pool))
             {
                 GameObject obj = pool.Get();
                 obj.transform.SetPositionAndRotation(position, rotation);
                 int keyValuePair = obj.GetInstanceID();
 
-                if (!_keyValuePairs.ContainsKey(keyValuePair))
+                if (!keyValuePairs.ContainsKey(keyValuePair))
                 {
-                    _keyValuePairs.Add(keyValuePair, poolKey);
+                    keyValuePairs.Add(keyValuePair, poolKey);
                 }
             }
         }
 
         public void ReturnToPool(GameObject prefab)
         {
-            if (_keyValuePairs.TryGetValue(prefab.GetInstanceID(), out int poolKey))
+            if (keyValuePairs.TryGetValue(prefab.GetInstanceID(), out int poolKey))
             {
-                if (_poolDictionary.ContainsKey(poolKey))
+                if (poolDictionary.ContainsKey(poolKey))
                 {
-                    _poolDictionary[poolKey].Release(prefab);
+                    poolDictionary[poolKey].Release(prefab);
                 }
             }
         }
