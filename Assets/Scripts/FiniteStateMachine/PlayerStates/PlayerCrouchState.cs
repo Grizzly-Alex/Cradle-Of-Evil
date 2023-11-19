@@ -46,17 +46,17 @@ namespace FiniteStateMachine.PlayerStates
         #region Input
         private void OnStand()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.SitStandState);            
+            if (!isTouchedRoof) stateMachine.ChangeState(player.States.SitStand);            
         }
 
 		protected override void OnJump()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.JumpState);
+            if (!isTouchedRoof) stateMachine.ChangeState(player.States.Jump);
         }
 
 		protected override void OnSlide()
         {
-            stateMachine.ChangeState(player.SlideState);
+            stateMachine.ChangeState(player.States.Slide);
         }
         #endregion
     }

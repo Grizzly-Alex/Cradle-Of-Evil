@@ -48,17 +48,17 @@ namespace FiniteStateMachine.PlayerStates
         #region Input
         private void OnSit()
         {
-            stateMachine.ChangeState(player.SitStandState);
+            stateMachine.ChangeState(player.States.SitStand);
         }
 
 		protected override void OnJump()
 		{
-            stateMachine.ChangeState(player.JumpState);
+            stateMachine.ChangeState(player.States.Jump);
         }
 
 		protected override void OnSlide()
 		{
-			stateMachine.ChangeState(player.SlideState);
+			stateMachine.ChangeState(player.States.Slide);
 		}
 		#endregion
 	}

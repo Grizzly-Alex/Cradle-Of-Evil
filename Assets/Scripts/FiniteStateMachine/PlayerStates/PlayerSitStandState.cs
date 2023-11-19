@@ -24,15 +24,15 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.SetVelocityZero();
             player.Core.Movement.FreezePosOnSlope();
 
-            switch (player.PreviousState)
+            switch (player.States.PreviousState)
             {
                 case PlayerCrouchState or PlayerLedgeClimbState:
                     player.Animator.Play(hashStandUp);
-                    changeState = () => stateMachine.ChangeState(player.StandState);
+                    changeState = () => stateMachine.ChangeState(player.States.Stand);
                     break;
                 case PlayerStandState:
                     player.Animator.Play(hashSitDown);
-                    changeState = () => stateMachine.ChangeState(player.CrouchState);
+                    changeState = () => stateMachine.ChangeState(player.States.Crouch);
                     break;
             }
         }
@@ -49,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
             if (!isGrounded)
             {
                 player.Core.Movement.ResetFreezePos();
-                stateMachine.ChangeState(player.InAirState);
+                stateMachine.ChangeState(player.States.InAir);
             }
         }
 

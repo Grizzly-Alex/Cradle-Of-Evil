@@ -29,16 +29,16 @@ namespace FiniteStateMachine.PlayerStates
                 {
                     if (isCellingDetected)
                     {
-                        stateMachine.ChangeState(player.CrouchState);
+                        stateMachine.ChangeState(player.States.Crouch);
                     }
                     else
                     {
-                        stateMachine.ChangeState(player.PreviousState);
+                        stateMachine.ChangeState(player.States.PreviousState);
                     }
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.InAirState);
+                    stateMachine.ChangeState(player.States.InAir);
                 }
             }
         }

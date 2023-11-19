@@ -45,16 +45,16 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-				player.LandingState.LandingForce = fallingForce;
-                stateMachine.ChangeState(player.LandingState);
+				player.States.Landing.LandingForce = fallingForce;
+                stateMachine.ChangeState(player.States.Landing);
             }
             else if (isLedgeDetected && Cooldown(player.Data.GrabLedgeCooldown) && сuгrentVelocityY <= 0.0f) 
             {
-				stateMachine.ChangeState(player.LedgeClimbState);
+				stateMachine.ChangeState(player.States.LedgeClimb);
             }
             else if (isGrabWallDetected && сuгrentVelocityY <= 0.0f)
             {
-				stateMachine.ChangeState(player.OnWallState);
+				stateMachine.ChangeState(player.States.OnWall);
             }
         }
 
@@ -77,11 +77,11 @@ namespace FiniteStateMachine.PlayerStates
 
             isLedgeDetected = player.Core.Sensor.IsLedgeHorizontalDetect();
             if (isLedgeDetected) 
-                player.LedgeClimbState.DetectedPos = player.transform.position;
+                player.States.LedgeClimb.DetectedPos = player.transform.position;
 
             isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
             if (isGrabWallDetected)
-                player.OnWallState.DetectedPos = player.Core.Sensor.WallHit.point;
+                player.States.OnWall.DetectedPos = player.Core.Sensor.WallHit.point;
         }
 
 		public override void AnimationTrigger() => player.Animator.Play(hashInAir);
@@ -94,7 +94,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
 			else
 			{
-				player.Animator.Play(player.JumpState.GetDoubleJumpHashAnim());
+				player.Animator.Play(player.States.Jump.GetDoubleJumpHashAnim());
 				UseDoubleJump = false;
 			}
 		}
@@ -113,14 +113,14 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (player.JumpState.CanJump())
-                stateMachine.ChangeState(player.JumpState);          
+            if (player.States.Jump.CanJump())
+                stateMachine.ChangeState(player.States.Jump);          
         }
 
         private void OnDash()
         {
-			if (player.DashState.CanDash())
-				stateMachine.ChangeState(player.DashState);
+			if (player.States.Dash.CanDash())
+				stateMachine.ChangeState(player.States.Dash);
         }
     }
 }

@@ -23,12 +23,12 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-			if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
+			if (player.States.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
 				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJumpFromGround;
 			}
-			else if (player.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
+			else if (player.States.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
 			{
 				finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
@@ -36,9 +36,9 @@ namespace FiniteStateMachine.PlayerStates
 				player.Core.Movement.SetVelocity(player.Data.JumpForce, new Vector2(1, 2), player.Core.Movement.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
-			else if (player.PreviousState is PlayerInAirState)
+			else if (player.States.PreviousState is PlayerInAirState)
 			{
-				player.InAirState.UseDoubleJump = true;
+				player.States.InAir.UseDoubleJump = true;
 				player.Animator.Play(hashDoubleJump);
 				player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJumpFromAir;

@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.CrouchColiderHeight);
 
-            switch (player.PreviousState)
+            switch (player.States.PreviousState)
             {
                 case PlayerCrouchState: 
                     player.Animator.Play(hashDashing);

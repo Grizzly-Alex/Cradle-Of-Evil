@@ -26,8 +26,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.DashState.ResetAmountOfDash();
-			player.JumpState.ResetAmountOfJump();
+			player.States.Dash.ResetAmountOfDash();
+			player.States.Jump.ResetAmountOfJump();
 
 			player.Core.Movement.SetVelocityZero();
 
@@ -51,11 +51,11 @@ namespace FiniteStateMachine.PlayerStates
             {
                 if (isTouchingCeiling)
                 {
-                    stateMachine.ChangeState(player.CrouchState);
+                    stateMachine.ChangeState(player.States.Crouch);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.SitStandState);
+                    stateMachine.ChangeState(player.States.SitStand);
                 }
             }
             else
@@ -70,7 +70,7 @@ namespace FiniteStateMachine.PlayerStates
                 }
                 else if (player.Input.NormInputY == -1 && isHanging && !isClimbing)
                 {
-                    stateMachine.ChangeState(player.InAirState);
+                    stateMachine.ChangeState(player.States.InAir);
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace FiniteStateMachine.PlayerStates
         private void OnJump()
         {
             if (!isClimbing && isHanging) 
-                stateMachine.ChangeState(player.JumpState);
+                stateMachine.ChangeState(player.States.Jump);
         }
 
         public override void AnimationTrigger() => isHanging = true;
