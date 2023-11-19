@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.CrouchColiderHeight);
 
-            switch (player.PreviousState)
+            switch (player.States.PreviousState)
             {
                 case PlayerCrouchState: 
                     player.Animator.Play(hashDashing);
@@ -65,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateAfterImage(0.05f);  
+                player.Core.VisualFx.CreateAfterImage(0.6f);  
                 player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
             }
         }

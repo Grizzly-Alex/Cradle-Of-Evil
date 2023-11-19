@@ -1,4 +1,5 @@
-﻿using Pool.ContainersPool;
+﻿using Pool;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -8,38 +9,36 @@ namespace CoreSystem.Components
         private SpriteRenderer spriteRenderer;
 
         [Header("AFTER IMAGE")]
-        [SerializeField] private AfterImageContainer afterImageContainer;
-        private float afterImageCooldownTimer;
-        //[Range(0, 1)]
-        //[SerializeField]
-        //private float alphaBegin = 1;
-        //[SerializeField]
-        //private float colorLooseRate = 1;
+        [SerializeField] 
+        private GameObject afterImagePrefab;
+        [SerializeField]
+        private int afterImagePreload;
+        [Range(0, 1)]
+        [SerializeField]
+        private float alphaBegin;
+        [SerializeField]
+        private float colorLooseRate;
+        private float lastImageXpos;
 
 
         protected override void Awake()
         {
             base.Awake();
-
+            spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            afterImagePrefab.GetComponent<AfterImageSprite>().SetValues(spriteRenderer, alphaBegin, colorLooseRate); ;
         }
 
         protected override void Start()
         {
-            spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            PoolManger.Instance.CreatePool(afterImagePrefab, afterImagePreload);
         }
 
-        public override void LogicUpdate() 
-        { 
-            afterImageCooldownTimer -= Time.deltaTime;
-        }
-
-        public void CreateAfterImage(float cooldown)
+        public void CreateAfterImage(float distanceBetweenImages)
         {
-            if (afterImageCooldownTimer < 0)
+            if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                afterImageCooldownTimer = cooldown;
-                var obj = afterImageContainer.Pool.Get();
-                obj.Release = afterImageContainer.Pool.Release;
+                PoolManger.Instance.GetFromPool(afterImagePrefab, transform.position, transform.rotation);
+                lastImageXpos = transform.position.x;
             }
         }
     }

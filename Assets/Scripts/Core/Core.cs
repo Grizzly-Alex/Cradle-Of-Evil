@@ -1,6 +1,5 @@
 using CoreSystem.Components;
 using Interfaces;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CoreSystem

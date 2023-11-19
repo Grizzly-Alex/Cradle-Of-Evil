@@ -2,69 +2,68 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace Pool
 { 
     public class ObjectPool<T> : IPool<T> where T : class
     {
-        protected readonly Queue<T> _storage;
+        protected readonly Queue<T> storage;
 
-        private readonly Func<T> _createFunc;
-        private readonly Action<T> _getAction;
-        private readonly Action<T> _releaseAction;
-        private readonly Action<T> _destroyAction;
+        private readonly Func<T> createFunc;
+        private readonly Action<T> getAction;
+        private readonly Action<T> releaseAction;
+        private readonly Action<T> destroyAction;
 
         public ObjectPool(
             Func<T> createFunc,
             Action<T> getAction = null,
             Action<T> releaseAction = null,
             Action<T> destroyAction = null,
-            int defaultCapacity = 10, bool preload = false)
+            int defaultCapacity = 10)
         {
-            _getAction = getAction;
-            _releaseAction = releaseAction;
-            _destroyAction = destroyAction;
-            _createFunc = createFunc ?? throw new ArgumentNullException(nameof(createFunc));
+            this.getAction = getAction;
+            this.releaseAction = releaseAction;
+            this.destroyAction = destroyAction;
+            this.createFunc = createFunc ?? throw new ArgumentNullException(nameof(createFunc));
 
-            _storage = new Queue<T>(defaultCapacity);
+            this.storage = new Queue<T>(defaultCapacity);
 
-            if (preload) Preload(defaultCapacity);
+            Preload(defaultCapacity);
         }
 
         public T Get()
         {
-            T item = _storage.Count > 0 
-                ? _storage.Dequeue() 
-                : _createFunc.Invoke();
+            T item = storage.Count > 0 
+                ? storage.Dequeue() 
+                : createFunc.Invoke();         
 
-            _getAction?.Invoke(item);
+            getAction?.Invoke(item);
 
             return item;
         }
 
         public void Release(T item)
         {
-            _releaseAction?.Invoke(item);
-            _storage.Enqueue(item);           
+            releaseAction?.Invoke(item);
+            storage.Enqueue(item);           
         }
 
         public void Clear()
         {
-            if(_destroyAction is not null)
+            if(destroyAction is not null)
             {
-                foreach (var item in _storage)
+                foreach (var item in storage)
                 {
-                    _destroyAction.Invoke(item);
+                    destroyAction.Invoke(item);
                 }
             }
-            _storage.Clear();
+            storage.Clear();
         }
 
         private void Preload(int capacity)
         {
             for (int i = 0; i < capacity; i++)
             {
-                Release(_createFunc.Invoke());
+                storage.Enqueue(createFunc.Invoke());
             }
         }
     }

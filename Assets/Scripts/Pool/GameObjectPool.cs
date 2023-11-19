@@ -1,43 +1,80 @@
 using Interfaces;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace Pool
 {
-    public class GameObjectPool<T> : IPool<T>
-    where T : MonoBehaviour
+    public class GameObjectPool : IPool<GameObject>
     {
-        private readonly T gameObj;
-        private readonly ObjectPool<T> pool;
+        private readonly bool hasPoolObjectComponent;
+        private readonly PoolObject poolObjectScript;
+        private readonly GameObject gameObject;
         private readonly Transform container;
+        private readonly ObjectPool<GameObject> pool;
 
-        public GameObjectPool(T gameObj, Transform container, int defaultCapacity, bool preload)
+        public GameObjectPool(GameObject gameObject, Transform container, int defaultPoolCapacity)
         {
-            this.gameObj = gameObj;
+            this.gameObject = gameObject;
             this.container = container;
-            pool = new ObjectPool<T>(OnCreate, OnGet, OnRelease, OnDestroy, defaultCapacity, preload);
+            this.poolObjectScript = gameObject.GetComponent<PoolObject>();
+            this.hasPoolObjectComponent = gameObject.TryGetComponent(out poolObjectScript);
+            this.pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy, defaultPoolCapacity);
         }
 
         #region Public methods
-        public T Get() => pool.Get();
-        public void Release(T monoObj) => pool.Release(monoObj);
+        public GameObject Get() => pool.Get();
+        public void Release(GameObject gameObject) => pool.Release(gameObject);
         public void Clear() => pool.Clear();
         #endregion
 
         #region On methods
-        private void OnDestroy(T obj) => GameObject.Destroy(obj);
-        private void OnRelease(T obj) => obj.gameObject.SetActive(false);
-        private void OnGet(T obj) => obj.gameObject.SetActive(true);
-        private T OnCreate() => ObjectCreate();
-        #endregion
-
-        #region Private methods
-        private T ObjectCreate()
+        private GameObject OnCreate()
         {
-            var obj = GameObject.Instantiate(gameObj, container);
-            obj.gameObject.SetActive(true);
-            return obj;
+            if (hasPoolObjectComponent)
+            {
+                return poolObjectScript.Create(container);
+            }
+            else
+            {
+                return GameObject.Instantiate(gameObject, container);
+            }
+        }
+
+        private void OnDestroy(GameObject obj)
+        {
+            if (hasPoolObjectComponent)
+            {
+                poolObjectScript.Destroy(obj);
+            }
+            else
+            {
+                GameObject.Destroy(obj);
+            }
+        }
+
+        private void OnGet(GameObject obj)
+        {
+            if (hasPoolObjectComponent)
+            {               
+                poolObjectScript.Get(obj);
+            }
+            else
+            {
+                obj.SetActive(true);
+            }
+        }
+
+        private void OnRelease(GameObject obj)
+        {
+            if (hasPoolObjectComponent)
+            {
+                poolObjectScript.Release(obj);
+            }
+            else
+            {
+                obj.SetActive(false);
+            }
         }
         #endregion
     }
 }
-

@@ -1,12 +1,13 @@
-﻿using Entities;
+﻿using CoreSystem;
+using Entities;
 using Interfaces;
 
-namespace FiniteStateMachine
+namespace FiniteStateMachine.PlayerStates
 {
     public abstract class PlayerBaseState : IState
     {
-        protected Player player;
         protected StateMachine stateMachine;
+        protected Player player;
         protected bool isAnimFinished;
 
         public PlayerBaseState(StateMachine stateMachine, Player player)
@@ -28,7 +29,7 @@ namespace FiniteStateMachine
 
         public virtual void Exit()
         {
-            player.PreviousState = this;           
+            player.States.PreviousState = this;           
         }
 
         public abstract void DoCheck();

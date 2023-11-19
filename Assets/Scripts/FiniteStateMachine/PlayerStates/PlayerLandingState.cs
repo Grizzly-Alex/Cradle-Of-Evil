@@ -29,8 +29,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.DashState.ResetAmountOfDash();
-			player.JumpState.ResetAmountOfJump();
+            player.States.Dash.ResetAmountOfDash();
+			player.States.Jump.ResetAmountOfJump();
 			player.Core.Movement.SetVelocityZero();
 
             if (player.Core.Sensor.GetGroundSlopeAngle() != 0.0f)
@@ -44,7 +44,7 @@ namespace FiniteStateMachine.PlayerStates
                 updateLogic = () =>
                 {
                     if (isAnimFinished) 
-                        stateMachine.ChangeState(player.StandState);                    
+                        stateMachine.ChangeState(player.States.Stand);                    
                 };                               
             }
             else
@@ -53,7 +53,7 @@ namespace FiniteStateMachine.PlayerStates
                 updateLogic = () =>
                 {
                     if (isAnimFinished || player.Input.NormInputX != 0) 
-                        stateMachine.ChangeState(player.StandState);
+                        stateMachine.ChangeState(player.States.Stand);
                 };
             }
         }
@@ -64,13 +64,12 @@ namespace FiniteStateMachine.PlayerStates
 
             if (!isGrounded)
             {
-                stateMachine.ChangeState(player.InAirState);
+                stateMachine.ChangeState(player.States.InAir);
             }
             else
             {
                 updateLogic.Invoke();
             }
-
         }
 
         public override void Exit()
@@ -78,17 +77,17 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.JumpEvent -= OnJump;
-        }
+        }     
 
         public override void DoCheck()
         {
             isGrounded = player.Core.Sensor.IsGroundDetect();
         }
-
+       
         private void OnJump()
         {
             if (LandingForce < player.Data.LandingThreshold)
-                stateMachine.ChangeState(player.JumpState);
+                stateMachine.ChangeState(player.States.Jump);
         }
     }
 }

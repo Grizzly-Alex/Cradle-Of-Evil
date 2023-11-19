@@ -3,45 +3,57 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public sealed class AfterImageSprite : ItemPool<Action<AfterImageSprite>>
+    public class AfterImageSprite : PoolObject
     {
         [Range(0, 1)]
         [SerializeField]
-        private float alphaBegin = 1;
+        private float alphaBegin;
         private float alphaUpdate;
-        [SerializeField]
-        private float colorLooseRate = 1;
-        [SerializeField]
-        private string tagMask;
 
+        [SerializeField]
+        private float colorLooseRate;
 
-        private Transform entity;
-        private SpriteRenderer spriteRenderer;
+        [SerializeField]
         private SpriteRenderer entitySpriteRenderer;
+
+        private SpriteRenderer spriteRenderer;
+
         private Color color;
 
 
+        private void Awake()
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();          
+        }
+
         private void OnEnable()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            entity = GameObject.FindGameObjectWithTag(tagMask).transform;
-            entitySpriteRenderer = entity.GetComponent<SpriteRenderer>();
             alphaUpdate = alphaBegin;
             color = spriteRenderer.color;
             spriteRenderer.sprite = entitySpriteRenderer.sprite;
-            transform.SetPositionAndRotation(entity.position, entity.rotation);
         }
-
 
         private void Update()
         {
             alphaUpdate -= colorLooseRate * Time.deltaTime;
             spriteRenderer.color = new Color(color.r, color.g, color.b, alphaUpdate);
-
-            if(spriteRenderer.color.a <= 0)
-            {               
-                Release.Invoke(this);
+            if (spriteRenderer.color.a <= 0)
+            {
+                PoolManger.Instance.ReturnToPool(gameObject);
             }
+        }
+
+        public override GameObject Create(Transform container)
+        {
+            gameObject.SetActive(false);
+            return base.Create(container);
+        }
+
+        public void SetValues(SpriteRenderer spriteRendarer, float alphaBegin, float colorLooseRate)
+        {
+            this.entitySpriteRenderer = spriteRendarer;
+            this.alphaBegin = alphaBegin;
+            this.colorLooseRate = colorLooseRate;
         }
     }
 }

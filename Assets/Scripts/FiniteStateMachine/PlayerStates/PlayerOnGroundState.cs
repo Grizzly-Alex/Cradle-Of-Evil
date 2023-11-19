@@ -30,8 +30,8 @@ namespace FiniteStateMachine.PlayerStates
 
 			if (!isGrounded)
             {
-                player.JumpState.DecreaseAmountOfJump();
-				stateMachine.ChangeState(player.InAirState);
+                player.States.Jump.DecreaseAmountOfJump();
+				stateMachine.ChangeState(player.States.InAir);
             }
         }
 

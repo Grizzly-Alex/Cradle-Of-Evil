@@ -22,8 +22,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.DashState.ResetAmountOfDash();
-			player.JumpState.ResetAmountOfJump();
+			player.States.Dash.ResetAmountOfDash();
+			player.States.Jump.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
             holdPosition.Set(DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset)
@@ -42,11 +42,11 @@ namespace FiniteStateMachine.PlayerStates
 
             if (!isGrabWallDetected)
             {
-                stateMachine.ChangeState(player.InAirState);
+                stateMachine.ChangeState(player.States.InAir);
             }
             else if (isGrounded)
             {
-                stateMachine.ChangeState(player.StandState);
+                stateMachine.ChangeState(player.States.Stand);
             }          
         }
 
@@ -65,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
         private void OnJump()
         {
             if (isAnimFinished)
-                stateMachine.ChangeState(player.JumpState);
+                stateMachine.ChangeState(player.States.Jump);
         }
     }
 }
