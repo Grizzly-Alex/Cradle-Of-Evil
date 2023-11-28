@@ -25,19 +25,20 @@ namespace CoreSystem.Components
         {
             base.Awake();
             spriteRenderer = GetComponentInParent<SpriteRenderer>();
-            afterImagePrefab.GetComponent<AfterImageSprite>().SetValues(spriteRenderer, alphaBegin, colorLooseRate); ;
-        }
-
-        protected override void Start()
-        {
-            PoolManger.Instance.CreatePool(afterImagePrefab, afterImagePreload);
         }
 
         public void CreateAfterImage(float distanceBetweenImages)
         {
             if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                PoolManger.Instance.GetFromPool(afterImagePrefab, transform.position, transform.rotation);
+                AfterImageSprite afterImage = PoolManger.Instance.GetFromPool<AfterImageSprite>(afterImagePrefab, transform.position, transform.rotation);
+
+                if (afterImage != null)
+                {
+                    afterImage.SetValues(spriteRenderer, alphaBegin, colorLooseRate);
+                    afterImage.gameObject.SetActive(true);
+                }
+
                 lastImageXpos = transform.position.x;
             }
         }

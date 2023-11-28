@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public class AfterImageSprite : PoolObject
+    public class AfterImageSprite : PooledObject
     {
         [Range(0, 1)]
         [SerializeField]
@@ -23,7 +23,7 @@ namespace Pool.ItemsPool
 
         private void Awake()
         {
-            spriteRenderer = GetComponent<SpriteRenderer>();          
+            spriteRenderer = GetComponent<SpriteRenderer>();   
         }
 
         private void OnEnable()
@@ -41,6 +41,10 @@ namespace Pool.ItemsPool
             {
                 PoolManger.Instance.ReturnToPool(gameObject);
             }
+        }
+
+        public override void Get(GameObject obj)
+        {           
         }
 
         public override GameObject Create(Transform container)

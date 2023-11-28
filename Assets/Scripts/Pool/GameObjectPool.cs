@@ -7,7 +7,7 @@ namespace Pool
     public class GameObjectPool : IPool<GameObject>
     {
         private readonly bool hasPoolObjectComponent;
-        private readonly PoolObject poolObjectScript;
+        private readonly PooledObject poolObjectScript;
         private readonly GameObject gameObject;
         private readonly Transform container;
         private readonly ObjectPool<GameObject> pool;
@@ -16,7 +16,7 @@ namespace Pool
         {
             this.gameObject = gameObject;
             this.container = container;
-            this.poolObjectScript = gameObject.GetComponent<PoolObject>();
+            this.poolObjectScript = gameObject.GetComponent<PooledObject>();
             this.hasPoolObjectComponent = gameObject.TryGetComponent(out poolObjectScript);
             this.pool = new ObjectPool<GameObject>(OnCreate, OnGet, OnRelease, OnDestroy, defaultPoolCapacity);
         }
