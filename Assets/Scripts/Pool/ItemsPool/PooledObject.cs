@@ -2,8 +2,11 @@
 
 namespace Pool.ItemsPool
 {
-    public class PoolObject : MonoBehaviour
+    public class PooledObject : MonoBehaviour
     {
+        [field: SerializeField]
+        public int PoolId {  get; set; }
+
         public virtual void Get(GameObject obj)
         {
             obj.SetActive(true);
