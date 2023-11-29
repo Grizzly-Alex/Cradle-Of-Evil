@@ -44,7 +44,8 @@ namespace Pool.ItemsPool
         }
 
         public override void Get(GameObject obj)
-        {           
+        {
+            obj.SetActive(false);
         }
 
         public override GameObject Create(Transform container)
@@ -53,7 +54,7 @@ namespace Pool.ItemsPool
             return base.Create(container);
         }
 
-        public void SetValues(SpriteRenderer spriteRendarer, float alphaBegin, float colorLooseRate)
+        public void Initialize(SpriteRenderer spriteRendarer, float alphaBegin, float colorLooseRate)
         {
             this.entitySpriteRenderer = spriteRendarer;
             this.alphaBegin = alphaBegin;

@@ -9914,8 +9914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bdb1c1e47b5ee448a91ca4bbb91eb2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  afterImagePrefab: {fileID: 4904042723666194125, guid: 33d79e7dd72e6a2469c1eae00490d786, type: 3}
-  afterImagePreload: 7
+  afterImagePrefab: {fileID: 5761588458477073537, guid: 33d79e7dd72e6a2469c1eae00490d786, type: 3}
   alphaBegin: 0.4
   colorLooseRate: 1.6
 --- !u!4 &4733623414340094785

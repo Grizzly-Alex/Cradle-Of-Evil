@@ -10,9 +10,7 @@ namespace CoreSystem.Components
 
         [Header("AFTER IMAGE")]
         [SerializeField] 
-        private GameObject afterImagePrefab;
-        [SerializeField]
-        private int afterImagePreload;
+        private AfterImageSprite afterImagePrefab;
         [Range(0, 1)]
         [SerializeField]
         private float alphaBegin;
@@ -31,15 +29,15 @@ namespace CoreSystem.Components
         {
             if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                AfterImageSprite afterImage = PoolManger.Instance.GetFromPool<AfterImageSprite>(afterImagePrefab, transform.position, transform.rotation);
+                AfterImageSprite afterImage = PoolManger.Instance.GetFromPool<AfterImageSprite>(afterImagePrefab.gameObject, transform.position, transform.rotation);
 
                 if (afterImage != null)
                 {
-                    afterImage.SetValues(spriteRenderer, alphaBegin, colorLooseRate);
-                    afterImage.gameObject.SetActive(true);
-                }
+                    afterImage.Initialize(spriteRenderer, alphaBegin, colorLooseRate);
+                    afterImage.SetActive(true);
 
-                lastImageXpos = transform.position.x;
+                    lastImageXpos = transform.position.x;
+                }
             }
         }
     }

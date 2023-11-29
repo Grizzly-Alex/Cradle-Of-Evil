@@ -7,6 +7,11 @@ namespace Pool.ItemsPool
         [field: SerializeField]
         public int PoolId {  get; set; }
 
+        public void SetActive(bool isActive)
+        {
+            gameObject.SetActive(isActive);
+        }
+
         public virtual void Get(GameObject obj)
         {
             obj.SetActive(true);
