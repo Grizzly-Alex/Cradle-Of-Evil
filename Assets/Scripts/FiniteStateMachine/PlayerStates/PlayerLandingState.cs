@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -40,6 +41,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (LandingForce >= player.Data.LandingThreshold)
             {
+                player.Core.VisualFx.CreateDust(DustType.HardLandingOnGround);
                 player.Animator.Play(hashHardLanding);
                 updateLogic = () =>
                 {
@@ -49,6 +51,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
+                player.Core.VisualFx.CreateDust(DustType.LandingOnGround);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {

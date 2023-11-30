@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public class AfterImageSprite : PooledObject
+    public sealed class AfterImageSprite : PooledObject
     {
         [Range(0, 1)]
         [SerializeField]

@@ -18,6 +18,10 @@ namespace CoreSystem.Components
         private float colorLooseRate;
         private float lastImageXpos;
 
+        [Header("AFTER IMAGE")]
+        [SerializeField]
+        private Dust dustPrefab;
+
 
         protected override void Awake()
         {
@@ -38,6 +42,17 @@ namespace CoreSystem.Components
 
                     lastImageXpos = transform.position.x;
                 }
+            }
+        }
+
+        public void CreateDust(DustType dustType)
+        {
+            Dust dust = PoolManger.Instance.GetFromPool<Dust>(dustPrefab.gameObject, transform.position, transform.rotation);
+
+            if (dust != null)
+            {
+                dust.Initialize(dustType);
+                dust.SetActive(true);
             }
         }
     }
