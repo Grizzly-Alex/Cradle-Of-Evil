@@ -46,6 +46,12 @@ TagManager:
   - name: Platforms
     uniqueID: 646239603
     locked: 0
+  - name: DownEffect
+    uniqueID: 2984458203
+    locked: 0
   - name: Player
     uniqueID: 1651893771
+    locked: 0
+  - name: TopEffect
+    uniqueID: 1629420375
     locked: 0
