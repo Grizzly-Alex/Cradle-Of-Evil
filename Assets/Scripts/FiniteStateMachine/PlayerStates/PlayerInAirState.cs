@@ -76,8 +76,6 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             isLedgeDetected = player.Core.Sensor.IsLedgeHorizontalDetect();
-            if (isLedgeDetected) 
-                player.States.LedgeClimb.DetectedPos = player.transform.position;
 
             isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
             if (isGrabWallDetected)

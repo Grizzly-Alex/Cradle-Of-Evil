@@ -9,8 +9,6 @@ namespace FiniteStateMachine.PlayerStates
         {
         }
 
-        public Vector2 DetectedPos { private get; set; }
-
         private Vector2 startPos;
         private Vector2 stopPos;
         private Vector2 cornerPos;
@@ -31,16 +29,17 @@ namespace FiniteStateMachine.PlayerStates
 
 			player.Core.Movement.SetVelocityZero();
 
-            player.transform.position = DetectedPos;
             cornerPos = GetCornerOfLedge();
+
             startPos.Set(
                 cornerPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                cornerPos.y + Mathf.Abs(player.BodyCollider.offset.y) - player.BodyCollider.size.y / 2);
+                cornerPos.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
             stopPos.Set(
                 cornerPos.x + player.BodyCollider.size.x * player.Core.Movement.FacingDirection,
-                cornerPos.y + Mathf.Abs(player.BodyCollider.offset.y) + player.BodyCollider.size.y / 2 + Physics2D.defaultContactOffset);
+                cornerPos.y + Physics2D.defaultContactOffset);
 
             player.transform.position = startPos;
+
             player.Animator.Play(hashLedgeGrab);
         }
         public override void Update()

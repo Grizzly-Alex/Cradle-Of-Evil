@@ -45,9 +45,9 @@ namespace CoreSystem.Components
             }
         }
 
-        public void CreateDust(DustType dustType)
+        public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation)
         {
-            Dust dust = PoolManger.Instance.GetFromPool<Dust>(dustPrefab.gameObject, transform.position, transform.rotation);
+            Dust dust = PoolManger.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
 
             if (dust != null)
             {

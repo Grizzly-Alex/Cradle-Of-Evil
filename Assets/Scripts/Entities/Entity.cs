@@ -36,11 +36,11 @@ namespace Entities
 
         public void SetColliderHeight(float height)
         {
-            Vector2 center = BodyCollider.offset;
-            Vector2 newSize = new(BodyCollider.size.x, height); 
-            center.y += (height - BodyCollider.size.y) / 2;
+            Vector2 offset = BodyCollider.offset;
+            Vector2 newSize = new(BodyCollider.size.x, height);
+            offset.y += (height - BodyCollider.size.y) / 2;
             BodyCollider.size = newSize;
-            BodyCollider.offset = center;
+            BodyCollider.offset = offset;
         }
 
         public void AnimationFinishTrigger() 

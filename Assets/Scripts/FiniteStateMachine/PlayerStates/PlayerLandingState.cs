@@ -39,9 +39,12 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Movement.FreezePosX();
             }
 
+            Vector2 groundSurfacePoint = player.Core.Sensor.GroundHit.point;
+            Quaternion rotation = player.transform.rotation;
+
             if (LandingForce >= player.Data.LandingThreshold)
             {
-                player.Core.VisualFx.CreateDust(DustType.HardLandingOnGround);
+                player.Core.VisualFx.CreateDust(DustType.HardLandingOnGround, groundSurfacePoint, rotation);
                 player.Animator.Play(hashHardLanding);
                 updateLogic = () =>
                 {
@@ -51,7 +54,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateDust(DustType.LandingOnGround);
+                player.Core.VisualFx.CreateDust(DustType.LandingOnGround, groundSurfacePoint, rotation);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {
