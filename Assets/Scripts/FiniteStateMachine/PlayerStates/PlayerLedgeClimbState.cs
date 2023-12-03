@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -8,7 +9,7 @@ namespace FiniteStateMachine.PlayerStates
         public PlayerLedgeClimbState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
-
+        public Vector2 DetectedPos { get; set; }
         private Vector2 startPos;
         private Vector2 stopPos;
         private Vector2 cornerPos;
@@ -24,12 +25,14 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.States.Dash.ResetAmountOfDash();
+            player.States.Dash.ResetAmountOfDash();
 			player.States.Jump.ResetAmountOfJump();
 
-			player.Core.Movement.SetVelocityZero();
+            player.transform.position = DetectedPos;
 
             cornerPos = GetCornerOfLedge();
+
+            player.Core.VisualFx.CreateDust(DustType.Tiny, cornerPos, player.transform.rotation);
 
             startPos.Set(
                 cornerPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
@@ -39,6 +42,7 @@ namespace FiniteStateMachine.PlayerStates
                 cornerPos.y + Physics2D.defaultContactOffset);
 
             player.transform.position = startPos;
+            player.Core.Movement.FreezePosY();
 
             player.Animator.Play(hashLedgeGrab);
         }
@@ -59,17 +63,10 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.Movement.SetVelocityZero();
-                player.transform.position = startPos;
-
                 if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging && !isClimbing)
                 {
                     isClimbing = true;
                     player.Animator.SetBool(isClimbingHash, true);
-                }
-                else if (player.Input.NormInputY == -1 && isHanging && !isClimbing)
-                {
-                    stateMachine.ChangeState(player.States.InAir);
                 }
             }
         }
@@ -77,8 +74,9 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
-
             player.Input.JumpEvent -= OnJump;
+          
+            player.Core.Movement.ResetFreezePos();
 
             isHanging = false;
             player.Animator.SetBool(isClimbingHash, false);
@@ -87,6 +85,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isClimbing)
             {
+                player.Core.VisualFx.CreateDust(DustType.LandingOnGround, stopPos, player.transform.rotation);
                 player.transform.position = stopPos;
                 isClimbing = false;
             }

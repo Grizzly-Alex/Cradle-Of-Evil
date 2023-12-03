@@ -8,7 +8,6 @@ namespace FiniteStateMachine.PlayerStates
         public Vector2 DetectedPos { private get; set; }
 
         private readonly int landingOnWall = Animator.StringToHash("LandingOnWall");
-        private bool isGrabWallDetected;
         private bool isGrounded;
         private Vector2 holdPosition;
 
@@ -26,10 +25,13 @@ namespace FiniteStateMachine.PlayerStates
 			player.States.Jump.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
-            holdPosition.Set(DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset)
-                * player.Core.Movement.FacingDirection, DetectedPos.y);
+
+             holdPosition.Set(
+                DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
+                DetectedPos.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - player.Core.Sensor.WallSensor.position.y);
 
             player.transform.position = holdPosition;
+            player.Core.Movement.FreezePosY();
 
             player.Animator.Play(landingOnWall);
         }
@@ -38,13 +40,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Update();
 
-            player.transform.position = holdPosition;
-
-            if (!isGrabWallDetected)
-            {
-                stateMachine.ChangeState(player.States.InAir);
-            }
-            else if (isGrounded)
+            if (isGrounded)
             {
                 stateMachine.ChangeState(player.States.Stand);
             }          
@@ -53,12 +49,12 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+            player.Core.Movement.ResetFreezePos();
             player.Input.JumpEvent -= OnJump;
         }
 
         public override void DoCheck()
         {
-            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
             isGrounded = player.Core.Sensor.IsGroundDetect();
         }
 

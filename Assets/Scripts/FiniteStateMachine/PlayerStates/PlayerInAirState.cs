@@ -13,7 +13,6 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrabWallDetected;
         private float сuгrentVelocityY;
         private float fallingForce;
-        private float startTime;
         public bool UseDoubleJump {  get; set; }
 
         public PlayerInAirState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -26,8 +25,6 @@ namespace FiniteStateMachine.PlayerStates
 
 			player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
-
-            startTime = Time.time;
                        
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.StandColiderHeight);
@@ -45,10 +42,10 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-				player.States.Landing.LandingForce = fallingForce;
+                player.States.Landing.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.States.Landing);
             }
-            else if (isLedgeDetected && Cooldown(player.Data.GrabLedgeCooldown) && сuгrentVelocityY <= 0.0f) 
+            else if (isLedgeDetected && сuгrentVelocityY <= 0.0f) 
             {
 				stateMachine.ChangeState(player.States.LedgeClimb);
             }
@@ -76,6 +73,8 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             isLedgeDetected = player.Core.Sensor.IsLedgeHorizontalDetect();
+            if (isLedgeDetected)
+                player.States.LedgeClimb.DetectedPos = player.transform.position;
 
             isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
             if (isGrabWallDetected)
@@ -104,8 +103,6 @@ namespace FiniteStateMachine.PlayerStates
                 fallingForce = сuгrentVelocityY;
             }
         }
-
-        private bool Cooldown(float finishTime) => Time.time >= finishTime + startTime;
 
         private void ResetFallingForce() => fallingForce = default;
 
