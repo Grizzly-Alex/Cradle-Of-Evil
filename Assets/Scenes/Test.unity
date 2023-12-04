@@ -9594,7 +9594,7 @@ Transform:
   m_GameObject: {fileID: 1444150607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.96875, y: -2.71875, z: -10}
+  m_LocalPosition: {x: -45.34375, y: -2.71875, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9706,7 +9706,7 @@ Transform:
   m_GameObject: {fileID: 1892614046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.96875, y: -2.09375, z: -10}
+  m_LocalPosition: {x: -45.34375, y: -2.09375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9785,7 +9785,6 @@ MonoBehaviour:
     <JumpForce>k__BackingField: 12
     <DoubleJumpForce>k__BackingField: 8
     <WallJumpTime>k__BackingField: 0.15
-    <GrabLedgeCooldown>k__BackingField: 0.35
     <LandingThreshold>k__BackingField: 18
     <DashSpeed>k__BackingField: 16
     <DashTime>k__BackingField: 0.25
@@ -9844,7 +9843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bc3eddd995a2746970710a9ddf2028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellingRadius: 0.21
+  _cellingRadius: 0.2
   _groundDistance: 0.15
   _wallDistance: 0.35
   <CeilingSensor>k__BackingField: {fileID: 6900700827998271792}
@@ -9958,7 +9957,7 @@ Transform:
   m_GameObject: {fileID: 332105253614478520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.96875, y: -3.71875, z: 0}
+  m_LocalPosition: {x: -45.34375, y: -3.71875, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:

@@ -1,4 +1,5 @@
 using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -43,6 +44,36 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.SitStandEvent -= OnSit;
+        }
+
+        public override void AnimationTrigger()
+        {
+            if (player.Input.NormInputX != 0)
+            {
+                player.Core.VisualFx.CreateDust(
+                    DustType.Tiny,
+                    new Vector2()
+                    {
+                        x = player.Core.Movement.FacingDirection != 1 
+                            ? player.BodyCollider.bounds.max.x 
+                            : player.BodyCollider.bounds.min.x,
+                        y = player.Core.Sensor.GroundHit.point.y,
+                    },
+                    player.transform.rotation);
+            }
+            else
+            {
+                player.Core.VisualFx.CreateDust(
+                    DustType.AfterMove,
+                    new Vector2()
+                    {
+                        x = player.Core.Movement.FacingDirection != 1 
+                            ? player.BodyCollider.bounds.min.x 
+                            : player.BodyCollider.bounds.max.x,
+                        y = player.Core.Sensor.GroundHit.point.y,
+                    },
+                    player.transform.rotation);
+            }
         }
 
         #region Input

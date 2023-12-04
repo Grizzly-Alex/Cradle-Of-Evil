@@ -54,7 +54,7 @@ namespace CoreSystem.Components
         public bool IsWallDetect() => WallHit;
         public bool IsGroundDetect() => GroundHit;
         public bool IsCellingDetect() => Circle;
-        public bool IsLedgeVerticalDetect() => !LedgeVerticalHit && GroundHit;     
+        public bool IsLedgeVerticalDetect() => LedgeVerticalHit;     
         public bool IsGrabWallDetect() => WallHit.collider != null && WallHit.collider.CompareTag(GrabWall);
         public bool IsLedgeHorizontalDetect() 
             => !Physics2D.Raycast(LedgeHorizontalSensor.position,
