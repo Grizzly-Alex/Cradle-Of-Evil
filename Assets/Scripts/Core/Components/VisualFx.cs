@@ -18,7 +18,7 @@ namespace CoreSystem.Components
         private float colorLooseRate;
         private float lastImageXpos;
 
-        [Header("AFTER IMAGE")]
+        [Header("DUST")]
         [SerializeField]
         private Dust dustPrefab;
 
@@ -33,7 +33,8 @@ namespace CoreSystem.Components
         {
             if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
             {
-                AfterImageSprite afterImage = PoolManger.Instance.GetFromPool<AfterImageSprite>(afterImagePrefab.gameObject, transform.position, transform.rotation);
+                AfterImageSprite afterImage = PoolManager.Instance
+                    .GetFromPool<AfterImageSprite>(afterImagePrefab.gameObject, transform.position, transform.rotation);
 
                 if (afterImage != null)
                 {
@@ -47,13 +48,25 @@ namespace CoreSystem.Components
 
         public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation)
         {
-            Dust dust = PoolManger.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
+            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
 
             if (dust != null)
             {
                 dust.Initialize(dustType);
                 dust.SetActive(true);
             }
+        }
+
+        public Dust CreateDust(DustType dustType, Transform transform, Vector2 offset)
+        {
+            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, transform.position, transform.rotation);
+
+            if (dust != null)
+            {
+                dust.Initialize(dustType, transform, offset);
+                dust.SetActive(true);
+            }
+            return dust;
         }
     }
 }

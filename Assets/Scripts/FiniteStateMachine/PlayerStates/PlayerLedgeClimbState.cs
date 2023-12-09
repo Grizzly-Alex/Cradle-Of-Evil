@@ -9,6 +9,7 @@ namespace FiniteStateMachine.PlayerStates
         public PlayerLedgeClimbState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
+
         public Vector2 DetectedPos { get; set; }
         private Vector2 startPos;
         private Vector2 stopPos;
@@ -90,7 +91,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isClimbing)
             {
-                player.Core.VisualFx.CreateDust(DustType.LandingOnGround, stopPos, player.transform.rotation);
+                player.Core.VisualFx.CreateDust(DustType.Landing, stopPos, player.transform.rotation);
                 player.transform.position = stopPos;
                 isClimbing = false;
             }
@@ -103,8 +104,14 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (!isClimbing && isHanging)
-                stateMachine.ChangeState(player.States.Jump);
+            if (isClimbing && isHanging) return;
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromWall,
+                cornerPos,
+                player.transform.rotation);
         }
 
         public override void AnimationTrigger() => isHanging = true;

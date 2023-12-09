@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -26,26 +25,11 @@ namespace FiniteStateMachine.PlayerStates
 
             if (player.States.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
-				player.Core.VisualFx.CreateDust(DustType.JumpFromGround, player.Core.Sensor.GroundHit.point, player.transform.rotation);
 				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJumpFromGround;
 			}
 			else if (player.States.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
 			{
-				player.Core.VisualFx.CreateDust(
-					DustType.JumpFromWall,
-					new Vector2()
-					{
-						x = player.Core.Sensor.WallHit.point.x,
-						y = player.States.PreviousState is PlayerOnWallState 
-							? player.BodyCollider.bounds.min.y
-							: player.BodyCollider.bounds.max.y
-					},
-					new Quaternion()
-					{
-						y = player.Core.Movement.FacingDirection == -1 ? 0 : 180
-					});
-
 				finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
 				player.Core.Movement.Flip();

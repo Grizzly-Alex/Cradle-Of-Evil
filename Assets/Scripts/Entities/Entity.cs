@@ -6,7 +6,7 @@ using Interfaces;
 
 namespace Entities
 {
-    public abstract class Entity : MonoBehaviour, ITriggerAnimation
+    public abstract class Entity : MonoBehaviour, IAnimationFinishTrigger, IAnimationTrigger
     {
         protected StateMachine stateMachine;
         public Core Core { get; private set; }

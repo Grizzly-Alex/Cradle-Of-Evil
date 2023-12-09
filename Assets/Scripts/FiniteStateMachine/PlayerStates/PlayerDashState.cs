@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -24,7 +23,6 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.FreezePosY();
             player.Core.Movement.GravitationOff();
 			player.Animator.Play(hashDash);
-            player.Core.VisualFx.CreateDust(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
 
         public override void Update()

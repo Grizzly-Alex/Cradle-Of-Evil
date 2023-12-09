@@ -9594,7 +9594,7 @@ Transform:
   m_GameObject: {fileID: 1444150607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.34375, y: -2.71875, z: -10}
+  m_LocalPosition: {x: 5.03125, y: -2.71875, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9706,7 +9706,7 @@ Transform:
   m_GameObject: {fileID: 1892614046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.34375, y: -2.09375, z: -10}
+  m_LocalPosition: {x: 5.0312514, y: -2.09375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9786,10 +9786,10 @@ MonoBehaviour:
     <DoubleJumpForce>k__BackingField: 8
     <WallJumpTime>k__BackingField: 0.15
     <LandingThreshold>k__BackingField: 18
-    <DashSpeed>k__BackingField: 16
-    <DashTime>k__BackingField: 0.25
-    <SlideSpeed>k__BackingField: 12
-    <SlideTime>k__BackingField: 0.25
+    <DashSpeed>k__BackingField: 14
+    <DashTime>k__BackingField: 0.22
+    <SlideSpeed>k__BackingField: 14
+    <SlideTime>k__BackingField: 0.22
     <SlideCooldown>k__BackingField: 0.2
     <StandColiderHeight>k__BackingField: 1.38
     <CrouchColiderHeight>k__BackingField: 0.85
@@ -9957,7 +9957,7 @@ Transform:
   m_GameObject: {fileID: 332105253614478520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -45.34375, y: -3.71875, z: 0}
+  m_LocalPosition: {x: 5.03125, y: -3.71875, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:

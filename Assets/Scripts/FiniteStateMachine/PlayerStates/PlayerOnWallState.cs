@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -18,6 +19,8 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
+
+            player.Core.VisualFx.CreateDust(DustType.Tiny, DetectedPos, player.transform.rotation);
 
             player.Input.JumpEvent += OnJump;
 
@@ -49,6 +52,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+
             player.Core.Movement.ResetFreezePos();
             player.Input.JumpEvent -= OnJump;
         }
@@ -60,8 +64,19 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (isAnimFinished)
-                stateMachine.ChangeState(player.States.Jump);
+            if (!isAnimFinished) return;
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+                new Vector2()
+                {
+                    x = player.Core.Movement.FacingDirection != 1
+                        ? player.BodyCollider.bounds.max.x
+                        : player.BodyCollider.bounds.min.x,
+                    y = player.BodyCollider.bounds.min.y,
+                },
+                player.transform.rotation);
         }
     }
 }

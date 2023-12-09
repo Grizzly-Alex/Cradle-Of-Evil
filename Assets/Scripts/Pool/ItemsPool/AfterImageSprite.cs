@@ -39,7 +39,7 @@ namespace Pool.ItemsPool
             spriteRenderer.color = new Color(color.r, color.g, color.b, alphaUpdate);
             if (spriteRenderer.color.a <= 0)
             {
-                PoolManger.Instance.ReturnToPool(gameObject);
+                PoolManager.Instance.ReturnToPool(gameObject);
             }
         }
 

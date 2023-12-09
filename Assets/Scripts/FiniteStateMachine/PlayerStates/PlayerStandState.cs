@@ -52,13 +52,7 @@ namespace FiniteStateMachine.PlayerStates
             {
                 player.Core.VisualFx.CreateDust(
                     DustType.Tiny,
-                    new Vector2()
-                    {
-                        x = player.Core.Movement.FacingDirection != 1 
-                            ? player.BodyCollider.bounds.max.x 
-                            : player.BodyCollider.bounds.min.x,
-                        y = player.Core.Sensor.GroundHit.point.y,
-                    },
+                    player.Core.Sensor.GroundHit.point,
                     player.transform.rotation);
             }
             else
@@ -67,8 +61,8 @@ namespace FiniteStateMachine.PlayerStates
                     DustType.AfterMove,
                     new Vector2()
                     {
-                        x = player.Core.Movement.FacingDirection != 1 
-                            ? player.BodyCollider.bounds.min.x 
+                        x = player.Core.Movement.FacingDirection != 1
+                            ? player.BodyCollider.bounds.min.x
                             : player.BodyCollider.bounds.max.x,
                         y = player.Core.Sensor.GroundHit.point.y,
                     },
@@ -85,12 +79,22 @@ namespace FiniteStateMachine.PlayerStates
 		protected override void OnJump()
 		{
             stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromGround,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
 
 		protected override void OnSlide()
 		{
 			stateMachine.ChangeState(player.States.Slide);
-		}
+
+            player.Core.VisualFx.CreateDust(
+                DustType.StartSlide,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
+        }
 		#endregion
 	}
 }

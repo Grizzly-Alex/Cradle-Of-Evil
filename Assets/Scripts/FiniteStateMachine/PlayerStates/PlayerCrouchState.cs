@@ -65,12 +65,24 @@ namespace FiniteStateMachine.PlayerStates
 
 		protected override void OnJump()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.States.Jump);
+            if (isTouchedRoof) return; 
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromGround,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
 
 		protected override void OnSlide()
         {
             stateMachine.ChangeState(player.States.Slide);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.StartSlide,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
         #endregion
     }

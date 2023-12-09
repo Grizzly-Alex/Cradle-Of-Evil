@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -108,14 +109,17 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (player.States.Jump.CanJump())
-                stateMachine.ChangeState(player.States.Jump);          
+            if (!player.States.Jump.CanJump()) return;
+
+            stateMachine.ChangeState(player.States.Jump);
         }
 
         private void OnDash()
         {
-			if (player.States.Dash.CanDash())
-				stateMachine.ChangeState(player.States.Dash);
+			if (!player.States.Dash.CanDash()) return;
+
+            stateMachine.ChangeState(player.States.Dash);
+            player.Core.VisualFx.CreateDust(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
     }
 }

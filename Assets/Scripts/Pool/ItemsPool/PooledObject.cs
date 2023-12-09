@@ -12,6 +12,14 @@ namespace Pool.ItemsPool
             gameObject.SetActive(isActive);
         }
 
+        public void ReturnToPool()
+        {
+            if(gameObject.activeSelf) 
+            {
+                PoolManager.Instance.ReturnToPool(gameObject);
+            }
+        }
+
         public virtual void Get(GameObject obj)
         {
             obj.SetActive(true);
