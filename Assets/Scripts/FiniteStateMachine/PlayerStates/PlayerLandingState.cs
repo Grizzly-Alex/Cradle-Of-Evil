@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -38,8 +39,12 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Movement.FreezePosX();
             }
 
+            Vector2 groundSurfacePoint = player.Core.Sensor.GroundHit.point;
+            Quaternion rotation = player.transform.rotation;
+
             if (LandingForce >= player.Data.LandingThreshold)
             {
+                player.Core.VisualFx.CreateDust(DustType.HardLanding, groundSurfacePoint, rotation);
                 player.Animator.Play(hashHardLanding);
                 updateLogic = () =>
                 {
@@ -49,6 +54,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
+                player.Core.VisualFx.CreateDust(DustType.Landing, groundSurfacePoint, rotation);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {
@@ -86,8 +92,14 @@ namespace FiniteStateMachine.PlayerStates
        
         private void OnJump()
         {
-            if (LandingForce < player.Data.LandingThreshold)
-                stateMachine.ChangeState(player.States.Jump);
+            if (LandingForce >= player.Data.LandingThreshold) return;
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromGround,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
     }
 }

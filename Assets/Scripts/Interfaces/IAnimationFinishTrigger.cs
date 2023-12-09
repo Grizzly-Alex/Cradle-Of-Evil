@@ -1,8 +1,7 @@
 ﻿namespace Interfaces
 {
-    public interface ITriggerAnimation
+    public interface IAnimationFinishTrigger
     {
         void AnimationFinishTrigger();
-        void AnimationTrigger();
     }
 }

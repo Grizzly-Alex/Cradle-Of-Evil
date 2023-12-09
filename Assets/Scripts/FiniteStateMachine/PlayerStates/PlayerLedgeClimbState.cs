@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -9,8 +10,7 @@ namespace FiniteStateMachine.PlayerStates
         {
         }
 
-        public Vector2 DetectedPos { private get; set; }
-
+        public Vector2 DetectedPos { get; set; }
         private Vector2 startPos;
         private Vector2 stopPos;
         private Vector2 cornerPos;
@@ -26,23 +26,31 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.States.Dash.ResetAmountOfDash();
-			player.States.Jump.ResetAmountOfJump();
-
-			player.Core.Movement.SetVelocityZero();
+            player.States.Dash.ResetAmountOfDash();
+            player.States.Jump.ResetAmountOfJump();
 
             player.transform.position = DetectedPos;
+
             cornerPos = GetCornerOfLedge();
+
+            player.Core.VisualFx.CreateDust(
+                DustType.Tiny,
+                cornerPos,
+                new Quaternion() { y = player.Core.Movement.FacingDirection == -1 ? 0 : 180 });
+
             startPos.Set(
                 cornerPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                cornerPos.y + Mathf.Abs(player.BodyCollider.offset.y) - player.BodyCollider.size.y / 2);
+                cornerPos.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
             stopPos.Set(
                 cornerPos.x + player.BodyCollider.size.x * player.Core.Movement.FacingDirection,
-                cornerPos.y + Mathf.Abs(player.BodyCollider.offset.y) + player.BodyCollider.size.y / 2 + Physics2D.defaultContactOffset);
+                cornerPos.y + Physics2D.defaultContactOffset);
 
             player.transform.position = startPos;
+            player.Core.Movement.FreezePosY();
+
             player.Animator.Play(hashLedgeGrab);
         }
+
         public override void Update()
         {
             base.Update();
@@ -60,17 +68,10 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.Movement.SetVelocityZero();
-                player.transform.position = startPos;
-
                 if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging && !isClimbing)
                 {
                     isClimbing = true;
                     player.Animator.SetBool(isClimbingHash, true);
-                }
-                else if (player.Input.NormInputY == -1 && isHanging && !isClimbing)
-                {
-                    stateMachine.ChangeState(player.States.InAir);
                 }
             }
         }
@@ -81,6 +82,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent -= OnJump;
 
+            player.Core.Movement.ResetFreezePos();
+
             isHanging = false;
             player.Animator.SetBool(isClimbingHash, false);
 
@@ -88,6 +91,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isClimbing)
             {
+                player.Core.VisualFx.CreateDust(DustType.Landing, stopPos, player.transform.rotation);
                 player.transform.position = stopPos;
                 isClimbing = false;
             }
@@ -100,8 +104,14 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (!isClimbing && isHanging) 
-                stateMachine.ChangeState(player.States.Jump);
+            if (isClimbing && isHanging) return;
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromWall,
+                cornerPos,
+                player.transform.rotation);
         }
 
         public override void AnimationTrigger() => isHanging = true;

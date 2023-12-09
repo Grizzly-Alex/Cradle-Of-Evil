@@ -17,9 +17,6 @@ namespace Entities
         [field: SerializeField] public float DoubleJumpForce { get; private set; }
         [field: SerializeField] public float WallJumpTime { get; private set; }
 
-        [field: Header("GRAB LEDGE")]
-        [field: SerializeField] public float GrabLedgeCooldown { get; private set; }
-
         [field: Header("LANDING")]
         [field: SerializeField] public float LandingThreshold { get; private set; }
 

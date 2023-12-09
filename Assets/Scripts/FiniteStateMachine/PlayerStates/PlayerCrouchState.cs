@@ -1,4 +1,5 @@
 using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -7,10 +8,9 @@ namespace FiniteStateMachine.PlayerStates
     {
         private readonly int hashIdle = Animator.StringToHash("IdleCrouch");
         private bool isTouchedRoof;
-
 		protected override float MoveSpeed => player.Data.CrouchMoveSpeed;
 
-		public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+        public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
 			
 		}
@@ -43,6 +43,20 @@ namespace FiniteStateMachine.PlayerStates
             isTouchedRoof = player.Core.Sensor.IsCellingDetect();
         }
 
+        public override void AnimationTrigger()
+        {
+            player.Core.VisualFx.CreateDust(
+                DustType.Tiny,
+                new Vector2()
+                {
+                    x = player.Core.Movement.FacingDirection != 1 
+                        ? player.BodyCollider.bounds.max.x 
+                        : player.BodyCollider.bounds.min.x,
+                    y = player.Core.Sensor.GroundHit.point.y,
+                },
+                player.transform.rotation);
+        }
+
         #region Input
         private void OnStand()
         {
@@ -51,12 +65,24 @@ namespace FiniteStateMachine.PlayerStates
 
 		protected override void OnJump()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.States.Jump);
+            if (isTouchedRoof) return; 
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.JumpFromGround,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
 
 		protected override void OnSlide()
         {
             stateMachine.ChangeState(player.States.Slide);
+
+            player.Core.VisualFx.CreateDust(
+                DustType.StartSlide,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
         }
         #endregion
     }

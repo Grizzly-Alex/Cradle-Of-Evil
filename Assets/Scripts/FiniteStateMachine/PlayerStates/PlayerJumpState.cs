@@ -23,7 +23,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-			if (player.States.PreviousState is PlayerOnGroundState or PlayerLandingState) 
+            if (player.States.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
 				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJumpFromGround;
@@ -56,7 +56,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Exit();
 
-			DecreaseAmountOfJump();
+            DecreaseAmountOfJump();
 		}
 
 		#region Update
@@ -76,7 +76,6 @@ namespace FiniteStateMachine.PlayerStates
 			isAbilityDone = true;
 		}
 		#endregion
-
 
 		public void ResetAmountOfJump() => amountOfJumpLeft = amountOfJump;
 		public void DecreaseAmountOfJump() => amountOfJumpLeft--;

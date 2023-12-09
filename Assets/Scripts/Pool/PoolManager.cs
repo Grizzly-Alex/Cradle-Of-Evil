@@ -6,14 +6,14 @@ using Pool.ItemsPool;
 
 namespace Pool
 {
-    public class PoolManger : MonoBehaviour
+    public class PoolManager : MonoBehaviour
     {
         [SerializeField] private List<PoolItem> poolableObjects = new List<PoolItem>();
 
         private Dictionary<int, GameObjectPool> poolDictionary = new Dictionary<int, GameObjectPool>();
 
-        static PoolManger instance;
-        public static PoolManger Instance => instance ??= FindObjectOfType<PoolManger>();
+        static PoolManager instance;
+        public static PoolManager Instance => instance ??= FindObjectOfType<PoolManager>();
 
         private void Awake()
         {
@@ -51,7 +51,7 @@ namespace Pool
             int poolKey = prefab.GetInstanceID();
 
             if (!poolDictionary.TryGetValue(poolKey, out GameObjectPool pool)) return default;
-
+          
             GameObject obj = pool.Get();
             obj.transform.SetPositionAndRotation(position, rotation);
 

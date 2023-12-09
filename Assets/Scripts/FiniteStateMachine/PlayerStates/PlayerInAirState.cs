@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -13,7 +14,6 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrabWallDetected;
         private float сuгrentVelocityY;
         private float fallingForce;
-        private float startTime;
         public bool UseDoubleJump {  get; set; }
 
         public PlayerInAirState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -26,8 +26,6 @@ namespace FiniteStateMachine.PlayerStates
 
 			player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
-
-            startTime = Time.time;
                        
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.StandColiderHeight);
@@ -45,10 +43,10 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-				player.States.Landing.LandingForce = fallingForce;
+                player.States.Landing.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.States.Landing);
             }
-            else if (isLedgeDetected && Cooldown(player.Data.GrabLedgeCooldown) && сuгrentVelocityY <= 0.0f) 
+            else if (isLedgeDetected && сuгrentVelocityY <= 0.0f) 
             {
 				stateMachine.ChangeState(player.States.LedgeClimb);
             }
@@ -76,7 +74,7 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             isLedgeDetected = player.Core.Sensor.IsLedgeHorizontalDetect();
-            if (isLedgeDetected) 
+            if (isLedgeDetected)
                 player.States.LedgeClimb.DetectedPos = player.transform.position;
 
             isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
@@ -107,20 +105,21 @@ namespace FiniteStateMachine.PlayerStates
             }
         }
 
-        private bool Cooldown(float finishTime) => Time.time >= finishTime + startTime;
-
         private void ResetFallingForce() => fallingForce = default;
 
         private void OnJump()
         {
-            if (player.States.Jump.CanJump())
-                stateMachine.ChangeState(player.States.Jump);          
+            if (!player.States.Jump.CanJump()) return;
+
+            stateMachine.ChangeState(player.States.Jump);
         }
 
         private void OnDash()
         {
-			if (player.States.Dash.CanDash())
-				stateMachine.ChangeState(player.States.Dash);
+			if (!player.States.Dash.CanDash()) return;
+
+            stateMachine.ChangeState(player.States.Dash);
+            player.Core.VisualFx.CreateDust(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
     }
 }

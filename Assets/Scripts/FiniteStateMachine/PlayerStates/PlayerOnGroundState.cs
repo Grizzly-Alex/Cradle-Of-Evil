@@ -7,7 +7,7 @@ namespace FiniteStateMachine.PlayerStates
     {
         protected bool isGrounded;
         private readonly int hashIsMoving = Animator.StringToHash("isMoving");       
-        protected abstract float MoveSpeed {  get; }
+        protected abstract float MoveSpeed { get; }
 
         protected PlayerOnGroundState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {

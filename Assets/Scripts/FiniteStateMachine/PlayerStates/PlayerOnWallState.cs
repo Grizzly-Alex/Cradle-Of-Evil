@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -8,7 +9,6 @@ namespace FiniteStateMachine.PlayerStates
         public Vector2 DetectedPos { private get; set; }
 
         private readonly int landingOnWall = Animator.StringToHash("LandingOnWall");
-        private bool isGrabWallDetected;
         private bool isGrounded;
         private Vector2 holdPosition;
 
@@ -20,16 +20,21 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
+            player.Core.VisualFx.CreateDust(DustType.Tiny, DetectedPos, player.transform.rotation);
+
             player.Input.JumpEvent += OnJump;
 
 			player.States.Dash.ResetAmountOfDash();
 			player.States.Jump.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
-            holdPosition.Set(DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset)
-                * player.Core.Movement.FacingDirection, DetectedPos.y);
+
+             holdPosition.Set(
+                DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
+                DetectedPos.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - player.Core.Sensor.WallSensor.position.y);
 
             player.transform.position = holdPosition;
+            player.Core.Movement.FreezePosY();
 
             player.Animator.Play(landingOnWall);
         }
@@ -38,13 +43,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Update();
 
-            player.transform.position = holdPosition;
-
-            if (!isGrabWallDetected)
-            {
-                stateMachine.ChangeState(player.States.InAir);
-            }
-            else if (isGrounded)
+            if (isGrounded)
             {
                 stateMachine.ChangeState(player.States.Stand);
             }          
@@ -53,19 +52,31 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+
+            player.Core.Movement.ResetFreezePos();
             player.Input.JumpEvent -= OnJump;
         }
 
         public override void DoCheck()
         {
-            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
             isGrounded = player.Core.Sensor.IsGroundDetect();
         }
 
         private void OnJump()
         {
-            if (isAnimFinished)
-                stateMachine.ChangeState(player.States.Jump);
+            if (!isAnimFinished) return;
+
+            stateMachine.ChangeState(player.States.Jump);
+
+            player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+                new Vector2()
+                {
+                    x = player.Core.Movement.FacingDirection != 1
+                        ? player.BodyCollider.bounds.max.x
+                        : player.BodyCollider.bounds.min.x,
+                    y = player.BodyCollider.bounds.min.y,
+                },
+                player.transform.rotation);
         }
     }
 }
