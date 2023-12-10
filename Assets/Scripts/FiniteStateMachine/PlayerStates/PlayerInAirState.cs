@@ -16,6 +16,7 @@ namespace FiniteStateMachine.PlayerStates
         private float fallingForce;
         public bool UseDoubleJump {  get; set; }
 
+
         public PlayerInAirState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
@@ -73,12 +74,10 @@ namespace FiniteStateMachine.PlayerStates
             isGrounded = player.Core.Sensor.IsGroundDetect();
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
-            isLedgeDetected = player.Core.Sensor.IsLedgeHorizontalDetect();
-            if (isLedgeDetected)
-                player.States.LedgeClimb.DetectedPos = player.transform.position;
+            if (isLedgeDetected = player.Core.Sensor.IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner))
+                player.States.LedgeClimb.CornerPosition = ledgeCorner;
 
-            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
-            if (isGrabWallDetected)
+            if (isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect())
                 player.States.OnWall.DetectedPos = player.Core.Sensor.WallHit.point;
         }
 

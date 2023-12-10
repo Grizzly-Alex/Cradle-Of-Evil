@@ -10,10 +10,9 @@ namespace FiniteStateMachine.PlayerStates
         {
         }
 
-        public Vector2 DetectedPos { get; set; }
+        public Vector2 CornerPosition { get; set; }
         private Vector2 startPos;
         private Vector2 stopPos;
-        private Vector2 cornerPos;
         private bool isHanging;
         private bool isClimbing;
         private bool isTouchingCeiling;
@@ -29,21 +28,17 @@ namespace FiniteStateMachine.PlayerStates
             player.States.Dash.ResetAmountOfDash();
             player.States.Jump.ResetAmountOfJump();
 
-            player.transform.position = DetectedPos;
-
-            cornerPos = GetCornerOfLedge();
-
             player.Core.VisualFx.CreateDust(
                 DustType.Tiny,
-                cornerPos,
+                CornerPosition,
                 new Quaternion() { y = player.Core.Movement.FacingDirection == -1 ? 0 : 180 });
 
             startPos.Set(
-                cornerPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                cornerPos.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
+                CornerPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
+                CornerPosition.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
             stopPos.Set(
-                cornerPos.x + player.BodyCollider.size.x * player.Core.Movement.FacingDirection,
-                cornerPos.y + Physics2D.defaultContactOffset);
+                CornerPosition.x + player.BodyCollider.size.x * player.Core.Movement.FacingDirection,
+                CornerPosition.y + Physics2D.defaultContactOffset);
 
             player.transform.position = startPos;
             player.Core.Movement.FreezePosY();
@@ -99,7 +94,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isTouchingCeiling = CheckForSpace();
+            isTouchingCeiling = IsLowCeiling();
         }
 
         private void OnJump()
@@ -110,34 +105,22 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Core.VisualFx.CreateDust(
                 DustType.JumpFromWall,
-                cornerPos,
+                CornerPosition,
                 player.transform.rotation);
         }
 
-        public override void AnimationTrigger() => isHanging = true;
+        public override void AnimationTrigger() 
+            => isHanging = true;
 
-        private bool CheckForSpace()
+        private bool IsLowCeiling()
         {
+            float offset = Physics2D.defaultContactOffset;
+
             return Physics2D.Raycast(
-                cornerPos + (Vector2.up * Physics2D.defaultContactOffset) + (Physics2D.defaultContactOffset * player.Core.Movement.FacingDirection * Vector2.right),
+                CornerPosition + (Vector2.up * offset) + (offset * player.Core.Movement.FacingDirection * Vector2.right),
                 Vector2.up,
                 player.Data.StandColiderHeight,
                 player.Core.Sensor.PlatformsLayer);
-        }
-
-        private Vector2 GetCornerOfLedge()
-        {
-            float positionX = player.Core.Movement.FacingDirection * player.Core.Sensor.WallHit.distance + player.Core.Sensor.WallSensor.position.x;
-
-            RaycastHit2D hitDown = Physics2D.Raycast(
-                new Vector2(positionX, player.Core.Sensor.LedgeHorizontalSensor.position.y),
-                Vector2.down,
-                player.Core.Sensor.LedgeHorizontalSensor.position.y - player.Core.Sensor.WallSensor.position.y,
-                player.Core.Sensor.PlatformsLayer);
-
-            float positionY = player.Core.Sensor.LedgeHorizontalSensor.position.y - hitDown.distance;
-
-            return new Vector2(positionX, positionY);
         }
     }
 }
