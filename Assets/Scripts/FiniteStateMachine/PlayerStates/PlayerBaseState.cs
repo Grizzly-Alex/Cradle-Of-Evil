@@ -18,7 +18,6 @@ namespace FiniteStateMachine.PlayerStates
         public virtual void Enter()
         {
             isAnimFinished = false;    
-            DoCheck();
         }
 
         public virtual void Update()
