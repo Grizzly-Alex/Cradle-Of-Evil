@@ -6,32 +6,25 @@ namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerStandState : PlayerOnGroundState
     {
-        private readonly int hashIdle = Animator.StringToHash("IdleStand");
-        private readonly int hashRun = Animator.StringToHash("RunStart");
-
         protected override float MoveSpeed => player.Data.StandMoveSpeed;
+        protected override float ColiderHeight => player.Data.StandColiderHeight;
+        protected override int HashIdle => Animator.StringToHash("IdleStand");
+        protected override int HashMove => Animator.StringToHash("RunStart");
 
-		public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+
+        public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
 			
 		}
 
+
         public override void Enter()
         {
             base.Enter();
+
+            isCrouching = false;
             
             player.Input.SitStandEvent += OnSit;
-
-            player.SetColliderHeight(player.Data.StandColiderHeight);
-
-            if (player.Input.NormInputX != 0)
-            {
-                player.Animator.Play(hashRun);
-            }
-            else
-            {
-                player.Animator.Play(hashIdle);
-            }
         }
 
         public override void Update()
@@ -73,12 +66,12 @@ namespace FiniteStateMachine.PlayerStates
         #region Input
         private void OnSit()
         {
-            stateMachine.ChangeState(player.States.SitStand);
+            stateMachine.ChangeState(player.SitStandState);
         }
 
 		protected override void OnJump()
 		{
-            stateMachine.ChangeState(player.States.Jump);
+            stateMachine.ChangeState(player.JumpState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.JumpFromGround,
@@ -88,7 +81,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		protected override void OnSlide()
 		{
-			stateMachine.ChangeState(player.States.Slide);
+			stateMachine.ChangeState(player.SlideState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.StartSlide,

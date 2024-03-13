@@ -27,14 +27,14 @@ namespace FiniteStateMachine.PlayerStates
             dust = player.Core.VisualFx.CreateDust(
                 DustType.Sliding,
                 player.transform, 
-                new Vector2(0.4f, 0));
+                new Vector2(x: 0.4f, y: 0.0f));
 
             finishTime = Time.time + player.Data.SlideTime;
 
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.CrouchColiderHeight);
           
-            switch (player.States.PreviousState)
+            switch (player.PreviousState)
             {
                 case PlayerCrouchState: 
                     player.Animator.Play(hashDashing);

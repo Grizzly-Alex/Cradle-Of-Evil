@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerLedgeClimbState : PlayerBaseState
+    public class PlayerLedgeClimbState : PlayerState
     {
         public PlayerLedgeClimbState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -25,8 +25,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.States.Dash.ResetAmountOfDash();
-            player.States.Jump.ResetAmountOfJump();
+            player.DashState.ResetAmountOfDash();
+            player.JumpState.ResetAmountOfJump();
 
             player.Core.VisualFx.CreateDust(
                 DustType.Tiny,
@@ -54,11 +54,11 @@ namespace FiniteStateMachine.PlayerStates
             {
                 if (isTouchingCeiling)
                 {
-                    stateMachine.ChangeState(player.States.Crouch);
+                    stateMachine.ChangeState(player.CrouchState);
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.States.SitStand);
+                    stateMachine.ChangeState(player.SitStandState);
                 }
             }
             else
@@ -101,7 +101,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (isClimbing && isHanging) return;
 
-            stateMachine.ChangeState(player.States.Jump);
+            stateMachine.ChangeState(player.JumpState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.JumpFromWall,

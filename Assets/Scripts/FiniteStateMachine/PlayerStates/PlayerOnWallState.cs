@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerOnWallState : PlayerBaseState
+    public class PlayerOnWallState : PlayerState
     {
         public Vector2 DetectedPos { private get; set; }
 
@@ -24,8 +24,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.States.Dash.ResetAmountOfDash();
-			player.States.Jump.ResetAmountOfJump();
+			player.DashState.ResetAmountOfDash();
+			player.JumpState.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
 
@@ -45,7 +45,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-                stateMachine.ChangeState(player.States.Stand);
+                stateMachine.ChangeState(player.StandState);
             }          
         }
 
@@ -66,7 +66,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (!isAnimFinished) return;
 
-            stateMachine.ChangeState(player.States.Jump);
+            stateMachine.ChangeState(player.JumpState);
 
             player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
                 new Vector2()

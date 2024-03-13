@@ -2,27 +2,32 @@ using Entities;
 using Pool.ItemsPool;
 using UnityEngine;
 
+
 namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerCrouchState : PlayerOnGroundState
     {
-        private readonly int hashIdle = Animator.StringToHash("IdleCrouch");
         private bool isTouchedRoof;
+
 		protected override float MoveSpeed => player.Data.CrouchMoveSpeed;
+        protected override float ColiderHeight => player.Data.CrouchColiderHeight;
+        protected override int HashIdle => Animator.StringToHash("IdleCrouch");
+        protected override int HashMove => Animator.StringToHash("MoveCrouch");
+
 
         public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
 			
 		}
 
+
         public override void Enter()
         {
             base.Enter();
 
-            player.Input.SitStandEvent += OnStand;
+            isCrouching = true;
 
-            player.SetColliderHeight(player.Data.CrouchColiderHeight);
-            player.Animator.Play(hashIdle);
+            player.Input.SitStandEvent += OnStand;
         }
 
         public override void Update()
@@ -40,6 +45,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void DoCheck()
         {
             base.DoCheck();
+
             isTouchedRoof = player.Core.Sensor.IsCellingDetect();
         }
 
@@ -60,14 +66,16 @@ namespace FiniteStateMachine.PlayerStates
         #region Input
         private void OnStand()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.States.SitStand);            
+            if (!isTouchedRoof) stateMachine.ChangeState(player.SitStandState);            
         }
 
 		protected override void OnJump()
         {
-            if (isTouchedRoof) return; 
+            if (isTouchedRoof) return;
 
-            stateMachine.ChangeState(player.States.Jump);
+            player.SetColliderHeight(player.Data.StandColiderHeight);
+
+            stateMachine.ChangeState(player.JumpState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.JumpFromGround,
@@ -77,7 +85,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		protected override void OnSlide()
         {
-            stateMachine.ChangeState(player.States.Slide);
+            stateMachine.ChangeState(player.SlideState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.StartSlide,

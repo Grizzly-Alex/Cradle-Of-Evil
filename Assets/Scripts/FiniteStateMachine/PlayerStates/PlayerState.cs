@@ -3,13 +3,13 @@ using Interfaces;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public abstract class PlayerBaseState : IState
+    public abstract class PlayerState : IState
     {
         protected StateMachine stateMachine;
         protected Player player;
         protected bool isAnimFinished;
 
-        public PlayerBaseState(StateMachine stateMachine, Player player)
+        public PlayerState(StateMachine stateMachine, Player player)
         {
             this.stateMachine = stateMachine;
             this.player = player;
@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public virtual void Exit()
         {
-            player.States.PreviousState = this;           
+            player.PreviousState = this;           
         }
 
         public abstract void DoCheck();

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public sealed class PlayerInAirState : PlayerBaseState
+    public sealed class PlayerInAirState : PlayerState
     {
         private readonly int hashVelocityY = Animator.StringToHash("velocityY");
         private readonly int hashInAir = Animator.StringToHash("InAirState");
@@ -14,6 +14,7 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrabWallDetected;
         private float сuгrentVelocityY;
         private float fallingForce;
+
         public bool UseDoubleJump {  get; set; }
 
 
@@ -28,9 +29,6 @@ namespace FiniteStateMachine.PlayerStates
 			player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
                        
-            player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.Data.StandColiderHeight);
-
             PlayInAirAnimation();
         }
 
@@ -44,16 +42,16 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-                player.States.Landing.LandingForce = fallingForce;
-                stateMachine.ChangeState(player.States.Landing);
+                player.LandingState.LandingForce = fallingForce;
+                stateMachine.ChangeState(player.LandingState);
             }
             else if (isLedgeDetected && сuгrentVelocityY <= 0.0f) 
             {
-				stateMachine.ChangeState(player.States.LedgeClimb);
+				stateMachine.ChangeState(player.LedgeClimbState);
             }
             else if (isGrabWallDetected && сuгrentVelocityY <= 0.0f)
             {
-				stateMachine.ChangeState(player.States.OnWall);
+				stateMachine.ChangeState(player.OnWallState);
             }
         }
 
@@ -75,13 +73,14 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             if (isLedgeDetected = player.Core.Sensor.IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner))
-                player.States.LedgeClimb.CornerPosition = ledgeCorner;
+                player.LedgeClimbState.CornerPosition = ledgeCorner;
 
             if (isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect())
-                player.States.OnWall.DetectedPos = player.Core.Sensor.WallHit.point;
+                player.OnWallState.DetectedPos = player.Core.Sensor.WallHit.point;
         }
 
-		public override void AnimationTrigger() => player.Animator.Play(hashInAir);
+		public override void AnimationTrigger() 
+            => player.Animator.Play(hashInAir);
 
 		private void PlayInAirAnimation()
 		{
@@ -91,7 +90,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
 			else
 			{
-				player.Animator.Play(player.States.Jump.GetDoubleJumpHashAnim());
+				player.Animator.Play(player.JumpState.GetDoubleJumpHashAnim());
 				UseDoubleJump = false;
 			}
 		}
@@ -108,16 +107,16 @@ namespace FiniteStateMachine.PlayerStates
 
         private void OnJump()
         {
-            if (!player.States.Jump.CanJump()) return;
+            if (!player.JumpState.CanJump()) return;
 
-            stateMachine.ChangeState(player.States.Jump);
+            stateMachine.ChangeState(player.JumpState);
         }
 
         private void OnDash()
         {
-			if (!player.States.Dash.CanDash()) return;
+			if (!player.DashState.CanDash()) return;
 
-            stateMachine.ChangeState(player.States.Dash);
+            stateMachine.ChangeState(player.DashState);
             player.Core.VisualFx.CreateDust(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
     }

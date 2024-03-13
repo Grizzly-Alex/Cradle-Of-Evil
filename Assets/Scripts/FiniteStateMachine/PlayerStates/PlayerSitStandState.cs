@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public sealed class PlayerSitStandState : PlayerBaseState
+    public sealed class PlayerSitStandState : PlayerState
     {
         private readonly int hashStandUp = Animator.StringToHash("StandUp");
         private readonly int hashSitDown = Animator.StringToHash("SitDown");
 
         private bool isGrounded;
-        private Action changeState;
+        private Action update;
 
         public PlayerSitStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -24,15 +24,15 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.SetVelocityZero();
             player.Core.Movement.FreezePosOnSlope();
 
-            switch (player.States.PreviousState)
+            switch (player.PreviousState)
             {
                 case PlayerCrouchState or PlayerLedgeClimbState:
                     player.Animator.Play(hashStandUp);
-                    changeState = () => stateMachine.ChangeState(player.States.Stand);
+                    update = () => stateMachine.ChangeState(player.StandState);
                     break;
                 case PlayerStandState:
                     player.Animator.Play(hashSitDown);
-                    changeState = () => stateMachine.ChangeState(player.States.Crouch);
+                    update = () => stateMachine.ChangeState(player.CrouchState);
                     break;
             }
         }
@@ -43,13 +43,13 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isAnimFinished)
             {
-                changeState.Invoke();
+                update.Invoke();
             }
 
             if (!isGrounded)
             {
                 player.Core.Movement.ResetFreezePos();
-                stateMachine.ChangeState(player.States.InAir);
+                stateMachine.ChangeState(player.InAirState);
             }
         }
 
