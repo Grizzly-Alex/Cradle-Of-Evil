@@ -47,7 +47,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else if (isLedgeDetected && сuгrentVelocityY <= 0.0f) 
             {
-				stateMachine.ChangeState(player.LedgeClimbState);
+				stateMachine.ChangeState(player.HangOnLedgeState);
             }
             else if (isGrabWallDetected && сuгrentVelocityY <= 0.0f)
             {
@@ -73,7 +73,7 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             if (isLedgeDetected = player.Core.Sensor.IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner))
-                player.LedgeClimbState.CornerPosition = ledgeCorner;
+                PlayerLedgeState.CornerPosition = ledgeCorner;
 
             if (isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect())
                 player.OnWallState.DetectedPos = player.Core.Sensor.WallHit.point;

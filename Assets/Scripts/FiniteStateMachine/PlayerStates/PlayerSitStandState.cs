@@ -26,7 +26,7 @@ namespace FiniteStateMachine.PlayerStates
 
             switch (player.PreviousState)
             {
-                case PlayerCrouchState or PlayerLedgeClimbState:
+                case PlayerCrouchState or PlayerLedgeState:
                     player.Animator.Play(hashStandUp);
                     update = () => stateMachine.ChangeState(player.StandState);
                     break;

@@ -20,7 +20,8 @@ namespace Entities
         public PlayerStandState StandState { get; private set; }
         public PlayerSlideState SlideState { get; private set; }
         public PlayerSitStandState SitStandState { get; private set; }
-        public PlayerLedgeClimbState LedgeClimbState { get; private set; }
+        public PlayerHangOnLedgeState HangOnLedgeState { get; private set; }
+        public PlayerClimbLedgeState ClimbLedgeState { get; private set; }
         public PlayerOnWallState OnWallState { get; private set; }
         public PlayerDashState DashState { get; private set; }
         #endregion
@@ -36,7 +37,8 @@ namespace Entities
             CrouchState = new PlayerCrouchState(stateMachine, this);
             SlideState = new PlayerSlideState(stateMachine, this);
             SitStandState = new PlayerSitStandState(stateMachine, this);
-            LedgeClimbState = new PlayerLedgeClimbState(stateMachine, this);
+            HangOnLedgeState = new PlayerHangOnLedgeState(stateMachine, this);
+            ClimbLedgeState = new PlayerClimbLedgeState(stateMachine, this);
             OnWallState = new PlayerOnWallState(stateMachine, this);
             DashState = new PlayerDashState(stateMachine, this);
         }

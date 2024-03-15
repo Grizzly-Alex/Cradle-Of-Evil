@@ -30,7 +30,9 @@ namespace FiniteStateMachine.PlayerStates
             player.PreviousState = this;           
         }
 
-        public abstract void DoCheck();
+        public virtual void DoCheck() 
+        {
+        }
 
         public virtual void AnimationFinishTrigger()
             => isAnimFinished = true;
