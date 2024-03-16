@@ -8,7 +8,7 @@ namespace FiniteStateMachine.PlayerStates
     {
         public Vector2 DetectedPos { private get; set; }
 
-        private readonly int landingOnWall = Animator.StringToHash("LandingOnWall");
+        private readonly int hashLandingOnWall = Animator.StringToHash("LandingOnWall");
         private bool isGrounded;
         private Vector2 holdPosition;
 
@@ -36,7 +36,7 @@ namespace FiniteStateMachine.PlayerStates
             player.transform.position = holdPosition;
             player.Core.Movement.FreezePosY();
 
-            player.Animator.Play(landingOnWall);
+            player.Animator.Play(hashLandingOnWall);
         }
 
         public override void Update()

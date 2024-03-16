@@ -24,6 +24,11 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
+            player.Core.VisualFx.CreateDust(
+                DustType.StartSlide,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
+
             dust = player.Core.VisualFx.CreateDust(
                 DustType.Sliding,
                 player.transform, 

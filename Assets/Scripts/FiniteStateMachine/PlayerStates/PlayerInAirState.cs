@@ -37,7 +37,7 @@ namespace FiniteStateMachine.PlayerStates
             base.Update();
 
             player.Animator.SetFloat(hashVelocityY, сuгrentVelocityY);
-            player.Core.Movement.FlipToMovement(player.Input.NormInputX);
+            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
             player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
 
             if (isGrounded)
@@ -73,7 +73,7 @@ namespace FiniteStateMachine.PlayerStates
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             if (isLedgeDetected = player.Core.Sensor.IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner))
-                PlayerLedgeState.CornerPosition = ledgeCorner;
+                PlayerOnLedgeState.CornerPosition = ledgeCorner;
 
             if (isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect())
                 player.OnWallState.DetectedPos = player.Core.Sensor.WallHit.point;

@@ -7,12 +7,9 @@ namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerCrouchState : PlayerOnGroundState
     {
-        private bool isTouchedRoof;
-
-		protected override float MoveSpeed => player.Data.CrouchMoveSpeed;
         protected override float ColiderHeight => player.Data.CrouchColiderHeight;
-        protected override int HashIdle => Animator.StringToHash("IdleCrouch");
-        protected override int HashMove => Animator.StringToHash("MoveCrouch");
+        private readonly int hashIdle = Animator.StringToHash("IdleCrouch");
+        private bool isTouchedRoof;
 
 
         public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -20,14 +17,14 @@ namespace FiniteStateMachine.PlayerStates
 			
 		}
 
-
         public override void Enter()
         {
             base.Enter();
 
-            isCrouching = true;
-
             player.Input.SitStandEvent += OnStand;
+            player.Input.JumpEvent += OnJump;
+
+            player.Animator.Play(hashIdle);
         }
 
         public override void Update()
@@ -40,6 +37,7 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.SitStandEvent -= OnStand;
+            player.Input.JumpEvent -= OnJump;
         }
 
         public override void DoCheck()
@@ -69,7 +67,7 @@ namespace FiniteStateMachine.PlayerStates
             if (!isTouchedRoof) stateMachine.ChangeState(player.SitStandState);            
         }
 
-		protected override void OnJump()
+		private void OnJump()
         {
             if (isTouchedRoof) return;
 
@@ -83,15 +81,15 @@ namespace FiniteStateMachine.PlayerStates
                 player.transform.rotation);
         }
 
-		protected override void OnSlide()
-        {
-            stateMachine.ChangeState(player.SlideState);
+		//private void OnSlide()
+  //      {
+  //          stateMachine.ChangeState(player.SlideState);
 
-            player.Core.VisualFx.CreateDust(
-                DustType.StartSlide,
-                player.Core.Sensor.GroundHit.point,
-                player.transform.rotation);
-        }
+  //          player.Core.VisualFx.CreateDust(
+  //              DustType.StartSlide,
+  //              player.Core.Sensor.GroundHit.point,
+  //              player.transform.rotation);
+  //      }
         #endregion
     }
 }

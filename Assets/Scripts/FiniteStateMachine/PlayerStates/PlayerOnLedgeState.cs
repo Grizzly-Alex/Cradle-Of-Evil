@@ -1,16 +1,14 @@
 ﻿using Entities;
-using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerHangOnLedgeState : PlayerLedgeState
+    public abstract class PlayerOnLedgeState : PlayerState
     {
-        private bool isHanging;
-        protected override int AnimationHash => Animator.StringToHash("LedgeGrab");
+        public static Vector2 CornerPosition { get; set; }
+        protected abstract int AnimationHash { get; }
 
-
-        public PlayerHangOnLedgeState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+        public PlayerOnLedgeState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
 
@@ -18,59 +16,15 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
-
-            player.Input.JumpEvent += OnJump;
-
-            player.DashState.ResetAmountOfDash();
-            player.JumpState.ResetAmountOfJump();
-
-            player.Core.VisualFx.CreateDust(
-                DustType.Tiny,
-                CornerPosition,
-                new Quaternion() { y = player.Core.Movement.FacingDirection == -1 ? 0 : 180 });
-
-            player.transform.position = GetHangingPosition();
-        }
-
-        public override void Update()
-        {
-            base.Update();
-
-            if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging)
-            {
-                stateMachine.ChangeState(player.ClimbLedgeState);              
-            }           
+            player.Animator.Play(AnimationHash);
+            player.Core.Movement.FreezePosY();
         }
 
         public override void Exit()
         {
             base.Exit();
 
-            isHanging = false;         
-            player.Input.JumpEvent -= OnJump;
-        }
-
-        public override void AnimationTrigger()
-            => isHanging = true;
-
-
-        private void OnJump()
-        {
-            if (!isHanging) return;
-
-            stateMachine.ChangeState(player.JumpState);
-
-            player.Core.VisualFx.CreateDust(
-                DustType.JumpFromWall,
-                CornerPosition,
-                player.transform.rotation);
-        }
-
-
-        private Vector2 GetHangingPosition()
-        {
-            return new(CornerPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                CornerPosition.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
+            player.Core.Movement.ResetFreezePos();
         }
     }
 }

@@ -36,6 +36,8 @@ namespace Entities
 
         public void SetColliderHeight(float height)
         {
+            if (BodyCollider.size.y == height) return;
+
             Vector2 offset = BodyCollider.offset;
             Vector2 newSize = new(BodyCollider.size.x, height);
             offset.y += (height - BodyCollider.size.y) / 2;

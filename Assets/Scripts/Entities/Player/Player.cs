@@ -12,7 +12,6 @@ namespace Entities
 
         #region States
         public PlayerState PreviousState { get; set; }
-        public PlayerOnGroundState LastOnGroundState { get; set; }
         public PlayerInAirState InAirState { get; private set; }
         public PlayerJumpState JumpState { get; private set; }
         public PlayerLandingState LandingState { get; private set; }

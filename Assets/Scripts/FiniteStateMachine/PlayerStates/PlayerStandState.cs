@@ -6,30 +6,33 @@ namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerStandState : PlayerOnGroundState
     {
-        protected override float MoveSpeed => player.Data.StandMoveSpeed;
         protected override float ColiderHeight => player.Data.StandColiderHeight;
-        protected override int HashIdle => Animator.StringToHash("IdleStand");
-        protected override int HashMove => Animator.StringToHash("RunStart");
 
+        private readonly int hashIsMoving = Animator.StringToHash("isMoving");
+        private readonly int hashIdle = Animator.StringToHash("IdleStand");
+        private readonly int hashMove = Animator.StringToHash("RunStart");
 
         public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
-        {
-			
+        {			
 		}
-
 
         public override void Enter()
         {
             base.Enter();
 
-            isCrouching = false;
-            
             player.Input.SitStandEvent += OnSit;
+            player.Input.JumpEvent += OnJump;
+            player.Input.DashEvent += OnSlide;
+
+            player.Animator.Play(player.Input.NormInputX != 0 ? hashMove : hashIdle);
         }
 
         public override void Update()
         {
             base.Update();
+
+            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != 0);
+            player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.NormInputX);
         }
 
         public override void Exit()
@@ -37,6 +40,8 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.SitStandEvent -= OnSit;
+            player.Input.JumpEvent -= OnJump;
+            player.Input.DashEvent -= OnSlide;
         }
 
         public override void AnimationTrigger()
@@ -69,7 +74,7 @@ namespace FiniteStateMachine.PlayerStates
             stateMachine.ChangeState(player.SitStandState);
         }
 
-		protected override void OnJump()
+		private void OnJump()
 		{
             stateMachine.ChangeState(player.JumpState);
 
@@ -79,14 +84,9 @@ namespace FiniteStateMachine.PlayerStates
                 player.transform.rotation);
         }
 
-		protected override void OnSlide()
+		private void OnSlide()
 		{
 			stateMachine.ChangeState(player.SlideState);
-
-            player.Core.VisualFx.CreateDust(
-                DustType.StartSlide,
-                player.Core.Sensor.GroundHit.point,
-                player.transform.rotation);
         }
 		#endregion
 	}

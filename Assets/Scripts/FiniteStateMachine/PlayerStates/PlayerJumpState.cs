@@ -28,7 +28,7 @@ namespace FiniteStateMachine.PlayerStates
 				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJumpFromGround;
 			}
-			else if (player.PreviousState is PlayerOnWallState or PlayerLedgeState)
+			else if (player.PreviousState is PlayerOnWallState or PlayerOnLedgeState)
 			{
 				finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
