@@ -76,12 +76,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		private void OnJump()
 		{
-            stateMachine.ChangeState(player.JumpState);
-
-            player.Core.VisualFx.CreateDust(
-                DustType.JumpFromGround,
-                player.Core.Sensor.GroundHit.point,
-                player.transform.rotation);
+            stateMachine.ChangeState(player.JumpState); 
         }
 
 		private void OnSlide()

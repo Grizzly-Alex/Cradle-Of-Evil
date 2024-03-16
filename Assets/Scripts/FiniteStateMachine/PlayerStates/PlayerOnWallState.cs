@@ -67,16 +67,6 @@ namespace FiniteStateMachine.PlayerStates
             if (!isAnimFinished) return;
 
             stateMachine.ChangeState(player.JumpState);
-
-            player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
-                new Vector2()
-                {
-                    x = player.Core.Movement.FacingDirection != 1
-                        ? player.BodyCollider.bounds.max.x
-                        : player.BodyCollider.bounds.min.x,
-                    y = player.BodyCollider.bounds.min.y,
-                },
-                player.transform.rotation);
         }
     }
 }

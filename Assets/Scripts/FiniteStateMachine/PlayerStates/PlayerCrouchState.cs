@@ -9,7 +9,6 @@ namespace FiniteStateMachine.PlayerStates
     {
         protected override float ColiderHeight => player.Data.CrouchColiderHeight;
         private readonly int hashIdle = Animator.StringToHash("IdleCrouch");
-        private bool isTouchedRoof;
 
 
         public PlayerCrouchState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -40,37 +39,15 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent -= OnJump;
         }
 
-        public override void DoCheck()
-        {
-            base.DoCheck();
-
-            isTouchedRoof = player.Core.Sensor.IsCellingDetect();
-        }
-
-        public override void AnimationTrigger()
-        {
-            player.Core.VisualFx.CreateDust(
-                DustType.Tiny,
-                new Vector2()
-                {
-                    x = player.Core.Movement.FacingDirection != 1 
-                        ? player.BodyCollider.bounds.max.x 
-                        : player.BodyCollider.bounds.min.x,
-                    y = player.Core.Sensor.GroundHit.point.y,
-                },
-                player.transform.rotation);
-        }
 
         #region Input
         private void OnStand()
         {
-            if (!isTouchedRoof) stateMachine.ChangeState(player.SitStandState);            
+            stateMachine.ChangeState(player.SitStandState);            
         }
 
 		private void OnJump()
         {
-            if (isTouchedRoof) return;
-
             player.SetColliderHeight(player.Data.StandColiderHeight);
 
             stateMachine.ChangeState(player.JumpState);
@@ -80,16 +57,6 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Sensor.GroundHit.point,
                 player.transform.rotation);
         }
-
-		//private void OnSlide()
-  //      {
-  //          stateMachine.ChangeState(player.SlideState);
-
-  //          player.Core.VisualFx.CreateDust(
-  //              DustType.StartSlide,
-  //              player.Core.Sensor.GroundHit.point,
-  //              player.transform.rotation);
-  //      }
         #endregion
     }
 }

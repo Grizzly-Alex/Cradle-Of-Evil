@@ -46,9 +46,14 @@ namespace CoreSystem.Components
             }
         }
 
-        public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation)
+        public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
         {
             Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
+
+            if (flipHorizontal)
+            {
+                dust.transform.Rotate(0.0f, 180, 0.0f);
+            }
 
             if (dust != null)
             {

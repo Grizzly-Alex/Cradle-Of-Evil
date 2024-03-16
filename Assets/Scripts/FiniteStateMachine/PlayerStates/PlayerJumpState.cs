@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -25,18 +26,36 @@ namespace FiniteStateMachine.PlayerStates
 
             if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
-				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                player.Core.VisualFx.CreateDust(
+					DustType.JumpFromGround,
+					player.Core.Sensor.GroundHit.point,
+					player.transform.rotation);
+
+                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJumpFromGround;
 			}
-			else if (player.PreviousState is PlayerOnWallState or PlayerOnLedgeState)
+			else if (player.PreviousState is PlayerOnWallState or PlayerHangOnLedgeState)
 			{
-				finishTime = Time.time + player.Data.WallJumpTime;
+                player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+				new Vector2()
+				{
+					x = player.Core.Movement.FacingDirection != 1
+						? player.BodyCollider.bounds.min.x
+						: player.BodyCollider.bounds.max.x,
+					y = player.BodyCollider.bounds.min.y,
+				},
+                player.transform.rotation, true);
+
+                finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
 				player.Core.Movement.Flip();
-				player.Core.Movement.SetVelocity(player.Data.JumpForce, new Vector2(1, 2), player.Core.Movement.FacingDirection);
+				player.Core.Movement.SetVelocity(
+					player.Data.JumpForce,
+					new Vector2(1, 2),
+					player.Core.Movement.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
-			else if (player.PreviousState is PlayerInAirState)
+            else if (player.PreviousState is PlayerInAirState)
 			{
 				player.InAirState.UseDoubleJump = true;
 				player.Animator.Play(hashDoubleJump);

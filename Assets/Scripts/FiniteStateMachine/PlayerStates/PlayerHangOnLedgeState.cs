@@ -59,11 +59,6 @@ namespace FiniteStateMachine.PlayerStates
             if (!isHanging) return;
 
             stateMachine.ChangeState(player.JumpState);
-
-            player.Core.VisualFx.CreateDust(
-                DustType.JumpFromWall,
-                CornerPosition,
-                player.transform.rotation);
         }
 
 
