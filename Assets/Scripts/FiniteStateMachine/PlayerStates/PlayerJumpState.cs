@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -23,25 +24,56 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            if (player.States.PreviousState is PlayerOnGroundState or PlayerLandingState) 
+            if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
-				player.Core.Movement.SetVelocityY(player.Data.JumpForce);
-                jumpUpdate = UpdateJumpFromGround;
+                player.Core.VisualFx.CreateDust(
+					DustType.JumpFromGround,
+					player.Core.Sensor.GroundHit.point,
+					player.transform.rotation);
+
+                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                jumpUpdate = UpdateJump;
 			}
-			else if (player.States.PreviousState is PlayerOnWallState or PlayerLedgeClimbState)
+			else if (player.PreviousState is PlayerOnWallState)
 			{
-				finishTime = Time.time + player.Data.WallJumpTime;
+                player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+				new Vector2()
+				{
+					x = player.Core.Movement.FacingDirection != 1
+						? player.BodyCollider.bounds.min.x
+						: player.BodyCollider.bounds.max.x,
+					y = player.BodyCollider.bounds.min.y,
+				},
+                player.transform.rotation, true);
+
+                finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
 				player.Core.Movement.Flip();
-				player.Core.Movement.SetVelocity(player.Data.JumpForce, new Vector2(1, 2), player.Core.Movement.FacingDirection);
+				player.Core.Movement.SetVelocity(
+					player.Data.JumpForce,
+					new Vector2(1, 2),
+					player.Core.Movement.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
-			else if (player.States.PreviousState is PlayerInAirState)
+            else if (player.PreviousState is PlayerHangOnLedgeState)
+            {
+                player.Core.VisualFx.CreateDust(DustType.JumpFromWall, 
+					PlayerOnLedgeState.CornerPosition,
+					player.transform.rotation, true);
+
+                finishTime = Time.time + player.Data.WallJumpTime;
+                player.Animator.Play(hashInAir);
+                player.Core.Movement.Flip();
+                player.Core.Movement.SetVelocity(
+                    player.Data.JumpForce,
+                    new Vector2(1, 2),
+                    player.Core.Movement.FacingDirection);
+                jumpUpdate = UpdateJumpFromWall;
+            }
+            else if (player.PreviousState is PlayerInAirState)
 			{
-				player.States.InAir.UseDoubleJump = true;
-				player.Animator.Play(hashDoubleJump);
-				player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
-                jumpUpdate = UpdateJumpFromAir;
+                player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
+                jumpUpdate = UpdateJump;
 			}
         }
 
@@ -60,7 +92,7 @@ namespace FiniteStateMachine.PlayerStates
 		}
 
 		#region Update
-		private void UpdateJumpFromGround()
+		private void UpdateJump()
 		{
 			if (!isGrounded) isAbilityDone = true;
 		}
@@ -69,11 +101,6 @@ namespace FiniteStateMachine.PlayerStates
 		{			
 			player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
 			if (Time.time >= finishTime) isAbilityDone = true;
-		}
-
-		private void UpdateJumpFromAir()
-		{	
-			isAbilityDone = true;
 		}
 		#endregion
 

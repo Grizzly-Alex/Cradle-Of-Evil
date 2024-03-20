@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerOnWallState : PlayerBaseState
+    public class PlayerOnWallState : PlayerState
     {
         public Vector2 DetectedPos { private get; set; }
 
-        private readonly int landingOnWall = Animator.StringToHash("LandingOnWall");
+        private readonly int hashLandingOnWall = Animator.StringToHash("LandingOnWall");
         private bool isGrounded;
+        private bool isGrabWallDetected;
         private Vector2 holdPosition;
 
         public PlayerOnWallState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -24,8 +25,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-			player.States.Dash.ResetAmountOfDash();
-			player.States.Jump.ResetAmountOfJump();
+			player.DashState.ResetAmountOfDash();
+			player.JumpState.ResetAmountOfJump();
 
             player.Core.Movement.SetVelocityZero();
 
@@ -36,7 +37,7 @@ namespace FiniteStateMachine.PlayerStates
             player.transform.position = holdPosition;
             player.Core.Movement.FreezePosY();
 
-            player.Animator.Play(landingOnWall);
+            player.Animator.Play(hashLandingOnWall);
         }
 
         public override void Update()
@@ -45,8 +46,12 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isGrounded)
             {
-                stateMachine.ChangeState(player.States.Stand);
-            }          
+                stateMachine.ChangeState(player.StandState);
+            }
+            else if (!isGrabWallDetected)
+            {
+                stateMachine.ChangeState(player.InAirState);
+            }
         }
 
         public override void Exit()
@@ -60,23 +65,14 @@ namespace FiniteStateMachine.PlayerStates
         public override void DoCheck()
         {
             isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
         }
 
         private void OnJump()
         {
             if (!isAnimFinished) return;
 
-            stateMachine.ChangeState(player.States.Jump);
-
-            player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
-                new Vector2()
-                {
-                    x = player.Core.Movement.FacingDirection != 1
-                        ? player.BodyCollider.bounds.max.x
-                        : player.BodyCollider.bounds.min.x,
-                    y = player.BodyCollider.bounds.min.y,
-                },
-                player.transform.rotation);
+            stateMachine.ChangeState(player.JumpState);
         }
     }
 }

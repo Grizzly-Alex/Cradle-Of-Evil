@@ -2,10 +2,9 @@
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public abstract class PlayerAbilityState : PlayerBaseState
+    public abstract class PlayerAbilityState : PlayerState
     {
         protected bool isGrounded;
-        protected bool isCellingDetected;
         protected bool isAbilityDone;
 
         protected PlayerAbilityState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -27,18 +26,11 @@ namespace FiniteStateMachine.PlayerStates
             {
                 if (isGrounded)
                 {
-                    if (isCellingDetected)
-                    {
-                        stateMachine.ChangeState(player.States.Crouch);
-                    }
-                    else
-                    {
-                        stateMachine.ChangeState(player.States.PreviousState);
-                    }
+                    stateMachine.ChangeState(player.StandState);                   
                 }
                 else
                 {
-                    stateMachine.ChangeState(player.States.InAir);
+                    stateMachine.ChangeState(player.InAirState);
                 }
             }
         }
@@ -51,7 +43,6 @@ namespace FiniteStateMachine.PlayerStates
         public override void DoCheck()
         {
             isGrounded = player.Core.Sensor.IsGroundDetect();
-            isCellingDetected = player.Core.Sensor.IsCellingDetect();
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Entities
         #region Data
         [field: Header("MOVEMENT")]
         [field: SerializeField] public float StandMoveSpeed { get; private set; }
-        [field: SerializeField] public float CrouchMoveSpeed { get; private set; }
         [field: SerializeField] public float InAirMoveSpeed { get; private set; }
 
         [field: Header("JUMPING")]

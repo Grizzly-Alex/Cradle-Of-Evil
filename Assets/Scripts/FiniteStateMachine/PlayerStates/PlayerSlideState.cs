@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Pool.ItemsPool;
-using System;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -8,11 +7,10 @@ namespace FiniteStateMachine.PlayerStates
     public sealed class PlayerSlideState : PlayerAbilityState
     {
         private readonly int hashStartDash = Animator.StringToHash("StartSlide");
-        private readonly int hashDashing = Animator.StringToHash("Sliding");
-        private readonly int hashToCrouch = Animator.StringToHash("toCrouch");
-        private readonly int hashToStand = Animator.StringToHash("toStand");
+        private readonly int hashIsMoving = Animator.StringToHash("isMoving");
+
+        private bool isTouchedRoof;
         private float finishTime;
-        private Action trigger;
         private Dust dust;
 
         public PlayerSlideState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -24,27 +22,23 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
+            player.Core.VisualFx.CreateDust(
+                DustType.StartSlide,
+                player.Core.Sensor.GroundHit.point,
+                player.transform.rotation);
+
             dust = player.Core.VisualFx.CreateDust(
                 DustType.Sliding,
                 player.transform, 
-                new Vector2(0.4f, 0));
+                new Vector2(x: 0.4f, y: 0.0f));
 
             finishTime = Time.time + player.Data.SlideTime;
 
             player.Core.Movement.ResetFreezePos();
             player.SetColliderHeight(player.Data.CrouchColiderHeight);
-          
-            switch (player.States.PreviousState)
-            {
-                case PlayerCrouchState: 
-                    player.Animator.Play(hashDashing);
-                    trigger = () => player.Animator.SetTrigger(hashToCrouch);
-                    break;
-                case PlayerStandState: 
-                    player.Animator.Play(hashStartDash);
-                    trigger = () => player.Animator.SetTrigger(hashToStand);
-                    break;
-            }
+
+            player.Animator.SetBool(hashIsMoving, true);
+            player.Animator.Play(hashStartDash);
         }
 
         public override void Update()
@@ -55,26 +49,24 @@ namespace FiniteStateMachine.PlayerStates
             {
                 isAbilityDone = true;
             }
-            else if (Time.time >= finishTime)
+            else if (Time.time >= finishTime && !isTouchedRoof)
             {
                 dust.ReturnToPool();
+                player.Animator.SetBool(hashIsMoving, false);
 
                 if (!isAnimFinished)
                 {
                     player.Core.Movement.SetVelocityZero();
                     player.Core.Movement.FreezePosOnSlope();
-
-                    if (!isCellingDetected)
-                    {
-                        trigger.Invoke();
-                    }
-                    else player.Animator.SetTrigger(hashToCrouch);
                 }
-                else isAbilityDone = true;
+                else
+                { 
+                    isAbilityDone = true;
+                }
             }
             else
             {               
-                player.Core.VisualFx.CreateAfterImage(0.6f);  
+                player.Core.VisualFx.CreateAfterImage(distanceBetweenImages: 0.6f);  
                 player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
             }
         }
@@ -84,10 +76,15 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             dust.ReturnToPool();
-            player.Animator.ResetTrigger(hashToStand);
-            player.Animator.ResetTrigger(hashToCrouch);
             player.Core.Movement.ResetFreezePos();
             player.Input.DashInputCooldown = player.Data.SlideCooldown;
+        }
+
+        public override void DoCheck()
+        {
+            base.DoCheck();
+
+            isTouchedRoof = player.Core.Sensor.IsCellingDetect();
         }
 
         public override void AnimationTrigger()

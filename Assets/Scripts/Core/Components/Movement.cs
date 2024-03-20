@@ -89,7 +89,7 @@ namespace CoreSystem.Components
         #endregion
 
         #region Flip
-        public void FlipToMovement(int xInput)
+        public void FlipToDirection(int xInput)
         {
             if (xInput != 0 && xInput != FacingDirection) 
                 Flip(); 

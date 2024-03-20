@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public sealed class PlayerLandingState : PlayerBaseState
+    public sealed class PlayerLandingState : PlayerState
 	{
         private readonly int hashSoftLanding = Animator.StringToHash("SoftLanding");
         private readonly int hashHardLanding = Animator.StringToHash("HardLanding");
@@ -30,8 +30,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.States.Dash.ResetAmountOfDash();
-			player.States.Jump.ResetAmountOfJump();
+            player.DashState.ResetAmountOfDash();
+			player.JumpState.ResetAmountOfJump();
 			player.Core.Movement.SetVelocityZero();
 
             if (player.Core.Sensor.GetGroundSlopeAngle() != 0.0f)
@@ -49,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
                 updateLogic = () =>
                 {
                     if (isAnimFinished) 
-                        stateMachine.ChangeState(player.States.Stand);                    
+                        stateMachine.ChangeState(player.StandState);                    
                 };                               
             }
             else
@@ -59,7 +59,7 @@ namespace FiniteStateMachine.PlayerStates
                 updateLogic = () =>
                 {
                     if (isAnimFinished || player.Input.NormInputX != 0) 
-                        stateMachine.ChangeState(player.States.Stand);
+                        stateMachine.ChangeState(player.StandState);
                 };
             }
         }
@@ -70,7 +70,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (!isGrounded)
             {
-                stateMachine.ChangeState(player.States.InAir);
+                stateMachine.ChangeState(player.InAirState);
             }
             else
             {
@@ -94,7 +94,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (LandingForce >= player.Data.LandingThreshold) return;
 
-            stateMachine.ChangeState(player.States.Jump);
+            stateMachine.ChangeState(player.JumpState);
 
             player.Core.VisualFx.CreateDust(
                 DustType.JumpFromGround,
