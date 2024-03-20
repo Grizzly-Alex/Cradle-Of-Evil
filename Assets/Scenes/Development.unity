@@ -9594,7 +9594,7 @@ Transform:
   m_GameObject: {fileID: 1444150607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -39.5, y: -2.71875, z: -10}
+  m_LocalPosition: {x: -62.5, y: 0.28125, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9706,7 +9706,7 @@ Transform:
   m_GameObject: {fileID: 1892614046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -39.5, y: -2.09375, z: -10}
+  m_LocalPosition: {x: -60.1875, y: 0.28125, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9842,14 +9842,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bc3eddd995a2746970710a9ddf2028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellingRadius: 0.29
-  groundDistance: 0.15
+  cellingRadius: 0.26
+  groundDistance: 0.3
   wallDistance: 0.4
+  horizontalLedgePrecision: 0.1
   <CeilingSensor>k__BackingField: {fileID: 6900700827998271792}
   <GroundSensor>k__BackingField: {fileID: 8695246330380317351}
   <WallSensor>k__BackingField: {fileID: 7920299856601731084}
-  <HorizontalLedgeSensor>k__BackingField: {fileID: 8225209158854972715}
-  <VerticalLedgeSensor>k__BackingField: {fileID: 0}
+  <HorizontalSensor>k__BackingField: {fileID: 8225209158854972715}
   <PlatformsLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
@@ -9956,15 +9956,15 @@ Transform:
   m_GameObject: {fileID: 332105253614478520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -39.5, y: -3.71875, z: 0}
+  m_LocalPosition: {x: -62.5, y: -0.71875, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4733623414340094785}
-  - {fileID: 8225209158854972715}
   - {fileID: 6900700827998271792}
-  - {fileID: 7920299856601731084}
   - {fileID: 8695246330380317351}
+  - {fileID: 7920299856601731084}
+  - {fileID: 8225209158854972715}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3768209297592592169
@@ -10082,9 +10082,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9189762886003958029}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.09375, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3518069804518867130}
@@ -10124,9 +10124,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 903976280927482767}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000014305115, y: 0.71875, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.78125, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3518069804518867130}
@@ -10152,9 +10152,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8321995402875586116}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3749999, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.4375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3518069804518867130}
@@ -10169,7 +10169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8225209158854972715}
   m_Layer: 6
-  m_Name: HorizontalLedgeSensor
+  m_Name: LedgeSensor
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -10183,9 +10183,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2228584289319483770}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.03125, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.21875, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3518069804518867130}
