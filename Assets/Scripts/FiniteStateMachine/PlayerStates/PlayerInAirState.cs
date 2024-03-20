@@ -28,8 +28,8 @@ namespace FiniteStateMachine.PlayerStates
 
 			player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
-                       
-            PlayInAirAnimation();
+
+            player.Animator.Play(hashInAir);
         }
 
         public override void Update()
@@ -82,18 +82,6 @@ namespace FiniteStateMachine.PlayerStates
 		public override void AnimationTrigger() 
             => player.Animator.Play(hashInAir);
 
-		private void PlayInAirAnimation()
-		{
-			if (!UseDoubleJump)
-			{
-				player.Animator.Play(hashInAir);
-			}
-			else
-			{
-				player.Animator.Play(player.JumpState.GetDoubleJumpHashAnim());
-				UseDoubleJump = false;
-			}
-		}
 
         private void TrackingFallingForce() 
         {

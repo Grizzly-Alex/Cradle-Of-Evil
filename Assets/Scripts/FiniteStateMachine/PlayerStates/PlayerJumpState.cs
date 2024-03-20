@@ -32,9 +32,9 @@ namespace FiniteStateMachine.PlayerStates
 					player.transform.rotation);
 
                 player.Core.Movement.SetVelocityY(player.Data.JumpForce);
-                jumpUpdate = UpdateJumpFromGround;
+                jumpUpdate = UpdateJump;
 			}
-			else if (player.PreviousState is PlayerOnWallState or PlayerHangOnLedgeState)
+			else if (player.PreviousState is PlayerOnWallState)
 			{
                 player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
 				new Vector2()
@@ -55,12 +55,25 @@ namespace FiniteStateMachine.PlayerStates
 					player.Core.Movement.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
+            else if (player.PreviousState is PlayerHangOnLedgeState)
+            {
+                player.Core.VisualFx.CreateDust(DustType.JumpFromWall, 
+					PlayerOnLedgeState.CornerPosition,
+					player.transform.rotation, true);
+
+                finishTime = Time.time + player.Data.WallJumpTime;
+                player.Animator.Play(hashInAir);
+                player.Core.Movement.Flip();
+                player.Core.Movement.SetVelocity(
+                    player.Data.JumpForce,
+                    new Vector2(1, 2),
+                    player.Core.Movement.FacingDirection);
+                jumpUpdate = UpdateJumpFromWall;
+            }
             else if (player.PreviousState is PlayerInAirState)
 			{
-				player.InAirState.UseDoubleJump = true;
-				player.Animator.Play(hashDoubleJump);
-				player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
-                jumpUpdate = UpdateJumpFromAir;
+                player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
+                jumpUpdate = UpdateJump;
 			}
         }
 
@@ -79,7 +92,7 @@ namespace FiniteStateMachine.PlayerStates
 		}
 
 		#region Update
-		private void UpdateJumpFromGround()
+		private void UpdateJump()
 		{
 			if (!isGrounded) isAbilityDone = true;
 		}
@@ -88,11 +101,6 @@ namespace FiniteStateMachine.PlayerStates
 		{			
 			player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
 			if (Time.time >= finishTime) isAbilityDone = true;
-		}
-
-		private void UpdateJumpFromAir()
-		{	
-			isAbilityDone = true;
 		}
 		#endregion
 

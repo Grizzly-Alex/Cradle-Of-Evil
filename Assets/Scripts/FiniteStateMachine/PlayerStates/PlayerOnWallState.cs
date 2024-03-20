@@ -10,6 +10,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private readonly int hashLandingOnWall = Animator.StringToHash("LandingOnWall");
         private bool isGrounded;
+        private bool isGrabWallDetected;
         private Vector2 holdPosition;
 
         public PlayerOnWallState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -46,7 +47,11 @@ namespace FiniteStateMachine.PlayerStates
             if (isGrounded)
             {
                 stateMachine.ChangeState(player.StandState);
-            }          
+            }
+            else if (!isGrabWallDetected)
+            {
+                stateMachine.ChangeState(player.InAirState);
+            }
         }
 
         public override void Exit()
@@ -60,6 +65,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void DoCheck()
         {
             isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
         }
 
         private void OnJump()
