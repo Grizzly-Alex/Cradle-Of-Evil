@@ -20,9 +20,14 @@ namespace FiniteStateMachine.PlayerStates
             isAnimFinished = false;    
         }
 
-        public virtual void Update()
+        public virtual void LogicUpdate()
         {
             DoCheck();
+        }
+
+        public virtual void PhysicsUpdate()
+        {
+            
         }
 
         public virtual void Exit()

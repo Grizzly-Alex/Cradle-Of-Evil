@@ -27,18 +27,24 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.Play(player.Input.NormInputX != 0 ? hashMove : hashIdle);
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
-            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != 0);
+            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != 0);           
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+
             player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.NormInputX);
         }
 
         public override void Exit()
         {
             base.Exit();
-
+            player.Core.Movement.SetVelocityZero();
             player.Input.SitStandEvent -= OnSit;
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnSlide;

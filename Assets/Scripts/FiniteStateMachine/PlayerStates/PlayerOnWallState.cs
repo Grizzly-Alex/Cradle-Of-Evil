@@ -40,9 +40,9 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.Play(hashLandingOnWall);
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             if (isGrounded)
             {
