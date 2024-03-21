@@ -32,9 +32,9 @@ namespace FiniteStateMachine.PlayerStates
             player.transform.position = GetHangingPosition();
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging)
             {

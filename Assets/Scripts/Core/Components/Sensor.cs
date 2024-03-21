@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -99,5 +97,4 @@ namespace CoreSystem.Components
                 new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray down           
         }
     }
-
 }

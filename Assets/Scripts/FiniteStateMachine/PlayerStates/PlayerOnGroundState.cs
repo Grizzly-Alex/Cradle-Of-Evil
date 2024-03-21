@@ -19,9 +19,9 @@ namespace FiniteStateMachine.PlayerStates
 
             player.SetColliderHeight(ColiderHeight);
         }
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             player.Core.Movement.FlipToDirection(player.Input.NormInputX);
 

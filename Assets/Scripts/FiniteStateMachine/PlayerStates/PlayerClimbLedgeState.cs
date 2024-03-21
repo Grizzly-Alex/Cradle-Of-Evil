@@ -21,9 +21,9 @@ namespace FiniteStateMachine.PlayerStates
             player.transform.position = climbedPosition;
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             if (isAnimFinished)
             {

@@ -9845,7 +9845,7 @@ MonoBehaviour:
   cellingRadius: 0.26
   groundDistance: 0.3
   wallDistance: 0.4
-  horizontalLedgePrecision: 0.1
+  ledgePrecision: 0.12
   <CeilingSensor>k__BackingField: {fileID: 6900700827998271792}
   <GroundSensor>k__BackingField: {fileID: 8695246330380317351}
   <WallSensor>k__BackingField: {fileID: 7920299856601731084}

@@ -31,7 +31,12 @@ namespace Entities
         protected virtual void Update()
         {
             Core.LogicUpdate();
-            stateMachine.CurrentState.Update();           
+            stateMachine.CurrentState.LogicUpdate();           
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            stateMachine.CurrentState.PhysicsUpdate();
         }
 
         public void SetColliderHeight(float height)

@@ -32,13 +32,12 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.Play(hashInAir);
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             player.Animator.SetFloat(hashVelocityY, сuгrentVelocityY);
             player.Core.Movement.FlipToDirection(player.Input.NormInputX);
-            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
 
             if (isGrounded)
             {
@@ -53,6 +52,13 @@ namespace FiniteStateMachine.PlayerStates
             {
 				stateMachine.ChangeState(player.OnWallState);
             }
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+
+            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
         }
 
         public override void Exit()

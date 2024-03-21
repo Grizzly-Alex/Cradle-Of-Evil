@@ -9,6 +9,7 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashStartDash = Animator.StringToHash("StartSlide");
         private readonly int hashIsMoving = Animator.StringToHash("isMoving");
 
+        private bool isMoving;
         private bool isTouchedRoof;
         private float finishTime;
         private Dust dust;
@@ -39,20 +40,23 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Animator.SetBool(hashIsMoving, true);
             player.Animator.Play(hashStartDash);
+            isMoving = true;
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             if (!isGrounded)
             {
+                isMoving = false;
                 isAbilityDone = true;
             }
             else if (Time.time >= finishTime && !isTouchedRoof)
             {
                 dust.ReturnToPool();
                 player.Animator.SetBool(hashIsMoving, false);
+                isMoving = false;
 
                 if (!isAnimFinished)
                 {
@@ -66,7 +70,16 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {               
-                player.Core.VisualFx.CreateAfterImage(distanceBetweenImages: 0.6f);  
+                player.Core.VisualFx.CreateAfterImage(distanceBetweenImages: 0.6f);
+
+            }
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            if (isMoving)
+            {
                 player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
             }
         }

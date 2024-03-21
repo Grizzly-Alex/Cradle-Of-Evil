@@ -25,9 +25,9 @@ namespace FiniteStateMachine.PlayerStates
 			player.Animator.Play(hashDash);
         }
 
-        public override void Update()
+        public override void LogicUpdate()
         {
-            base.Update();
+            base.LogicUpdate();
 
             if (Time.time >= finishTime)
             {
@@ -36,8 +36,14 @@ namespace FiniteStateMachine.PlayerStates
             else
             {
                 player.Core.VisualFx.CreateAfterImage(0.6f);
-                player.Core.Movement.SetVelocity(player.Data.DashSpeed, new Vector2(1, 0), player.Core.Movement.FacingDirection);
             }
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+
+            player.Core.Movement.SetVelocity(player.Data.DashSpeed, new Vector2(1, 0), player.Core.Movement.FacingDirection);
         }
 
         public override void Exit()
