@@ -46,11 +46,6 @@ namespace FiniteStateMachine.PlayerStates
             player.SetColliderHeight(player.Data.StandColiderHeight);
 
             stateMachine.ChangeState(player.JumpState);
-
-            player.Core.VisualFx.CreateDust(
-                DustType.JumpFromGround,
-                player.Core.Sensor.GroundHit.point,
-                player.transform.rotation);
         }
         #endregion
     }
