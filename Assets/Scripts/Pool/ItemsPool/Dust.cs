@@ -27,6 +27,7 @@ namespace Pool.ItemsPool
         private readonly int brake = Animator.StringToHash("BrakeDust");
         private readonly int sliding = Animator.StringToHash("SlidingDust");
         private readonly int dash = Animator.StringToHash("DashDust");
+        private readonly int landingOnWall = Animator.StringToHash("LandingOnWallDust");
         #endregion
 
         private void Awake()
@@ -96,6 +97,7 @@ namespace Pool.ItemsPool
                 DustType.Brake => brake,
                 DustType.Tiny => tiny,
                 DustType.Dash => dash,
+                DustType.LandingOnWall => landingOnWall,
                 _ => default
             };
 
@@ -115,5 +117,6 @@ namespace Pool.ItemsPool
         HardLanding = 8,
         Sliding = 9,
         Dash = 10,
+        LandingOnWall = 11,
     }
 }

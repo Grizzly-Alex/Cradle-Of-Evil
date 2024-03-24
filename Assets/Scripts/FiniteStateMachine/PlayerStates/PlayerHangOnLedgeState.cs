@@ -53,14 +53,14 @@ namespace FiniteStateMachine.PlayerStates
         public override void AnimationTrigger()
             => isHanging = true;
 
-
+        #region Input
         private void OnJump()
         {
             if (!isHanging) return;
 
             stateMachine.ChangeState(player.JumpState);
         }
-
+        #endregion
 
         private Vector2 GetHangingPosition()
         {

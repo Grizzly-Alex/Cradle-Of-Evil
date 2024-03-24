@@ -99,6 +99,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private void ResetFallingForce() => fallingForce = default;
 
+        #region Input
         private void OnJump()
         {
             if (!player.JumpState.CanJump()) return;
@@ -111,7 +112,7 @@ namespace FiniteStateMachine.PlayerStates
 			if (!player.DashState.CanDash()) return;
 
             stateMachine.ChangeState(player.DashState);
-            player.Core.VisualFx.CreateDust(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
+        #endregion
     }
 }

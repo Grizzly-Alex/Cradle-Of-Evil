@@ -21,7 +21,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Core.VisualFx.CreateDust(DustType.Tiny, DetectedPos, player.transform.rotation);
+            CreateDust(yOffset: 0.15f);
 
             player.Input.JumpEvent += OnJump;
 
@@ -68,11 +68,21 @@ namespace FiniteStateMachine.PlayerStates
             isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
         }
 
+
+        #region Input
         private void OnJump()
         {
             if (!isAnimFinished) return;
 
             stateMachine.ChangeState(player.JumpState);
+        }
+        #endregion
+
+        private void CreateDust(float yOffset)
+        {
+            player.Core.VisualFx.CreateDust(DustType.LandingOnWall,
+                new Vector2(DetectedPos.x, player.BodyCollider.bounds.center.y - yOffset),
+                player.transform.rotation);
         }
     }
 }
