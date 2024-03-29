@@ -87,6 +87,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		private void OnSlide()
 		{
+            if (player.Input.NormInputX != player.Core.Movement.FacingDirection) return;
 			stateMachine.ChangeState(player.SlideState);
         }
 		#endregion

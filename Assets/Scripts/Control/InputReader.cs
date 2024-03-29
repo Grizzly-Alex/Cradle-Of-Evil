@@ -80,7 +80,7 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     public void OnDash(InputAction.CallbackContext context)
     {
         if(context.performed && canDashInput)
-        {       
+        { 
             DashEvent?.Invoke();
         }
     }

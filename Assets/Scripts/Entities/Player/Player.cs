@@ -22,7 +22,7 @@ namespace Entities
         public PlayerHangOnLedgeState HangOnLedgeState { get; private set; }
         public PlayerClimbLedgeState ClimbLedgeState { get; private set; }
         public PlayerOnWallState OnWallState { get; private set; }
-        public PlayerDashState DashState { get; private set; }
+        public PlayerAirDashState AirDashState { get; private set; }
         #endregion
 
         protected override void Awake()
@@ -39,7 +39,7 @@ namespace Entities
             HangOnLedgeState = new PlayerHangOnLedgeState(stateMachine, this);
             ClimbLedgeState = new PlayerClimbLedgeState(stateMachine, this);
             OnWallState = new PlayerOnWallState(stateMachine, this);
-            DashState = new PlayerDashState(stateMachine, this);
+            AirDashState = new PlayerAirDashState(stateMachine, this);
         }
 
         protected override void Start()

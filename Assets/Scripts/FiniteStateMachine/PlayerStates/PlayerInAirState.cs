@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
             base.Enter();
 
 			player.Input.JumpEvent += OnJump;
-            player.Input.DashEvent += OnDash;
+            player.Input.DashEvent += OnAirDash;
 
             player.Animator.Play(hashInAir);
         }
@@ -66,7 +66,7 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             player.Input.JumpEvent -= OnJump;
-            player.Input.DashEvent -= OnDash;
+            player.Input.DashEvent -= OnAirDash;
 
             ResetFallingForce();
         }
@@ -107,11 +107,11 @@ namespace FiniteStateMachine.PlayerStates
             stateMachine.ChangeState(player.JumpState);
         }
 
-        private void OnDash()
+        private void OnAirDash()
         {
-			if (!player.DashState.CanDash()) return;
+			if (!player.AirDashState.CanDash()) return;
 
-            stateMachine.ChangeState(player.DashState);
+            stateMachine.ChangeState(player.AirDashState);
         }
         #endregion
     }
