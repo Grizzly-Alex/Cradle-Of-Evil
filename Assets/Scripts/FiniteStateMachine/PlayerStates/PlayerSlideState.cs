@@ -41,6 +41,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Animator.SetBool(hashIsMoving, true);
             player.Animator.Play(hashStartDash);
             isMoving = true;
+            player.Input.InputCooldown = player.Data.SlideCooldown;
         }
 
         public override void LogicUpdate()
@@ -90,7 +91,6 @@ namespace FiniteStateMachine.PlayerStates
 
             dust.ReturnToPool();
             player.Core.Movement.ResetFreezePos();
-            player.Input.DashInputCooldown = player.Data.SlideCooldown;
         }
 
         public override void DoCheck()

@@ -6,7 +6,7 @@ namespace FiniteStateMachine.PlayerStates
 {
     public class PlayerAirDashState : PlayerAbilityState
     {
-        private readonly int hashDash = Animator.StringToHash("Dashing");
+        private readonly int hashDash = Animator.StringToHash("AirDashing");
 		private readonly int amountOfDash = 1;
 		private int amountOfDashLeft;
         private float finishTime;

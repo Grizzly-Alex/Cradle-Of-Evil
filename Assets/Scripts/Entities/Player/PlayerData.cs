@@ -15,11 +15,12 @@ namespace Entities
         [field: SerializeField] public float JumpForce { get; private set; }
         [field: SerializeField] public float DoubleJumpForce { get; private set; }
         [field: SerializeField] public float WallJumpTime { get; private set; }
+        [field: SerializeField] public byte AmountOfJump { get; private set; }
 
         [field: Header("LANDING")]
         [field: SerializeField] public float LandingThreshold { get; private set; }
 
-        [field: Header("DASHING")]
+        [field: Header("AIR DASHING")]
         [field: SerializeField] public float DashSpeed { get; private set; }
         [field: SerializeField] public float DashTime { get; private set; }
 
@@ -27,6 +28,11 @@ namespace Entities
 		[field: SerializeField] public float SlideSpeed { get; private set; }
         [field: SerializeField] public float SlideTime { get; private set; }
         [field: SerializeField] public float SlideCooldown { get; private set; }
+
+        [field: Header("KNOCK BACK")]
+        [field: SerializeField] public float KnockBackSpeed { get; private set; }
+        [field: SerializeField] public float KnockBackTime { get; private set; }
+        [field: SerializeField] public float KnockBackCooldown { get; private set; }
 
         [field: Header("COLIDER SIZE")]
         [field: SerializeField] public float StandColiderHeight { get; private set; }
