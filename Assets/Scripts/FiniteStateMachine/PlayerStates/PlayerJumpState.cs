@@ -10,14 +10,13 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashDoubleJump = Animator.StringToHash("DoubleJump");
 		private readonly int hashVelocityY = Animator.StringToHash("velocityY");
 		private readonly int hashInAir = Animator.StringToHash("InAirState");
-		private readonly int amountOfJump = 2;
-		private int amountOfJumpLeft;
+		private byte amountOfJumpLeft;
 		private float finishTime;
 		private Action jumpUpdate;
 
         public PlayerJumpState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
-			amountOfJumpLeft = amountOfJump;
+			amountOfJumpLeft = player.Data.AmountOfJump;
 		}
 
         public override void Enter()
@@ -104,8 +103,8 @@ namespace FiniteStateMachine.PlayerStates
 		}
 		#endregion
 
-		public void ResetAmountOfJump() => amountOfJumpLeft = amountOfJump;
-		public void DecreaseAmountOfJump() => amountOfJumpLeft--;
+		public void ResetAmountOfJump() => amountOfJumpLeft = player.Data.AmountOfJump;
+        public void DecreaseAmountOfJump() => amountOfJumpLeft--;
 		public bool CanJump() => amountOfJumpLeft > 0;
 		public int GetDoubleJumpHashAnim() => hashDoubleJump;
 	}

@@ -22,7 +22,7 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.SitStandEvent += OnSit;
             player.Input.JumpEvent += OnJump;
-            player.Input.DashEvent += OnSlide;
+            player.Input.DashEvent += OnDash;
 
             player.Animator.Play(player.Input.NormInputX != 0 ? hashMove : hashIdle);
         }
@@ -47,7 +47,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.SetVelocityZero();
             player.Input.SitStandEvent -= OnSit;
             player.Input.JumpEvent -= OnJump;
-            player.Input.DashEvent -= OnSlide;
+            player.Input.DashEvent -= OnDash;
         }
 
         public override void AnimationTrigger()
@@ -85,10 +85,17 @@ namespace FiniteStateMachine.PlayerStates
             stateMachine.ChangeState(player.JumpState); 
         }
 
-		private void OnSlide()
+		private void OnDash()
 		{
-			stateMachine.ChangeState(player.SlideState);
+            if (player.Input.NormInputX == player.Core.Movement.FacingDirection)
+            {
+			    stateMachine.ChangeState(player.SlideState);
+            }
+            else
+            {
+                stateMachine.ChangeState(player.KnockBackState);
+            }
         }
-		#endregion
-	}
+        #endregion
+    }
 }

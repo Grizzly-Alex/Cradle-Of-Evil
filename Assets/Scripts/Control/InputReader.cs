@@ -15,16 +15,16 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     #region InputEvents
     public event Action JumpEvent;
     public event Action SitStandEvent;
-    public event Action DashEvent;   
+    public event Action DashEvent;
     #endregion
 
-    #region InputDash
-    private bool canDashInput;
-    private float dashInputCooldown;
-    public float DashInputCooldown
+    #region InputCooldown
+    private bool canInput;
+    private float inputCooldown;
+    public float InputCooldown
     {
-        get { return dashInputCooldown ; }
-        set { dashInputCooldown = value + Time.time; }
+        get { return inputCooldown; }
+        set { inputCooldown = value + Time.time; }
     }  
     #endregion
 
@@ -42,7 +42,7 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     private void Update()
     {
-        canDashInput = CheckInputCooldown(dashInputCooldown);  
+        canInput = CheckInputCooldown(inputCooldown);  
     }
 
     private void OnDestroy()
@@ -79,8 +79,8 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(context.performed && canDashInput)
-        {       
+        if(context.performed && canInput)
+        { 
             DashEvent?.Invoke();
         }
     }

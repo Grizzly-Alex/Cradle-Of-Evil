@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerDashState : PlayerAbilityState
+    public class PlayerAirDashState : PlayerAbilityState
     {
-        private readonly int hashDash = Animator.StringToHash("Dashing");
+        private readonly int hashDash = Animator.StringToHash("AirDashing");
 		private readonly int amountOfDash = 1;
 		private int amountOfDashLeft;
         private float finishTime;
 
-		public PlayerDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+		public PlayerAirDashState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
             amountOfDashLeft = amountOfDash;
         }

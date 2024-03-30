@@ -9784,12 +9784,16 @@ MonoBehaviour:
     <JumpForce>k__BackingField: 12
     <DoubleJumpForce>k__BackingField: 10
     <WallJumpTime>k__BackingField: 0.15
+    <AmountOfJump>k__BackingField: 2
     <LandingThreshold>k__BackingField: 18
     <DashSpeed>k__BackingField: 14
     <DashTime>k__BackingField: 0.22
     <SlideSpeed>k__BackingField: 14
     <SlideTime>k__BackingField: 0.22
-    <SlideCooldown>k__BackingField: 0.2
+    <SlideCooldown>k__BackingField: 0.5
+    <KnockBackSpeed>k__BackingField: 20
+    <KnockBackTime>k__BackingField: 0.15
+    <KnockBackCooldown>k__BackingField: 0.5
     <StandColiderHeight>k__BackingField: 1.38
     <CrouchColiderHeight>k__BackingField: 0.85
 --- !u!1 &332105253614478520
