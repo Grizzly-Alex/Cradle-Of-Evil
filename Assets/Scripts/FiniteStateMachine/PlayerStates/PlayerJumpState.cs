@@ -71,6 +71,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else if (player.PreviousState is PlayerInAirState)
 			{
+				player.Core.VisualFx.CreateAnimationFX(AbilityFXType.WingsDoubleJump, player.transform, new Vector2(x:0, y:1f));
                 player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
 			}

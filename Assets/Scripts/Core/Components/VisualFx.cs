@@ -19,9 +19,11 @@ namespace CoreSystem.Components
         private float colorLooseRate;
         private float lastImageXpos;
 
-        [Header("DUST")]
+        [Header("ANIMATION FX")]
         [SerializeField]
         private Dust dustPrefab;
+        [SerializeField]
+        private AbilityFx abilityFXPrefab;
 
 
         protected override void Awake()
@@ -47,10 +49,10 @@ namespace CoreSystem.Components
             }
         }
 
-        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset) 
+        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset = default)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(dustPrefab.gameObject, transform.position, transform.rotation);
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), transform.position, transform.rotation);
 
             if (animationFx != null)
             {
@@ -60,10 +62,10 @@ namespace CoreSystem.Components
             return animationFx;
         }
 
-        public void CreateAnimationFX<T>(T dustType, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
+        public void CreateAnimationFX<T>(T animationTypeFX, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(dustPrefab.gameObject, position, rotation);
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), position, rotation);
 
             if (flipHorizontal)
             {
@@ -72,10 +74,18 @@ namespace CoreSystem.Components
 
             if (animationFx != null)
             {
-                animationFx.Initialize(dustType);
+                animationFx.Initialize(animationTypeFX);
                 animationFx.SetActive(true);
             }
         }
+
+        private GameObject GetGameObject(Enum typeFX)
+            => typeFX switch
+            {
+                AbilityFXType => abilityFXPrefab.gameObject,
+                DustType => dustPrefab.gameObject,
+                _ => throw new NotImplementedException()
+            };
 
     }
 }
