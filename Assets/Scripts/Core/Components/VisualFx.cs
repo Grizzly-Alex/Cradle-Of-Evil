@@ -1,5 +1,6 @@
 ﻿using Pool;
 using Pool.ItemsPool;
+using System;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -73,5 +74,36 @@ namespace CoreSystem.Components
             }
             return dust;
         }
+
+        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset) 
+            where T : Enum
+        {
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(dustPrefab.gameObject, transform.position, transform.rotation);
+
+            if (animationFx != null)
+            {
+                animationFx.Initialize(animationTypeFX, transform, offset);
+                animationFx.SetActive(true);
+            }
+            return animationFx;
+        }
+
+        public void CreateAnimationFX<T>(T dustType, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
+            where T : Enum
+        {
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(dustPrefab.gameObject, position, rotation);
+
+            if (flipHorizontal)
+            {
+                animationFx.transform.Rotate(0.0f, 180, 0.0f);
+            }
+
+            if (animationFx != null)
+            {
+                animationFx.Initialize(dustType);
+                animationFx.SetActive(true);
+            }
+        }
+
     }
 }
