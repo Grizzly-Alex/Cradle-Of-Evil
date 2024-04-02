@@ -47,34 +47,6 @@ namespace CoreSystem.Components
             }
         }
 
-        public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
-        {
-            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
-
-            if (flipHorizontal)
-            {
-                dust.transform.Rotate(0.0f, 180, 0.0f);
-            }
-
-            if (dust != null)
-            {
-                dust.Initialize(dustType);
-                dust.SetActive(true);
-            }
-        }
-
-        public Dust CreateDust(DustType dustType, Transform transform, Vector2 offset)
-        {
-            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, transform.position, transform.rotation);
-
-            if (dust != null)
-            {
-                dust.Initialize(dustType, transform, offset);
-                dust.SetActive(true);
-            }
-            return dust;
-        }
-
         public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset) 
             where T : Enum
         {

@@ -25,7 +25,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
-                player.Core.VisualFx.CreateDust(
+                player.Core.VisualFx.CreateAnimationFX(
 					DustType.JumpFromGround,
 					player.Core.Sensor.GroundHit.point,
 					player.transform.rotation);
@@ -35,7 +35,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
 			else if (player.PreviousState is PlayerOnWallState)
 			{
-                player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
 				{
 					x = player.Core.Movement.FacingDirection != 1
@@ -56,7 +56,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
             else if (player.PreviousState is PlayerHangOnLedgeState)
             {
-                player.Core.VisualFx.CreateDust(DustType.JumpFromWall, 
+                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall, 
 					PlayerOnLedgeState.CornerPosition,
 					player.transform.rotation, true);
 

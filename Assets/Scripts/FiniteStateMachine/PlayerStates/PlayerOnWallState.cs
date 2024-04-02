@@ -80,7 +80,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private void CreateDust(float yOffset)
         {
-            player.Core.VisualFx.CreateDust(DustType.LandingOnWall,
+            player.Core.VisualFx.CreateAnimationFX(DustType.LandingOnWall,
                 new Vector2(DetectedPos.x, player.BodyCollider.bounds.center.y - yOffset),
                 player.transform.rotation);
         }

@@ -81,7 +81,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void AnimationTrigger()
         {
-            player.Core.VisualFx.CreateDust(
+            player.Core.VisualFx.CreateAnimationFX(
                 DustType.Brake,
                 player.Core.Sensor.GroundHit.point,
                 player.transform.rotation, 

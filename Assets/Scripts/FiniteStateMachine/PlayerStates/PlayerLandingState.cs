@@ -44,7 +44,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (LandingForce >= player.Data.LandingThreshold)
             {
-                player.Core.VisualFx.CreateDust(DustType.HardLanding, groundSurfacePoint, rotation);
+                player.Core.VisualFx.CreateAnimationFX(DustType.HardLanding, groundSurfacePoint, rotation);
                 player.Animator.Play(hashHardLanding);
                 updateLogic = () =>
                 {
@@ -54,7 +54,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateDust(DustType.Landing, groundSurfacePoint, rotation);
+                player.Core.VisualFx.CreateAnimationFX(DustType.Landing, groundSurfacePoint, rotation);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {

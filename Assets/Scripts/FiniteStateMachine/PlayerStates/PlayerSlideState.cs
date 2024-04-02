@@ -23,12 +23,12 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Core.VisualFx.CreateDust(
+            player.Core.VisualFx.CreateAnimationFX(
                 DustType.StartSlide,
                 player.Core.Sensor.GroundHit.point,
                 player.transform.rotation);
 
-            dust = player.Core.VisualFx.CreateDust(
+            dust = (Dust)player.Core.VisualFx.CreateAnimationFX(
                 DustType.Sliding,
                 player.transform, 
                 new Vector2(x: 0.4f, y: 0.0f));
@@ -104,7 +104,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             float offsetX = 0.4f; 
 
-            player.Core.VisualFx.CreateDust(
+            player.Core.VisualFx.CreateAnimationFX(
                 DustType.Brake,
                 new Vector2
                 {

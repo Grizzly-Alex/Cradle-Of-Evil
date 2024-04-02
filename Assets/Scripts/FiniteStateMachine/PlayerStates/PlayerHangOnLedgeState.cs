@@ -24,7 +24,7 @@ namespace FiniteStateMachine.PlayerStates
             player.AirDashState.ResetAmountOfDash();
             player.JumpState.ResetAmountOfJump();
 
-            player.Core.VisualFx.CreateDust(
+            player.Core.VisualFx.CreateAnimationFX(
                 DustType.Tiny,
                 CornerPosition,
                 new Quaternion() { y = player.Core.Movement.FacingDirection == -1 ? 0 : 180 });
