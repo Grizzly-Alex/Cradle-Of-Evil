@@ -1,5 +1,6 @@
 ﻿using Pool;
 using Pool.ItemsPool;
+using System;
 using UnityEngine;
 
 namespace CoreSystem.Components
@@ -18,9 +19,11 @@ namespace CoreSystem.Components
         private float colorLooseRate;
         private float lastImageXpos;
 
-        [Header("DUST")]
+        [Header("ANIMATION FX")]
         [SerializeField]
         private Dust dustPrefab;
+        [SerializeField]
+        private AbilityFx abilityFXPrefab;
 
 
         protected override void Awake()
@@ -46,32 +49,43 @@ namespace CoreSystem.Components
             }
         }
 
-        public void CreateDust(DustType dustType, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
+        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset = default)
+            where T : Enum
         {
-            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, position, rotation);
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), transform.position, transform.rotation);
+
+            if (animationFx != null)
+            {
+                animationFx.Initialize(animationTypeFX, transform, offset);
+                animationFx.SetActive(true);
+            }
+            return animationFx;
+        }
+
+        public void CreateAnimationFX<T>(T animationTypeFX, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
+            where T : Enum
+        {
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), position, rotation);
 
             if (flipHorizontal)
             {
-                dust.transform.Rotate(0.0f, 180, 0.0f);
+                animationFx.transform.Rotate(0.0f, 180, 0.0f);
             }
 
-            if (dust != null)
+            if (animationFx != null)
             {
-                dust.Initialize(dustType);
-                dust.SetActive(true);
+                animationFx.Initialize(animationTypeFX);
+                animationFx.SetActive(true);
             }
         }
 
-        public Dust CreateDust(DustType dustType, Transform transform, Vector2 offset)
-        {
-            Dust dust = PoolManager.Instance.GetFromPool<Dust>(dustPrefab.gameObject, transform.position, transform.rotation);
-
-            if (dust != null)
+        private GameObject GetGameObject(Enum typeFX)
+            => typeFX switch
             {
-                dust.Initialize(dustType, transform, offset);
-                dust.SetActive(true);
-            }
-            return dust;
-        }
+                AbilityFXType => abilityFXPrefab.gameObject,
+                DustType => dustPrefab.gameObject,
+                _ => throw new NotImplementedException()
+            };
+
     }
 }

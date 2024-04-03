@@ -54,14 +54,14 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (player.Input.NormInputX != 0)
             {
-                player.Core.VisualFx.CreateDust(
+                player.Core.VisualFx.CreateAnimationFX(
                     DustType.Tiny,
                     player.Core.Sensor.GroundHit.point,
                     player.transform.rotation);
             }
             else
             {
-                player.Core.VisualFx.CreateDust(
+                player.Core.VisualFx.CreateAnimationFX(
                     DustType.AfterMove,
                     new Vector2()
                     {

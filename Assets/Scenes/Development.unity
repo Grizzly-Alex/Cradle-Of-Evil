@@ -8769,6 +8769,8 @@ MonoBehaviour:
     <PoolCount>k__BackingField: 7
   - <Prefab>k__BackingField: {fileID: 6209998994359849772, guid: 2144a85492e9f1c44b50e68999bdb2cb, type: 3}
     <PoolCount>k__BackingField: 5
+  - <Prefab>k__BackingField: {fileID: 8411491370033554219, guid: 38e35d70ad9a07749bc11455c402bbdf, type: 3}
+    <PoolCount>k__BackingField: 2
 --- !u!4 &231548221
 Transform:
   m_ObjectHideFlags: 0
@@ -10039,6 +10041,7 @@ MonoBehaviour:
   alphaBegin: 0.4
   colorLooseRate: 1.6
   dustPrefab: {fileID: 8827921298626610520, guid: 2144a85492e9f1c44b50e68999bdb2cb, type: 3}
+  abilityFXPrefab: {fileID: 1558968778588516404, guid: 38e35d70ad9a07749bc11455c402bbdf, type: 3}
 --- !u!4 &4733623414340094785
 Transform:
   m_ObjectHideFlags: 0

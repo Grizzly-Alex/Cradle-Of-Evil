@@ -1,21 +1,10 @@
-﻿using Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace Pool.ItemsPool
 {
-    public sealed class Dust : PooledObject, IAnimationFinishTrigger
+    public sealed class Dust : AnimationFX<DustType>
     {
-        [SerializeField]
-        private Transform updatedTransform;
-        [SerializeField]
-        private Vector2 offsetPosition;
-        private Vector2 workingVector;
-
-        [SerializeField]
-        private int currentHashAnimation;
-        private Animator animator;
-
         #region Hash Animations
         private readonly int afterMove = Animator.StringToHash("AfterMoveDust");
         private readonly int jumpFromGround = Animator.StringToHash("JumpFromGroundDust");
@@ -30,62 +19,8 @@ namespace Pool.ItemsPool
         private readonly int landingOnWall = Animator.StringToHash("LandingOnWallDust");
         #endregion
 
-        private void Awake()
-        {
-            animator = GetComponent<Animator>();
-        }
-
-        private void OnEnable()
-        {
-            if(currentHashAnimation != default)
-            {
-                animator.Play(currentHashAnimation);
-            }
-        }
-
-        private void Update()
-        {
-            if (updatedTransform == null) return;
-            
-            workingVector.Set(
-                updatedTransform.rotation.y < 0 
-                    ? updatedTransform.position.x - offsetPosition.x 
-                    : updatedTransform.position.x + offsetPosition.x,
-                updatedTransform.position.y + offsetPosition.y);
-
-            gameObject.transform.SetPositionAndRotation(workingVector, updatedTransform.rotation);           
-        }
-
-        private void OnDisable()
-        {
-            updatedTransform = null;   
-            currentHashAnimation = default;
-            offsetPosition = default;
-        }
-
-        public override void Get(GameObject obj)
-        {
-            obj.SetActive(false);
-        }
-
-        public override GameObject Create(Transform container)
-        {
-            gameObject.SetActive(false);
-            return base.Create(container);
-        }
-
-        public void Initialize(DustType dust) 
-            => currentHashAnimation = GetAnimationHash(dust);
-
-        public void Initialize(DustType dust, Transform transform, Vector2 offset)
-        {
-            currentHashAnimation = GetAnimationHash(dust);
-            updatedTransform = transform;
-            offsetPosition = offset;
-        }
-       
-        private int GetAnimationHash(DustType dust)
-            => dust switch
+        protected override int GetAnimationHash(DustType animationFX)
+            => animationFX switch
             {
                 DustType.JumpFromGround => jumpFromGround,
                 DustType.JumpFromWall => jumpFromWall,
@@ -100,9 +35,6 @@ namespace Pool.ItemsPool
                 DustType.LandingOnWall => landingOnWall,
                 _ => default
             };
-
-        public void AnimationFinishTrigger()
-             => ReturnToPool();
     }
 
     public enum DustType : byte

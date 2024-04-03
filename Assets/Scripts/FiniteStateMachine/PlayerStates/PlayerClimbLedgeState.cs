@@ -45,7 +45,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void AnimationTrigger()
         {
-            player.Core.VisualFx.CreateDust(DustType.Landing, climbedPosition, player.transform.rotation);
+            player.Core.VisualFx.CreateAnimationFX(DustType.Landing, climbedPosition, player.transform.rotation);
         }
 
         private bool IsLowCeiling()

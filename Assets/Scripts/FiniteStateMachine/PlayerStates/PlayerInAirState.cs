@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Pool.ItemsPool;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -68,6 +67,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnAirDash;
 
+            player.JumpState.DisableDoubleJumpFX();
             ResetFallingForce();
         }
 

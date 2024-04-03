@@ -13,6 +13,7 @@ namespace FiniteStateMachine.PlayerStates
 		private byte amountOfJumpLeft;
 		private float finishTime;
 		private Action jumpUpdate;
+		private AbilityFx wingsDoubleJump;
 
         public PlayerJumpState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -25,7 +26,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
 			{
-                player.Core.VisualFx.CreateDust(
+                player.Core.VisualFx.CreateAnimationFX(
 					DustType.JumpFromGround,
 					player.Core.Sensor.GroundHit.point,
 					player.transform.rotation);
@@ -35,7 +36,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
 			else if (player.PreviousState is PlayerOnWallState)
 			{
-                player.Core.VisualFx.CreateDust(DustType.JumpFromWall,
+                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
 				{
 					x = player.Core.Movement.FacingDirection != 1
@@ -56,7 +57,7 @@ namespace FiniteStateMachine.PlayerStates
 			}
             else if (player.PreviousState is PlayerHangOnLedgeState)
             {
-                player.Core.VisualFx.CreateDust(DustType.JumpFromWall, 
+                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall, 
 					PlayerOnLedgeState.CornerPosition,
 					player.transform.rotation, true);
 
@@ -71,6 +72,10 @@ namespace FiniteStateMachine.PlayerStates
             }
             else if (player.PreviousState is PlayerInAirState)
 			{
+                wingsDoubleJump = (AbilityFx)player.Core.VisualFx.CreateAnimationFX(
+					AbilityFXType.WingsDoubleJump,
+					player.transform,
+					new Vector2(x:0, y:1f));
                 player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
 			}
@@ -106,6 +111,15 @@ namespace FiniteStateMachine.PlayerStates
 		public void ResetAmountOfJump() => amountOfJumpLeft = player.Data.AmountOfJump;
         public void DecreaseAmountOfJump() => amountOfJumpLeft--;
 		public bool CanJump() => amountOfJumpLeft > 0;
-		public int GetDoubleJumpHashAnim() => hashDoubleJump;
+		public void DisableDoubleJumpFX()
+		{
+			if (wingsDoubleJump != null)
+			{
+				if (wingsDoubleJump.isActiveAndEnabled)
+				{
+                    wingsDoubleJump.ReturnToPool();
+                }
+			}
+        }
 	}
 }
