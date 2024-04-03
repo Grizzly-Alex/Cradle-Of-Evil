@@ -28,6 +28,7 @@ namespace FiniteStateMachine.PlayerStates
 			player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnAirDash;
 
+            player.Core.Movement.ResetFreezePos();
             player.Animator.Play(hashInAir);
         }
 
