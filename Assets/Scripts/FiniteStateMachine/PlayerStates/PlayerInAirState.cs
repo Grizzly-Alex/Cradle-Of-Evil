@@ -67,6 +67,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnAirDash;
 
+            player.JumpState.DisableDoubleJumpFX();
             ResetFallingForce();
         }
 
