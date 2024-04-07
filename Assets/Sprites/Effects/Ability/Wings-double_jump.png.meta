@@ -115,10 +115,10 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Wings-double_jump_1
       rect:
         serializedVersion: 2
-        x: 80
+        x: 92
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,12 +155,12 @@ TextureImporter:
       name: Wings-double_jump_2
       rect:
         serializedVersion: 2
-        x: 160
+        x: 184
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,12 +176,12 @@ TextureImporter:
       name: Wings-double_jump_3
       rect:
         serializedVersion: 2
-        x: 240
+        x: 276
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,12 +197,12 @@ TextureImporter:
       name: Wings-double_jump_4
       rect:
         serializedVersion: 2
-        x: 320
+        x: 368
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,12 +218,12 @@ TextureImporter:
       name: Wings-double_jump_5
       rect:
         serializedVersion: 2
-        x: 400
+        x: 460
         y: 0
-        width: 80
-        height: 73
+        width: 92
+        height: 104
       alignment: 9
-      pivot: {x: 0.65, y: 0.3}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,6 +231,27 @@ TextureImporter:
       bones: []
       spriteID: e8efea02f1c481e47a9a9ce852db367d
       internalID: 596493487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wings-double_jump_6
+      rect:
+        serializedVersion: 2
+        x: 552
+        y: 0
+        width: 92
+        height: 104
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6e2dfb03e5ea3a429afa64d6b42420b
+      internalID: 1088301824
       vertices: []
       indices: 
       edges: []
@@ -252,6 +273,7 @@ TextureImporter:
       Wings-double_jump_3: -468754361
       Wings-double_jump_4: 383943611
       Wings-double_jump_5: 596493487
+      Wings-double_jump_6: 1088301824
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
