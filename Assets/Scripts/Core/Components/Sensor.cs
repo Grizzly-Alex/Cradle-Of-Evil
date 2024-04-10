@@ -17,72 +17,97 @@ namespace CoreSystem.Components
         [field: SerializeField] public Transform HorizontalSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
-        [field: SerializeField] public LayerMask PlatformsLayer { get; private set; }
+        [field: SerializeField] public LayerMask TerrainLayer { get; private set; }
+        [field: SerializeField] public LayerMask TriggerLayer { get; private set; }
 
         [field: Header("TAG MASK")]
-        [field: SerializeField] public string Ground { get; private set; }
+        [field: SerializeField] public string Platform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
+        [field: SerializeField] public string Ledge { get; private set; }
 
         #region Sensors
         public RaycastHit2D GroundHit => Physics2D.Raycast(
             GroundSensor.position,
             Vector2.down,
             groundDistance,
-            PlatformsLayer);
+            TerrainLayer);
 
         public RaycastHit2D WallHit => Physics2D.Raycast(
             WallSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            PlatformsLayer);
+            TriggerLayer);
 
         private RaycastHit2D LedgeHitUp => Physics2D.Raycast(
             HorizontalSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            PlatformsLayer);
+            TriggerLayer);
 
-        private RaycastHit2D LedgeHitDown => Physics2D.Raycast(
-            new Vector2(HorizontalSensor.position.x, HorizontalSensor.position.y - ledgePrecision),
-            Vector2.right * core.Movement.FacingDirection,
-            wallDistance,
-            PlatformsLayer);
-
-        public Collider2D Circle => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, PlatformsLayer);
+        public Collider2D Circle => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, TerrainLayer);
         #endregion
-
-        public bool IsWallDetect() => WallHit;
 
         public bool IsGroundDetect() => GroundHit;
 
         public bool IsCellingDetect() => Circle;
-        
-        public bool IsGrabWallDetect() => WallHit.collider != null && WallHit.collider.CompareTag(GrabWall);
 
-        public bool IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner)
+        public bool IsGrabWallDetect() => 
+            WallHit.collider != null
+            && WallHit.collider.CompareTag(GrabWall);
+
+        public bool IsLedgeDetect()
         {
-            ledgeCorner = Vector2.zero;
+            bool behindIsEmpty = !Physics2D.Raycast(
+                HorizontalSensor.position,
+                Vector2.left * core.Movement.FacingDirection,
+                wallDistance,
+                TerrainLayer);
 
-            bool isLedge = !Physics2D.Raycast(
-                HorizontalSensor.position, Vector2.down,
-                ledgePrecision, PlatformsLayer) && !LedgeHitUp && LedgeHitDown;
-
-            if (!isLedge) return false;
-           
-            RaycastHit2D cornerRay = Physics2D.Raycast(
-                new Vector2(LedgeHitDown.point.x, HorizontalSensor.position.y), Vector2.down,
-                ledgePrecision, PlatformsLayer);
-            
-            if (!cornerRay) return false;
-
-            ledgeCorner = cornerRay.point;
-
-            return cornerRay;
+            return LedgeHitUp.collider != null
+                && LedgeHitUp.collider.CompareTag(Ledge)
+                && behindIsEmpty;
         }
 
-        public float GetGroundSlopeAngle() => Vector2.Angle(GroundHit.normal, Vector2.up);
+        public bool GetDetectedGrabWallPosition(out Vector2 wallPosition)
+        {
+            bool isDetected = IsGrabWallDetect();
 
-        public Vector2 GetGroundPerperdicular() => Vector2.Perpendicular(core.Sensor.GroundHit.normal).normalized;
+            if (isDetected)
+            {
+                wallPosition = new Vector2(
+                    WallHit.collider.gameObject.transform.position.x,
+                    WallHit.point.y);
+            }
+            else
+            {
+                wallPosition = Vector2.zero;
+            }
+
+            return isDetected;
+
+        }
+
+        public bool GetDetectedLedgeCorner(out Vector2 ledgeCorner)
+        {
+            bool isDetected = IsLedgeDetect();
+
+            if (isDetected)
+            {
+                ledgeCorner = LedgeHitUp.collider.gameObject.transform.position;
+            }
+            else
+            {
+                ledgeCorner = Vector2.zero;
+            }
+
+            return isDetected;
+        }
+
+        public float GetGroundSlopeAngle() 
+            => Vector2.Angle(GroundHit.normal, Vector2.up);
+
+        public Vector2 GetGroundPerperdicular() 
+            => Vector2.Perpendicular(core.Sensor.GroundHit.normal).normalized;
 
         private void OnDrawGizmos()
         {
@@ -93,8 +118,7 @@ namespace CoreSystem.Components
             Gizmos.DrawRay(GroundSensor.position, new Vector2(0, -groundDistance)); //ground ray
             Gizmos.DrawRay(WallSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //wall ray
             Gizmos.DrawRay(HorizontalSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray up
-            Gizmos.DrawRay(new Vector3(HorizontalSensor.position.x, HorizontalSensor.position.y - ledgePrecision), 
-                new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray down           
+            Gizmos.DrawRay(HorizontalSensor.position, new Vector2(wallDistance * -core.Movement.FacingDirection, 0)); //ledge ray behind      
         }
     }
 }

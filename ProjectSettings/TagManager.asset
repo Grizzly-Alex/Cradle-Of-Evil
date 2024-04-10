@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
   - GrabWall
+  - Ledge
+  - Platform
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Player
-  - Platforms
-  - 
+  - Terrain
+  - Trigger
   - 
   - 
   - 
