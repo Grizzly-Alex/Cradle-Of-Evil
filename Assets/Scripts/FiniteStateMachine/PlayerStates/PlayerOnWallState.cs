@@ -6,11 +6,9 @@ namespace FiniteStateMachine.PlayerStates
 {
     public class PlayerOnWallState : PlayerState
     {
-        public Vector2 DetectedPos { private get; set; }
+        public static Vector2 DetectedPosition { private get; set; }
 
         private readonly int hashLandingOnWall = Animator.StringToHash("LandingOnWall");
-        private bool isGrounded;
-        private bool isGrabWallDetected;
         private Vector2 holdPosition;
 
         public PlayerOnWallState(StateMachine stateMachine, Player player) : base(stateMachine, player)
@@ -31,8 +29,8 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.SetVelocityZero();
 
              holdPosition.Set(
-                DetectedPos.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                DetectedPos.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - player.Core.Sensor.WallSensor.position.y);
+                DetectedPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
+                DetectedPosition.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - player.Core.Sensor.WallSensor.position.y);
 
             player.transform.position = holdPosition;
             player.Core.Movement.FreezePosY();
@@ -44,14 +42,6 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            if (isGrounded)
-            {
-                stateMachine.ChangeState(player.StandState);
-            }
-            else if (!isGrabWallDetected)
-            {
-                stateMachine.ChangeState(player.InAirState);
-            }
         }
 
         public override void Exit()
@@ -60,12 +50,6 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Core.Movement.ResetFreezePos();
             player.Input.JumpEvent -= OnJump;
-        }
-
-        public override void DoCheck()
-        {
-            isGrounded = player.Core.Sensor.IsGroundDetect();
-            isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect();
         }
 
 
@@ -81,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
         private void CreateDust(float yOffset)
         {
             player.Core.VisualFx.CreateAnimationFX(DustType.LandingOnWall,
-                new Vector2(DetectedPos.x, player.BodyCollider.bounds.center.y - yOffset),
+                new Vector2(DetectedPosition.x, player.BodyCollider.bounds.center.y - yOffset),
                 player.transform.rotation);
         }
     }

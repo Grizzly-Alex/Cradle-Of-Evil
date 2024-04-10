@@ -56,7 +56,7 @@ namespace FiniteStateMachine.PlayerStates
                 CornerPosition + (Vector2.up * offset) + (offset * player.Core.Movement.FacingDirection * Vector2.right),
                 Vector2.up,
                 player.Data.StandColiderHeight,
-                player.Core.Sensor.PlatformsLayer);
+                player.Core.Sensor.TerrainLayer);
         }
 
         private Vector2 GetClimbedPosition()

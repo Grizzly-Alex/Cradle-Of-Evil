@@ -79,11 +79,11 @@ namespace FiniteStateMachine.PlayerStates
             isGrounded = player.Core.Sensor.IsGroundDetect();
             сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
-            if (isLedgeDetected = player.Core.Sensor.IsHorizonalLedgCornerDetect(out Vector2 ledgeCorner))
+            if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
                 PlayerOnLedgeState.CornerPosition = ledgeCorner;
 
-            if (isGrabWallDetected = player.Core.Sensor.IsGrabWallDetect())
-                player.OnWallState.DetectedPos = player.Core.Sensor.WallHit.point;
+            if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
+                PlayerOnWallState.DetectedPosition = wallPosition;
         }
 
 		public override void AnimationTrigger() 
