@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5050061828691883241}
   - component: {fileID: 1845704295944775653}
-  m_Layer: 8
-  m_Name: GrabWallTrigger
+  m_Layer: 7
+  m_Name: GrabWall
   m_TagString: GrabWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

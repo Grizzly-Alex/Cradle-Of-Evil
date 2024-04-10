@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public virtual void PhysicsUpdate()
         {
-            
+
         }
 
         public virtual void Exit()

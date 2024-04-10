@@ -8,17 +8,15 @@ namespace CoreSystem.Components
         [SerializeField] private float cellingRadius;
         [SerializeField] private float groundDistance;
         [SerializeField] private float wallDistance;
-        [SerializeField] private float ledgePrecision;
 
         [field: Header("POSITION OF SENSOR")]
         [field: SerializeField] public Transform CeilingSensor { get; private set; }
         [field: SerializeField] public Transform GroundSensor { get; private set; }
         [field: SerializeField] public Transform WallSensor { get; private set; }
-        [field: SerializeField] public Transform HorizontalSensor { get; private set; }
+        [field: SerializeField] public Transform LedgeSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
         [field: SerializeField] public LayerMask TerrainLayer { get; private set; }
-        [field: SerializeField] public LayerMask TriggerLayer { get; private set; }
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
@@ -36,13 +34,13 @@ namespace CoreSystem.Components
             WallSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            TriggerLayer);
+            TerrainLayer);
 
         private RaycastHit2D LedgeHitUp => Physics2D.Raycast(
-            HorizontalSensor.position,
+            LedgeSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            TriggerLayer);
+            TerrainLayer);
 
         public Collider2D Circle => Physics2D.OverlapCircle(CeilingSensor.position, cellingRadius, TerrainLayer);
         #endregion
@@ -58,7 +56,7 @@ namespace CoreSystem.Components
         public bool IsLedgeDetect()
         {
             bool behindIsEmpty = !Physics2D.Raycast(
-                HorizontalSensor.position,
+                LedgeSensor.position,
                 Vector2.left * core.Movement.FacingDirection,
                 wallDistance,
                 TerrainLayer);
@@ -70,17 +68,13 @@ namespace CoreSystem.Components
 
         public bool GetDetectedGrabWallPosition(out Vector2 wallPosition)
         {
+            wallPosition = Vector2.zero;
             bool isDetected = IsGrabWallDetect();
 
             if (isDetected)
             {
-                wallPosition = new Vector2(
-                    WallHit.collider.gameObject.transform.position.x,
-                    WallHit.point.y);
-            }
-            else
-            {
-                wallPosition = Vector2.zero;
+                Bounds colliderBounds = WallHit.collider.bounds;
+                wallPosition.Set(colliderBounds.center.x, WallHit.point.y);
             }
 
             return isDetected;
@@ -89,15 +83,13 @@ namespace CoreSystem.Components
 
         public bool GetDetectedLedgeCorner(out Vector2 ledgeCorner)
         {
+            ledgeCorner = Vector2.zero;
             bool isDetected = IsLedgeDetect();
 
             if (isDetected)
             {
-                ledgeCorner = LedgeHitUp.collider.gameObject.transform.position;
-            }
-            else
-            {
-                ledgeCorner = Vector2.zero;
+                Bounds colliderBounds = LedgeHitUp.collider.bounds;
+                ledgeCorner.Set(colliderBounds.center.x, colliderBounds.max.y);
             }
 
             return isDetected;
@@ -117,8 +109,8 @@ namespace CoreSystem.Components
             Gizmos.DrawWireSphere(CeilingSensor.position, cellingRadius); //celling ray 
             Gizmos.DrawRay(GroundSensor.position, new Vector2(0, -groundDistance)); //ground ray
             Gizmos.DrawRay(WallSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //wall ray
-            Gizmos.DrawRay(HorizontalSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray up
-            Gizmos.DrawRay(HorizontalSensor.position, new Vector2(wallDistance * -core.Movement.FacingDirection, 0)); //ledge ray behind      
+            Gizmos.DrawRay(LedgeSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray up
+            Gizmos.DrawRay(LedgeSensor.position, new Vector2(wallDistance * -core.Movement.FacingDirection, 0)); //ledge ray behind      
         }
     }
 }
