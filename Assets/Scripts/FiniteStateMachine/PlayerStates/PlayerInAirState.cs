@@ -29,6 +29,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.DashEvent += OnAirDash;
 
             player.Core.Movement.ResetFreezePos();
+           
             player.Animator.Play(hashInAir);
         }
 
@@ -40,7 +41,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.Movement.FlipToDirection(player.Input.NormInputX);
 
             if (isGrounded)
-            {
+            {               
                 player.LandingState.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.LandingState);
             }
@@ -54,7 +55,7 @@ namespace FiniteStateMachine.PlayerStates
             }
         }
 
-        public override void PhysicsUpdate()
+        public override void PhysicsUpdate() 
         {
             base.PhysicsUpdate();
 
@@ -69,6 +70,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.DashEvent -= OnAirDash;
 
             player.JumpState.DisableDoubleJumpFX();
+
             ResetFallingForce();
         }
 
@@ -92,9 +94,9 @@ namespace FiniteStateMachine.PlayerStates
 
         private void TrackingFallingForce() 
         {
-            if (сuгrentVelocityY < fallingForce)
+            if (player.Core.Movement.CurrentVelocity.y < fallingForce)
             {
-                fallingForce = сuгrentVelocityY;
+                fallingForce = player.Core.Movement.CurrentVelocity.y;
             }
         }
 
