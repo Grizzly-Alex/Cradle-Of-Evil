@@ -11,7 +11,6 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrounded;
         private bool isLedgeDetected;
         private bool isGrabWallDetected;
-        private float сuгrentVelocityY;
         private float fallingForce;
 
         public bool UseDoubleJump {  get; set; }
@@ -37,7 +36,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            player.Animator.SetFloat(hashVelocityY, сuгrentVelocityY);
+            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
             player.Core.Movement.FlipToDirection(player.Input.NormInputX);
 
             if (isGrounded)
@@ -45,11 +44,11 @@ namespace FiniteStateMachine.PlayerStates
                 player.LandingState.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.LandingState);
             }
-            else if (isLedgeDetected && сuгrentVelocityY <= 0.0f) 
+            else if (isLedgeDetected && player.Core.Movement.CurrentVelocity.y <= 0.0f) 
             {
 				stateMachine.ChangeState(player.HangOnLedgeState);
             }
-            else if (isGrabWallDetected && сuгrentVelocityY <= 0.0f)
+            else if (isGrabWallDetected && player.Core.Movement.CurrentVelocity.y <= 0.0f)
             {
 				stateMachine.ChangeState(player.OnWallState);
             }
@@ -79,7 +78,6 @@ namespace FiniteStateMachine.PlayerStates
             TrackingFallingForce();
 
             isGrounded = player.Core.Sensor.IsGroundDetect();
-            сuгrentVelocityY = player.Core.Movement.CurrentVelocity.y;
 
             if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
                 PlayerOnLedgeState.CornerPosition = ledgeCorner;
