@@ -6911,7 +6911,7 @@ MonoBehaviour:
   dustPrefab: {fileID: 8827921298626610520, guid: 2144a85492e9f1c44b50e68999bdb2cb, type: 3}
   abilityFXPrefab: {fileID: 1558968778588516404, guid: 38e35d70ad9a07749bc11455c402bbdf, type: 3}
   shadowOn: 1
-  koefficientShadowScale: 4
+  coefficientShadowScale: 3
   shadowPrefab: {fileID: 4141326490905833981, guid: fdc2c3da42d81504a9f32b4cc66d9848, type: 3}
 --- !u!4 &4733623414340094785
 Transform:

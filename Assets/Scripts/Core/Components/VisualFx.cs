@@ -1,9 +1,7 @@
 ﻿using Pool;
 using Pool.ItemsPool;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace CoreSystem.Components
 {
@@ -30,11 +28,11 @@ namespace CoreSystem.Components
 
         [Header("SHADOW FX")]
         [SerializeField]
+        private Shadow shadowPrefab;
+        [SerializeField]
         private bool shadowOn;
         [SerializeField]
-        private float koefficientShadowScale;
-        [SerializeField]
-        private Shadow shadowPrefab;
+        private float coefficientShadowScale;
         private Shadow shadowFromPool;
         private Vector3 initialShadowScale;
         private Vector3 scaleChange;
@@ -106,14 +104,29 @@ namespace CoreSystem.Components
             else
             {
                 float distance = Vector3.Distance(entityTransform.position, position);
-                float calculateKoefficient = distance / koefficientShadowScale;
+                float calculateCoefficient = distance / coefficientShadowScale;
 
                 scaleChange = new Vector3(
-                        initialShadowScale.x - calculateKoefficient * initialShadowScale.x,
-                        initialShadowScale.y - calculateKoefficient * initialShadowScale.y);
+                        initialShadowScale.x - calculateCoefficient * initialShadowScale.x,
+                        initialShadowScale.y - calculateCoefficient * initialShadowScale.y);
 
                 if (float.IsNegative(scaleChange.y) || float.IsNegative(scaleChange.x)) return;
                 shadowFromPool.transform.localScale = scaleChange;
+            }
+        }
+
+        public void ShadowIsActive(bool isActive)
+        {
+            shadowOn = isActive;
+
+            if (!isActive)
+            {
+                shadowFromPool.ReturnToPool();
+            }
+
+            if (isActive && !shadowFromPool.isActiveAndEnabled)
+            {
+                CreateShadow();
             }
         }
 
