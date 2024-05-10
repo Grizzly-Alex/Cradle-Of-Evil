@@ -30,7 +30,7 @@ namespace CoreSystem.Components
         public RaycastHit2D GroundHit => Physics2D.Raycast(
             GroundSensor.position,
             Vector2.down,
-            groundDistance,
+            Mathf.NegativeInfinity,
             TerrainLayer);
 
         public RaycastHit2D WallHit => Physics2D.Raycast(
@@ -48,7 +48,7 @@ namespace CoreSystem.Components
         public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TerrainLayer);
         #endregion
 
-        public bool IsGroundDetect() => GroundHit;
+        public bool IsGroundDetect() => groundDistance > GroundHit.distance;
 
         public bool IsCellingDetect() => Circle;
 

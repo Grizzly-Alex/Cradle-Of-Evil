@@ -74,7 +74,6 @@ namespace FiniteStateMachine.PlayerStates
 			{
                 wingsDoubleJump = (AbilityFx)player.Core.VisualFx.CreateAnimationFX(
 					AbilityFXType.WingsDoubleJump,
-					player.transform,
 					new Vector2(x:0, y:0.9f));
                 player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
