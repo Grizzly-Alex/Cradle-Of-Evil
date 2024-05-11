@@ -90,6 +90,7 @@ namespace FiniteStateMachine.PlayerStates
 
             dust.ReturnToPool();
             player.Core.Movement.ResetFreezePos();
+            player.SetColliderHeight(player.Data.StandColiderHeight);
         }
 
         public override void DoCheck()
