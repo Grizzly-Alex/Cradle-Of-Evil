@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8827921298626610520}
   m_Layer: 3
   m_Name: Dust
-  m_TagString: Untagged
+  m_TagString: VisualFx
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0303a0df8210a404dae5f03e2c247e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PoolId>k__BackingField: 26506
+  <PoolId>k__BackingField: 26898
   updatedTransform: {fileID: 0}
   offsetPosition: {x: 0, y: 0}
   currentHashAnimation: 0

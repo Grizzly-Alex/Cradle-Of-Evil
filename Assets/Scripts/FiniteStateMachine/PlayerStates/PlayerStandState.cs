@@ -12,6 +12,7 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashIdle = Animator.StringToHash("IdleStand");
         private readonly int hashMove = Animator.StringToHash("RunStart");
 
+
         public PlayerStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {			
 		}

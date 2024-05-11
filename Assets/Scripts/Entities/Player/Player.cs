@@ -1,4 +1,5 @@
 using FiniteStateMachine.PlayerStates;
+using Pool.ItemsPool;
 using UnityEngine;
 
 
@@ -53,8 +54,8 @@ namespace Entities
         }
 
         protected override void Update()
-        {
-            base.Update();
+        {           
+            base.Update();           
         }
     }
 }

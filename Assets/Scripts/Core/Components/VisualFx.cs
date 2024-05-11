@@ -7,7 +7,8 @@ namespace CoreSystem.Components
 {
     public sealed class VisualFx : CoreComponent
     {
-        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer entitySpriteRenderer;
+        private Transform entityTransform;
 
         [Header("AFTER IMAGE")]
         [SerializeField] 
@@ -25,38 +26,132 @@ namespace CoreSystem.Components
         [SerializeField]
         private AbilityFx abilityFXPrefab;
 
+        [Header("SHADOW FX")]
+        [SerializeField]
+        private Shadow shadowPrefab;
+        [SerializeField]
+        private bool shadowOn;
+        [SerializeField]
+        private float coefficientShadowScale;
+        private Shadow shadowFromPool;
+        private Vector3 initialShadowScale;
+        private Vector3 scaleChange;
+
 
         protected override void Awake()
         {
             base.Awake();
-            spriteRenderer = GetComponentInParent<SpriteRenderer>();
+            entitySpriteRenderer = GetComponentInParent<SpriteRenderer>();
+            entityTransform = GetComponentInParent<Transform>();
         }
 
+        protected override void Start()
+        {
+            if (shadowOn)
+            {
+                shadowFromPool = CreateShadow();
+                initialShadowScale = shadowFromPool.transform.localScale;
+            }
+        }
+
+        public override void LogicUpdate()
+        {
+            if (shadowOn)
+            {
+                UpdateShadow();
+            }
+        }
+
+        #region After image
         public void CreateAfterImage(float distanceBetweenImages)
         {
-            if (Mathf.Abs(transform.position.x - lastImageXpos) > distanceBetweenImages)
+            if (Mathf.Abs(entityTransform.position.x - lastImageXpos) > distanceBetweenImages)
             {
                 AfterImageSprite afterImage = PoolManager.Instance
-                    .GetFromPool<AfterImageSprite>(afterImagePrefab.gameObject, transform.position, transform.rotation);
+                    .GetFromPool<AfterImageSprite>(afterImagePrefab.gameObject, entityTransform.position, entityTransform.rotation);
 
                 if (afterImage != null)
                 {
-                    afterImage.Initialize(spriteRenderer, alphaBegin, colorLooseRate);
+                    afterImage.Initialize(entitySpriteRenderer, alphaBegin, colorLooseRate);
                     afterImage.SetActive(true);
 
-                    lastImageXpos = transform.position.x;
+                    lastImageXpos = entityTransform.position.x;
+                }
+            }
+        }
+        #endregion
+
+        #region Shadow
+        private Shadow CreateShadow()
+        {
+            Shadow shadow = PoolManager.Instance.GetFromPool<Shadow>(shadowPrefab.gameObject, entityTransform.position, entityTransform.rotation);
+
+            if (shadow != null)
+            {
+                shadow.Initialize(entitySpriteRenderer);
+            }
+            return shadow;
+        }
+
+        private void UpdateShadow()
+        {
+            Vector2 position = core.Sensor.GroundHit.point;
+            bool isActive = shadowFromPool.isActiveAndEnabled;
+
+            if (isActive) shadowFromPool.transform.SetPositionAndRotation(position, entityTransform.rotation);
+            
+            if (core.Sensor.IsGroundDetect())
+            {
+                if (shadowFromPool.transform.localScale == initialShadowScale) return;
+                shadowFromPool.transform.localScale = initialShadowScale;
+            }
+            else
+            {
+                float distance = Vector3.Distance(entityTransform.position, position);
+                float calculateCoefficient = distance / coefficientShadowScale;
+
+                scaleChange = new Vector3(
+                        initialShadowScale.x - calculateCoefficient * initialShadowScale.x,
+                        initialShadowScale.y - calculateCoefficient * initialShadowScale.y);
+
+                if (float.IsNegative(scaleChange.y) || float.IsNegative(scaleChange.x))
+                {
+                    if (!isActive) return;
+                    shadowFromPool.ReturnToPool();  
+                }
+                else
+                {
+                    if (!isActive) CreateShadow();
+                    shadowFromPool.transform.localScale = scaleChange;
                 }
             }
         }
 
-        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Transform transform, Vector2 offset = default)
+        public void ShadowIsActive(bool isActive)
+        {
+            shadowOn = isActive;
+
+            if (!isActive && shadowFromPool.isActiveAndEnabled)
+            {
+                shadowFromPool.ReturnToPool();
+            }
+
+            if (isActive && !shadowFromPool.isActiveAndEnabled)
+            {
+                CreateShadow();
+            }
+        }
+        #endregion
+
+        #region Animation effects
+        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Vector2 offset = default)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), transform.position, transform.rotation);
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetAnimationGameObject(animationTypeFX), entityTransform.position, entityTransform.rotation);
 
             if (animationFx != null)
             {
-                animationFx.Initialize(animationTypeFX, transform, offset);
+                animationFx.Initialize(animationTypeFX, entityTransform, offset);
                 animationFx.SetActive(true);
             }
             return animationFx;
@@ -65,7 +160,7 @@ namespace CoreSystem.Components
         public void CreateAnimationFX<T>(T animationTypeFX, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetGameObject(animationTypeFX), position, rotation);
+            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetAnimationGameObject(animationTypeFX), position, rotation);
 
             if (flipHorizontal)
             {
@@ -79,13 +174,13 @@ namespace CoreSystem.Components
             }
         }
 
-        private GameObject GetGameObject(Enum typeFX)
+        private GameObject GetAnimationGameObject(Enum typeFX)
             => typeFX switch
             {
                 AbilityFXType => abilityFXPrefab.gameObject,
                 DustType => dustPrefab.gameObject,
                 _ => throw new NotImplementedException()
             };
-
+        #endregion
     }
 }

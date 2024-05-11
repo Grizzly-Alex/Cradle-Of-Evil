@@ -3,6 +3,7 @@ using Interfaces;
 
 namespace CoreSystem.Components
 {
+    [RequireComponent(typeof(Core))]
     public abstract class CoreComponent: MonoBehaviour, ILogicUpdate
     {
         protected Core core;

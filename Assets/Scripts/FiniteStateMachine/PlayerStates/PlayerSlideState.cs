@@ -30,7 +30,6 @@ namespace FiniteStateMachine.PlayerStates
 
             dust = (Dust)player.Core.VisualFx.CreateAnimationFX(
                 DustType.Sliding,
-                player.transform, 
                 new Vector2(x: 0.4f, y: 0.0f));
 
             finishTime = Time.time + player.Data.SlideTime;
