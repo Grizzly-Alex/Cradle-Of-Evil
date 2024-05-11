@@ -62,7 +62,7 @@ namespace CoreSystem.Components
             }
         }
 
-
+        #region After image
         public void CreateAfterImage(float distanceBetweenImages)
         {
             if (Mathf.Abs(entityTransform.position.x - lastImageXpos) > distanceBetweenImages)
@@ -79,7 +79,9 @@ namespace CoreSystem.Components
                 }
             }
         }
+        #endregion
 
+        #region Shadow
         private Shadow CreateShadow()
         {
             Shadow shadow = PoolManager.Instance.GetFromPool<Shadow>(shadowPrefab.gameObject, entityTransform.position, entityTransform.rotation);
@@ -94,8 +96,10 @@ namespace CoreSystem.Components
         private void UpdateShadow()
         {
             Vector2 position = core.Sensor.GroundHit.point;
-            shadowFromPool.transform.SetPositionAndRotation(position, entityTransform.rotation);
+            bool isActive = shadowFromPool.isActiveAndEnabled;
 
+            if (isActive) shadowFromPool.transform.SetPositionAndRotation(position, entityTransform.rotation);
+            
             if (core.Sensor.IsGroundDetect())
             {
                 if (shadowFromPool.transform.localScale == initialShadowScale) return;
@@ -110,8 +114,16 @@ namespace CoreSystem.Components
                         initialShadowScale.x - calculateCoefficient * initialShadowScale.x,
                         initialShadowScale.y - calculateCoefficient * initialShadowScale.y);
 
-                if (float.IsNegative(scaleChange.y) || float.IsNegative(scaleChange.x)) return;
-                shadowFromPool.transform.localScale = scaleChange;
+                if (float.IsNegative(scaleChange.y) || float.IsNegative(scaleChange.x))
+                {
+                    if (!isActive) return;
+                    shadowFromPool.ReturnToPool();  
+                }
+                else
+                {
+                    if (!isActive) CreateShadow();
+                    shadowFromPool.transform.localScale = scaleChange;
+                }
             }
         }
 
@@ -119,7 +131,7 @@ namespace CoreSystem.Components
         {
             shadowOn = isActive;
 
-            if (!isActive)
+            if (!isActive && shadowFromPool.isActiveAndEnabled)
             {
                 shadowFromPool.ReturnToPool();
             }
@@ -129,7 +141,9 @@ namespace CoreSystem.Components
                 CreateShadow();
             }
         }
+        #endregion
 
+        #region Animation effects
         public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Vector2 offset = default)
             where T : Enum
         {
@@ -167,6 +181,6 @@ namespace CoreSystem.Components
                 DustType => dustPrefab.gameObject,
                 _ => throw new NotImplementedException()
             };
-
+        #endregion
     }
 }
