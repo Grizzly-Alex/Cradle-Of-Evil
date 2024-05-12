@@ -36,10 +36,10 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging)
-            {
-                stateMachine.ChangeState(player.ClimbLedgeState);              
-            }           
+            //if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging)
+            //{
+            //    stateMachine.ChangeState(player.ClimbLedgeState);
+            //}
         }
 
         public override void Exit()

@@ -13,9 +13,6 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrabWallDetected;
         private float fallingForce;
 
-        public bool UseDoubleJump {  get; set; }
-
-
         public PlayerInAirState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
@@ -36,9 +33,6 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
-            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
-
             if (isGrounded)
             {               
                 player.LandingState.LandingForce = fallingForce;
@@ -52,6 +46,9 @@ namespace FiniteStateMachine.PlayerStates
             {
 				stateMachine.ChangeState(player.OnWallState);
             }
+
+            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
+            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
         }
 
         public override void PhysicsUpdate() 
