@@ -19,7 +19,7 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     #endregion
 
     #region InputCooldown
-    private bool canInput;
+    public bool CanInput { get; private set; }
     private float inputCooldown;
     public float InputCooldown
     {
@@ -42,7 +42,7 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     private void Update()
     {
-        canInput = CheckInputCooldown(inputCooldown);  
+        CanInput = CheckInputCooldown(inputCooldown);  
     }
 
     private void OnDestroy()
@@ -79,7 +79,7 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if(context.performed && canInput)
+        if(context.performed)
         { 
             DashEvent?.Invoke();
         }

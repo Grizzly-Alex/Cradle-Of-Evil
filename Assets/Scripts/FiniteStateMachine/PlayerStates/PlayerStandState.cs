@@ -25,14 +25,14 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
 
-            player.Animator.Play(player.Input.NormInputX != 0 ? hashMove : hashIdle);
+            player.Animator.Play(player.Input.NormInputX != default ? hashMove : hashIdle);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != 0);           
+            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != default);           
         }
 
         public override void PhysicsUpdate()
@@ -53,7 +53,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void AnimationTrigger()
         {
-            if (player.Input.NormInputX != 0)
+            if (player.Input.NormInputX != default)
             {
                 player.Core.VisualFx.CreateAnimationFX(
                     DustType.Tiny,
@@ -66,7 +66,7 @@ namespace FiniteStateMachine.PlayerStates
                     DustType.AfterMove,
                     new Vector2()
                     {
-                        x = player.Core.Movement.FacingDirection != 1
+                        x = player.Core.Movement.FacingDirection != Vector2.right.x
                             ? player.BodyCollider.bounds.min.x
                             : player.BodyCollider.bounds.max.x,
                         y = player.Core.Sensor.GroundHit.point.y,
@@ -90,6 +90,7 @@ namespace FiniteStateMachine.PlayerStates
 		{
             if (player.Input.NormInputX == player.Core.Movement.FacingDirection)
             {
+                if (!player.Input.CanInput) return;
 			    stateMachine.ChangeState(player.SlideState);
             }
             else

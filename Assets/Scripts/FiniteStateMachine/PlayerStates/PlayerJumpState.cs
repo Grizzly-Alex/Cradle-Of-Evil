@@ -7,7 +7,6 @@ namespace FiniteStateMachine.PlayerStates
 {
     public sealed class PlayerJumpState : PlayerAbilityState
     {
-        private readonly int hashDoubleJump = Animator.StringToHash("DoubleJump");
 		private readonly int hashVelocityY = Animator.StringToHash("velocityY");
 		private readonly int hashInAir = Animator.StringToHash("InAirState");
 		private byte amountOfJumpLeft;
@@ -39,7 +38,7 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
 				{
-					x = player.Core.Movement.FacingDirection != 1
+					x = player.Core.Movement.FacingDirection != Vector2.right.x
 						? player.BodyCollider.bounds.min.x
 						: player.BodyCollider.bounds.max.x,
 					y = player.BodyCollider.bounds.min.y,
@@ -55,21 +54,6 @@ namespace FiniteStateMachine.PlayerStates
 					player.Core.Movement.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
-            else if (player.PreviousState is PlayerHangOnLedgeState)
-            {
-                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall, 
-					PlayerOnLedgeState.CornerPosition,
-					player.transform.rotation, true);
-
-                finishTime = Time.time + player.Data.WallJumpTime;
-                player.Animator.Play(hashInAir);
-                player.Core.Movement.Flip();
-                player.Core.Movement.SetVelocity(
-                    player.Data.JumpForce,
-                    new Vector2(1, 2),
-                    player.Core.Movement.FacingDirection);
-                jumpUpdate = UpdateJumpFromWall;
-            }
             else if (player.PreviousState is PlayerInAirState)
 			{
                 wingsDoubleJump = (AbilityFx)player.Core.VisualFx.CreateAnimationFX(

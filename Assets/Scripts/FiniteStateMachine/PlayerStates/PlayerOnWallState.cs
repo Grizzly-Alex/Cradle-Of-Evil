@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerOnWallState : PlayerState
+    public sealed class PlayerOnWallState : PlayerState
     {
         public static Vector2 DetectedPosition { private get; set; }
 

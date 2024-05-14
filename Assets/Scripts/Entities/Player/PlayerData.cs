@@ -34,6 +34,7 @@ namespace Entities
         [field: SerializeField] public float KnockBackTime { get; private set; }
         [field: SerializeField] public float KnockBackCooldown { get; private set; }
 
+
         [field: Header("COLIDER SIZE")]
         [field: SerializeField] public float StandColiderHeight { get; private set; }
         [field: SerializeField] public float CrouchColiderHeight { get; private set; }

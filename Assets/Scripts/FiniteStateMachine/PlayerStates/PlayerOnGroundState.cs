@@ -1,5 +1,4 @@
 ﻿using Entities;
-using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
