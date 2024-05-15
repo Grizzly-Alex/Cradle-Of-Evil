@@ -24,15 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SitStand",
-                    "type": "Button",
-                    "id": "31c9e4ce-1f95-4a04-8ed3-6be53a1bfe4e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "e5fafa81-f70d-4661-840a-769a4bc39538",
@@ -57,7 +48,7 @@
                 {
                     "name": "",
                     "id": "5e9d5eb2-625e-4505-b4de-e05cfc4c3afc",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<XInputController>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -68,7 +59,7 @@
                 {
                     "name": "",
                     "id": "854f995c-0f2b-4991-b817-2cac303d27cc",
-                    "path": "<Gamepad>/leftStick",
+                    "path": "<XInputController>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -133,33 +124,22 @@
                 },
                 {
                     "name": "",
-                    "id": "dab69c0a-74a1-4fa6-85a0-24c66d21db4e",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse and Keyboard",
-                    "action": "SitStand",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "42710622-a09a-4d05-b2f8-03c9ba3fc6ca",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SitStand",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e264dda8-eac9-41f7-a2f0-991700731b12",
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c0f6a67-b0c4-4821-aa59-403d075803f4",
+                    "path": "<XInputController>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false

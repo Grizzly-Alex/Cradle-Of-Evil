@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerClimbLedgeState : PlayerOnLedgeState
+    public sealed class PlayerClimbLedgeState : PlayerOnLedgeState
     {
         private Vector2 climbedPosition;
         //private bool isTouchingCeiling;

@@ -90,6 +90,7 @@ namespace FiniteStateMachine.PlayerStates
 
             dust.ReturnToPool();
             player.Core.Movement.ResetFreezePos();
+            player.SetColliderHeight(player.Data.StandColiderHeight);
         }
 
         public override void DoCheck()
@@ -108,7 +109,7 @@ namespace FiniteStateMachine.PlayerStates
                 new Vector2
                 {
                     y = player.BodyCollider.bounds.min.y,
-                    x = player.Core.Movement.FacingDirection !=1 
+                    x = player.Core.Movement.FacingDirection != Vector2.right.x 
                         ? player.BodyCollider.bounds.min.x - offsetX
                         : player.BodyCollider.bounds.max.x + offsetX,
                 },

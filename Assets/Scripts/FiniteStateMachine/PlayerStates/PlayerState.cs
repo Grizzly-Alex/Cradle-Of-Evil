@@ -17,7 +17,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public virtual void Enter()
         {
-            isAnimFinished = false;    
+            isAnimFinished = false;
         }
 
         public virtual void LogicUpdate()
@@ -32,7 +32,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public virtual void Exit()
         {
-            player.PreviousState = this;           
+            player.PreviousState = this;
         }
 
         public virtual void DoCheck() 

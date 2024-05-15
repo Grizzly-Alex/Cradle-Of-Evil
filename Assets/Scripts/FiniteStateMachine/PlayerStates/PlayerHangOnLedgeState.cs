@@ -4,22 +4,23 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerHangOnLedgeState : PlayerOnLedgeState
+    public sealed class PlayerHangOnLedgeState : PlayerOnLedgeState
     {
-        private bool isHanging;
         protected override int AnimationHash => Animator.StringToHash("LedgeGrab");
 
+        private bool isHanging;
+        private bool canHang;
 
         public PlayerHangOnLedgeState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
+            canHang = true;
         }
-
 
         public override void Enter()
         {
             base.Enter();
 
-            player.Input.JumpEvent += OnJump;
+            player.Input.JumpEvent += OnClimb;
 
             player.AirDashState.ResetAmountOfDash();
             player.JumpState.ResetAmountOfJump();
@@ -27,7 +28,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Core.VisualFx.CreateAnimationFX(
                 DustType.Tiny,
                 CornerPosition,
-                new Quaternion() { y = player.Core.Movement.FacingDirection == -1 ? 0 : 180 });
+                new Quaternion() { y = player.Core.Movement.FacingDirection == Vector2.left.x ? 0 : 180 });
 
             player.transform.position = GetHangingPosition();
         }
@@ -36,10 +37,16 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            if (player.Core.Movement.FacingDirection == player.Input.NormInputX && isHanging)
+            if (player.Input.InputVertical == Vector2.up.y && isHanging)
             {
-                stateMachine.ChangeState(player.ClimbLedgeState);              
-            }           
+                stateMachine.ChangeState(player.ClimbLedgeState);
+            }
+            else if (player.Input.InputVertical == Vector2.down.y && isHanging)
+            {
+                canHang = false;
+                player.Core.Movement.SetVelocityY(0.1f);
+                stateMachine.ChangeState(player.InAirState);
+            }
         }
 
         public override void Exit()
@@ -47,25 +54,35 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             isHanging = false;         
-            player.Input.JumpEvent -= OnJump;
+            player.Input.JumpEvent -= OnClimb;
         }
 
         public override void AnimationTrigger()
             => isHanging = true;
 
-        #region Input
-        private void OnJump()
+        public bool CanHang()
         {
-            if (!isHanging) return;
-
-            stateMachine.ChangeState(player.JumpState);
+            if (!player.Core.Sensor.IsLedgeDetect())
+            {
+                canHang = true;
+            }
+            return canHang;
         }
-        #endregion
 
         private Vector2 GetHangingPosition()
         {
             return new(CornerPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
                 CornerPosition.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
         }
+
+        #region Input
+        private void OnClimb()
+        {
+            if (!isHanging) return;
+
+            stateMachine.ChangeState(player.ClimbLedgeState);
+        }
+        #endregion
+
     }
 }

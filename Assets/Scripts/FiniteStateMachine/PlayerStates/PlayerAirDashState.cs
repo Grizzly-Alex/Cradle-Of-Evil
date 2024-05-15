@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerAirDashState : PlayerAbilityState
+    public sealed class PlayerAirDashState : PlayerAbilityState
     {
         private readonly int hashDash = Animator.StringToHash("AirDashing");
 		private readonly int amountOfDash = 1;

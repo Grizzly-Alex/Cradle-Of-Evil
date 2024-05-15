@@ -64,7 +64,7 @@ namespace CoreSystem.Components
         }
 
         public void SetVelocityX(float velocity)
-        {
+        {           
             workingVector.Set(velocity, CurrentVelocity.y);
             SetFinalVelocity();
         }
@@ -91,7 +91,7 @@ namespace CoreSystem.Components
         #region Flip
         public void FlipToDirection(int xInput)
         {
-            if (xInput != 0 && xInput != FacingDirection) 
+            if (xInput != Vector2Int.zero.x && xInput != FacingDirection) 
                 Flip(); 
         }
 

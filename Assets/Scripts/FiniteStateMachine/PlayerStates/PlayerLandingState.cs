@@ -34,7 +34,7 @@ namespace FiniteStateMachine.PlayerStates
 			player.JumpState.ResetAmountOfJump();
 			player.Core.Movement.SetVelocityZero();
 
-            if (player.Core.Sensor.GetGroundSlopeAngle() != 0.0f)
+            if (player.Core.Sensor.GetGroundSlopeAngle() != default)
             {
                 player.Core.Movement.FreezePosX();
             }
@@ -58,7 +58,7 @@ namespace FiniteStateMachine.PlayerStates
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {
-                    if (isAnimFinished || player.Input.NormInputX != 0) 
+                    if (isAnimFinished || player.Input.InputHorizontal != default) 
                         stateMachine.ChangeState(player.StandState);
                 };
             }

@@ -11,10 +11,8 @@ namespace FiniteStateMachine.PlayerStates
         private bool isGrounded;
         private bool isLedgeDetected;
         private bool isGrabWallDetected;
+        private bool isFalling;
         private float fallingForce;
-
-        public bool UseDoubleJump {  get; set; }
-
 
         public PlayerInAirState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -24,11 +22,11 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-			player.Input.JumpEvent += OnJump;
+            player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnAirDash;
 
             player.Core.Movement.ResetFreezePos();
-           
+
             player.Animator.Play(hashInAir);
         }
 
@@ -36,34 +34,37 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
-            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
-
             if (isGrounded)
             {               
                 player.LandingState.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.LandingState);
             }
-            else if (isLedgeDetected && player.Core.Movement.CurrentVelocity.y <= 0.0f) 
+            else if (isLedgeDetected && isFalling) 
             {
 				stateMachine.ChangeState(player.HangOnLedgeState);
             }
-            else if (isGrabWallDetected && player.Core.Movement.CurrentVelocity.y <= 0.0f)
+            else if (isGrabWallDetected && isFalling)
             {
 				stateMachine.ChangeState(player.OnWallState);
             }
+
+            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
+            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
         }
 
         public override void PhysicsUpdate() 
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
+            player.Core.Movement.SetVelocityX(player.Input.InputHorizontal * player.Data.InAirMoveSpeed);
         }
 
         public override void Exit()
         {
             base.Exit();
+
+            isLedgeDetected = false;
+            isGrabWallDetected = false; 
 
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnAirDash;
@@ -78,10 +79,15 @@ namespace FiniteStateMachine.PlayerStates
             TrackingFallingForce();
 
             isGrounded = player.Core.Sensor.IsGroundDetect();
+            isFalling = float.IsNegative(player.Core.Movement.CurrentVelocity.y);
 
-            if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
-                PlayerOnLedgeState.CornerPosition = ledgeCorner;
+            if (player.HangOnLedgeState.CanHang())
+            {
+                if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
+                    PlayerOnLedgeState.CornerPosition = ledgeCorner;
+            }
 
+            
             if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
                 PlayerOnWallState.DetectedPosition = wallPosition;
         }

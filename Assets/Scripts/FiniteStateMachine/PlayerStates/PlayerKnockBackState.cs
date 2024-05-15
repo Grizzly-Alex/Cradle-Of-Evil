@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public class PlayerKnockBackState : PlayerAbilityState
+    public sealed class PlayerKnockBackState : PlayerAbilityState
     {
         private readonly int hashKnockBacking = Animator.StringToHash("KnockBacking");
         private readonly int hashIsMoving = Animator.StringToHash("isMoving");
