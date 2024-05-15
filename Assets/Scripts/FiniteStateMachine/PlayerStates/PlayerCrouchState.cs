@@ -19,33 +19,22 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Input.SitStandEvent += OnStand;
-            player.Input.JumpEvent += OnJump;
-
             player.Animator.Play(hashIdle);
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+
+            if (player.Input.InputVertical != Vector2.down.y)
+            {
+                stateMachine.ChangeState(player.SitStandState);
+            }
         }
 
         public override void Exit()
         {
             base.Exit();
-
-            player.Input.SitStandEvent -= OnStand;
-            player.Input.JumpEvent -= OnJump;
         }
-
-
-        #region Input
-        private void OnStand()
-        {
-            stateMachine.ChangeState(player.SitStandState);            
-        }
-
-		private void OnJump()
-        {
-            player.SetColliderHeight(player.Data.StandColiderHeight);
-
-            stateMachine.ChangeState(player.JumpState);
-        }
-        #endregion
     }
 }

@@ -23,7 +23,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
+            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
 
 			if (!isGrounded)
             {

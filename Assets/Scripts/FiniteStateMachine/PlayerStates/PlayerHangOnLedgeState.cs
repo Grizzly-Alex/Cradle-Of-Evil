@@ -37,11 +37,11 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            if (player.Input.NormInputY == Vector2.up.y && isHanging)
+            if (player.Input.InputVertical == Vector2.up.y && isHanging)
             {
                 stateMachine.ChangeState(player.ClimbLedgeState);
             }
-            else if (player.Input.NormInputY == Vector2.down.y && isHanging)
+            else if (player.Input.InputVertical == Vector2.down.y && isHanging)
             {
                 canHang = false;
                 player.Core.Movement.SetVelocityY(0.1f);

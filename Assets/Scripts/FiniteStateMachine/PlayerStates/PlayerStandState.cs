@@ -21,39 +21,42 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Input.SitStandEvent += OnSit;
             player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnDash;
 
-            player.Animator.Play(player.Input.NormInputX != default ? hashMove : hashIdle);
+            player.Animator.Play(player.Input.InputHorizontal != default ? hashMove : hashIdle);
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            player.Animator.SetBool(hashIsMoving, player.Input.NormInputX != default);           
+            player.Animator.SetBool(hashIsMoving, player.Input.InputHorizontal != default);  
+            
+            if(player.Input.InputVertical == Vector2.down.y)
+            {
+                stateMachine.ChangeState(player.SitStandState);
+            }
         }
 
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.NormInputX);
+            player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.InputHorizontal);
         }
 
         public override void Exit()
         {
             base.Exit();
             player.Core.Movement.SetVelocityZero();
-            player.Input.SitStandEvent -= OnSit;
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnDash;
         }
 
         public override void AnimationTrigger()
         {
-            if (player.Input.NormInputX != default)
+            if (player.Input.InputHorizontal != default)
             {
                 player.Core.VisualFx.CreateAnimationFX(
                     DustType.Tiny,
@@ -76,11 +79,6 @@ namespace FiniteStateMachine.PlayerStates
         }
 
         #region Input
-        private void OnSit()
-        {
-            stateMachine.ChangeState(player.SitStandState);
-        }
-
 		private void OnJump()
 		{
             stateMachine.ChangeState(player.JumpState); 
@@ -88,7 +86,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		private void OnDash()
 		{
-            if (player.Input.NormInputX == player.Core.Movement.FacingDirection)
+            if (player.Input.InputHorizontal == player.Core.Movement.FacingDirection)
             {
                 if (!player.Input.CanInput) return;
 			    stateMachine.ChangeState(player.SlideState);

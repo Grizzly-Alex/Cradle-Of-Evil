@@ -5,16 +5,15 @@ using UnityEngine.InputSystem;
 public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
 {
     #region InputXY
+    private float inputX;
+    private float inputY;
+    public int InputHorizontal { get; private set;}
+    public int InputVertical { get; private set; }       
     [field: SerializeField] public float StickDeadzone { get; private set; }
-    public float InputForceX { get; private set; }
-    public float InputForceY { get; private set; }
-    public int NormInputX { get; private set;}
-    public int NormInputY { get; private set; }       
     #endregion
 
     #region InputEvents
     public event Action JumpEvent;
-    public event Action SitStandEvent;
     public event Action DashEvent;
     #endregion
 
@@ -54,11 +53,11 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     {     
         MovementValue = context.ReadValue<Vector2>();
 
-        InputForceX = Mathf.Abs(MovementValue.x);
-        InputForceY = Mathf.Abs(MovementValue.y);
+        inputX = Mathf.Abs(MovementValue.x);
+        inputY = Mathf.Abs(MovementValue.y);
 
-        NormInputX = StickLimiter(InputForceX, (int)(MovementValue * Vector2.right).normalized.x);
-        NormInputY = StickLimiter(InputForceY, (int)(MovementValue * Vector2.up).normalized.y); 
+        InputHorizontal = StickLimiter(inputX, (int)(MovementValue * Vector2.right).normalized.x);
+        InputVertical = StickLimiter(inputY, (int)(MovementValue * Vector2.up).normalized.y); 
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -66,14 +65,6 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
         if (context.performed)
         {
             JumpEvent?.Invoke();
-        }
-    }
-
-    public void OnSitStand(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            SitStandEvent?.Invoke();
         }
     }
 

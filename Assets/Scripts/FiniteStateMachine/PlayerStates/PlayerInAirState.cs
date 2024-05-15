@@ -49,14 +49,14 @@ namespace FiniteStateMachine.PlayerStates
             }
 
             player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
-            player.Core.Movement.FlipToDirection(player.Input.NormInputX);
+            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
         }
 
         public override void PhysicsUpdate() 
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.SetVelocityX(player.Input.NormInputX * player.Data.InAirMoveSpeed);
+            player.Core.Movement.SetVelocityX(player.Input.InputHorizontal * player.Data.InAirMoveSpeed);
         }
 
         public override void Exit()

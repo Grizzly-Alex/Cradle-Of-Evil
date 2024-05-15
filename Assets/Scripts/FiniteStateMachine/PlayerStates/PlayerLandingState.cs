@@ -58,7 +58,7 @@ namespace FiniteStateMachine.PlayerStates
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {
-                    if (isAnimFinished || player.Input.NormInputX != default) 
+                    if (isAnimFinished || player.Input.InputHorizontal != default) 
                         stateMachine.ChangeState(player.StandState);
                 };
             }
