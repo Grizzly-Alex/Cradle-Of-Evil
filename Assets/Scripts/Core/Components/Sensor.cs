@@ -5,6 +5,9 @@ namespace CoreSystem.Components
     public sealed class Sensor : CoreComponent
     {
         [SerializeField] private Grid grid;
+        private CapsuleCollider2D entityCollider;
+
+        private float inactiveGroundSensorDistance;
 
         [Header("SIZE OF SENSOR")]
         [SerializeField] private float cellingRadius;
@@ -24,6 +27,7 @@ namespace CoreSystem.Components
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
+        [field: SerializeField] public string OneWayPlatform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
         [field: SerializeField] public string Ledge { get; private set; }
 
@@ -49,7 +53,24 @@ namespace CoreSystem.Components
         public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TerrainLayer);
         #endregion
 
-        public bool IsGroundDetect() => groundDistance > GroundHit.distance;
+        protected override void Start()
+        {
+            base.Start();
+            entityCollider = GetComponentInParent<CapsuleCollider2D>();
+            inactiveGroundSensorDistance = GroundSensor.position.y - entityCollider.bounds.min.y;
+        }
+        
+        public bool IsGroundDetect() 
+            => groundDistance >= GroundHit.distance;
+
+        public bool IsPlatformDetect() 
+            => GroundHit.collider.CompareTag(Platform)
+            && groundDistance >= GroundHit.distance;
+
+        public bool IsOneWayPlatformDetect()
+            => GroundHit.collider.CompareTag(OneWayPlatform)
+            && groundDistance >= GroundHit.distance
+            && inactiveGroundSensorDistance <= GroundHit.distance;
 
         public bool IsCellingDetect() => Circle;
 
@@ -81,7 +102,7 @@ namespace CoreSystem.Components
                 TerrainLayer);
 
             return LedgeHit.collider != null
-                && LedgeHit.collider.CompareTag(Platform)
+                && (LedgeHit.collider.CompareTag(Platform) || LedgeHit.collider.CompareTag(OneWayPlatform))
                 && betweenHitsIsEmpty
                 && aboveIsEmpty;
         }
@@ -117,8 +138,11 @@ namespace CoreSystem.Components
         public float GetGroundSlopeAngle() 
             => Vector2.Angle(GroundHit.normal, Vector2.up);
 
+        public bool IsGroundSlope() 
+            => GetGroundSlopeAngle() != default;
+
         public Vector2 GetGroundPerperdicular() 
-            => Vector2.Perpendicular(core.Sensor.GroundHit.normal).normalized;
+            => Vector2.Perpendicular(GroundHit.normal).normalized;
 
         private void OnDrawGizmos()
         {
