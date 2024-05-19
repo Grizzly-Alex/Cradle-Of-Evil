@@ -24,6 +24,7 @@ namespace FiniteStateMachine.PlayerStates
 
             player.AirDashState.ResetAmountOfDash();
             player.JumpState.ResetAmountOfJump();
+            player.Core.Movement.SetVelocityZero();
 
             player.Core.VisualFx.CreateAnimationFX(
                 DustType.Tiny,

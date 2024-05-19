@@ -14,12 +14,13 @@ namespace FiniteStateMachine.PlayerStates
 
         public PlayerSitStandState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
-
         }
 
         public override void Enter()
         {
             base.Enter();
+
+            player.Input.JumpEvent += OnJump;
 
             player.Core.Movement.SetVelocityZero();
             player.Core.Movement.FreezePosOnSlope();
@@ -56,11 +57,27 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+
+            player.Input.JumpEvent -= OnJump;
         }
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrounded = player.Core.Sensor.IsPlatformDetect()
+                || player.Core.Sensor.IsOneWayPlatformDetect();
+        }
+
+        private void OnJump()
+        {
+            if (player.Input.InputVertical == Vector2.down.y)
+            {
+                if (!player.Core.Sensor.IsOneWayPlatformDetect()) return;
+                player.Core.Movement.LeaveOneWayPlatform();
+            }
+            else
+            {
+                stateMachine.ChangeState(player.JumpState);
+            }
         }
     }
 }

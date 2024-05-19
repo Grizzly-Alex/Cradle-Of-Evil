@@ -59,8 +59,8 @@ namespace CoreSystem.Components
             entityCollider = GetComponentInParent<CapsuleCollider2D>();
             inactiveGroundSensorDistance = GroundSensor.position.y - entityCollider.bounds.min.y;
         }
-        
-        public bool IsGroundDetect() 
+
+        public bool IsGroundDetect()
             => groundDistance >= GroundHit.distance;
 
         public bool IsPlatformDetect() 
