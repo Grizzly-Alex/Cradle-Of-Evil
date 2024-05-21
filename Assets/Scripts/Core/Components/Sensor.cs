@@ -23,34 +23,36 @@ namespace CoreSystem.Components
         [field: SerializeField] public Transform LedgeSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
-        [field: SerializeField] public LayerMask TerrainLayer { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForGroundSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForCeillingSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForWallSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForLedgeSensor { get; private set; }
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
         [field: SerializeField] public string OneWayPlatform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
-        [field: SerializeField] public string Ledge { get; private set; }
 
         #region Sensors
         public RaycastHit2D GroundHit => Physics2D.Raycast(
             GroundSensor.position,
             Vector2.down,
             Mathf.NegativeInfinity,
-            TerrainLayer);
+            TargetLayerForGroundSensor);
 
         public RaycastHit2D WallHit => Physics2D.Raycast(
             WallSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            TerrainLayer);
+            TargetLayerForWallSensor);
 
         private RaycastHit2D LedgeHit => Physics2D.Raycast(
             LedgeSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            TerrainLayer);
+            TargetLayerForLedgeSensor);
 
-        public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TerrainLayer);
+        public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TargetLayerForCeillingSensor);
         #endregion
 
         protected override void Start()
@@ -80,7 +82,7 @@ namespace CoreSystem.Components
                 new Vector2(WallSensor.position.x, WallSensor.position.y - spanOfGrabWall),
                 Vector2.right * core.Movement.FacingDirection,
                 wallDistance,
-                TerrainLayer);
+                TargetLayerForWallSensor);
 
             if (WallHit.collider is null || spanRayHit.collider is null) return false;
                                    
@@ -93,13 +95,13 @@ namespace CoreSystem.Components
                 new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge),
                 Vector2.right * core.Movement.FacingDirection,
                 wallDistance,
-                TerrainLayer);
+                TargetLayerForLedgeSensor);
 
             bool betweenHitsIsEmpty = !Physics2D.Raycast(
                 new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge),
                 Vector2.down,
                 spanOfLedge,
-                TerrainLayer);
+                TargetLayerForLedgeSensor);
 
             return LedgeHit.collider != null
                 && (LedgeHit.collider.CompareTag(Platform) || LedgeHit.collider.CompareTag(OneWayPlatform))
