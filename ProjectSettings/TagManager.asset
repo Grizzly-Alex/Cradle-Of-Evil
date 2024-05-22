@@ -8,6 +8,7 @@ TagManager:
   - Ledge
   - Platform
   - VisualFx
+  - OneWayPlatform
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - Water
   - UI
   - Player
-  - Terrain
-  - 
+  - Ground
+  - Interactive Environment
   - 
   - 
   - 
@@ -45,7 +46,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Platforms
+  - name: TileMap
     uniqueID: 646239603
     locked: 0
   - name: DownEffect

@@ -1,10 +1,18 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace CoreSystem.Components
 {
     public sealed class Movement : CoreComponent
     {
-        public Rigidbody2D Rigidbody { get; private set; }
+        [SerializeField]
+        private float timeIgnoreCollisions;
+        [SerializeField] 
+        private TilemapCollider2D oneWayPlatformCollider;
+        private Collider2D entityCollider;
+
+        private new Rigidbody2D rigidbody;
         public int FacingDirection { get; private set; }
         public Vector2 CurrentVelocity { get; private set; }
         private Vector2 workingVector;
@@ -19,12 +27,12 @@ namespace CoreSystem.Components
         protected override void Start()
         {
             base.Start();
-            Rigidbody = GetComponentInParent<Rigidbody2D>();
-            defaultGravityScale = Rigidbody.gravityScale;
-
+            rigidbody = GetComponentInParent<Rigidbody2D>();
+            entityCollider = GetComponentInParent<Collider2D>();
+            defaultGravityScale = rigidbody.gravityScale;
 		}
 
-        public override void LogicUpdate() => CurrentVelocity = Rigidbody.velocity;
+        public override void LogicUpdate() => CurrentVelocity = rigidbody.velocity;
 
         #region Movement
         public void Move(float velocity, int directX)
@@ -37,7 +45,7 @@ namespace CoreSystem.Components
 
         public void MoveAlongSurface(float velocity, int directX)
         {
-            if (core.Sensor.GetGroundSlopeAngle() != 0.0f) SetVelocityOnSlope(velocity * directX);           
+            if (core.Sensor.IsGroundSlope()) SetVelocityOnSlope(velocity * directX);           
             else SetVelocityOnSmooth(velocity * directX);            
         }
         #endregion
@@ -83,7 +91,7 @@ namespace CoreSystem.Components
 
         public void SetFinalVelocity()
         {
-            Rigidbody.velocity = workingVector;
+            rigidbody.velocity = workingVector;
             CurrentVelocity = workingVector;
         }
         #endregion
@@ -98,39 +106,58 @@ namespace CoreSystem.Components
         public void Flip()
         {
             FacingDirection *= -1;
-            Rigidbody.transform.Rotate(0.0f, 180.0f, 0.0f);
+            rigidbody.transform.Rotate(0.0f, 180.0f, 0.0f);
         }
         #endregion
 
         #region Freeze Position
         public void FreezePosOnSlope()
         {
-            if (core.Sensor.GetGroundSlopeAngle() == 0.0f) return;
-            FreezePosX();          
+            if (core.Sensor.IsGroundSlope())
+                FreezePosX();                      
         }
 
         public void FreezePosX()
         {
-            if (Rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX)) return;
-            Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+            if (rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX)) return;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
 
         public void FreezePosY()
         {
-            if (Rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY)) return;
-               Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
+            if (rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY)) return;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
         }
 
         public void ResetFreezePos()
         {
-            if (Rigidbody.constraints == RigidbodyConstraints2D.FreezeRotation) return;
-            Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            if (rigidbody.constraints == RigidbodyConstraints2D.FreezeRotation) return;
+            rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
         #endregion
 
         #region Gravitation
-        public void GravitationOn() => Rigidbody.gravityScale = defaultGravityScale;
-		public void GravitationOff() => Rigidbody.gravityScale = 0.0f;
-		#endregion
-	}
+        public void GravitationOn() => rigidbody.gravityScale = defaultGravityScale;
+		public void GravitationOff() => rigidbody.gravityScale = 0.0f;
+        #endregion
+
+        #region One Way Platform
+        public void LeaveOneWayPlatform()
+        {
+            IgnoreOneWayPlatform(true);
+            StartCoroutine(StopIgnoringOneWayPlatform(timeIgnoreCollisions));
+        }
+        public void IgnoreOneWayPlatform(bool isIgnore)
+        {
+            if (Physics2D.GetIgnoreCollision(oneWayPlatformCollider, entityCollider) == isIgnore) return;   
+            Physics2D.IgnoreCollision(oneWayPlatformCollider, entityCollider, isIgnore);           
+        }
+
+        private IEnumerator StopIgnoringOneWayPlatform(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            IgnoreOneWayPlatform(false);
+        }
+        #endregion
+    }
 }

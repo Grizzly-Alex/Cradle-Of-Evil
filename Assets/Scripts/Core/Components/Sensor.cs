@@ -5,11 +5,15 @@ namespace CoreSystem.Components
     public sealed class Sensor : CoreComponent
     {
         [SerializeField] private Grid grid;
+        private CapsuleCollider2D entityCollider;
+
+        private float inactiveGroundSensorDistance;
 
         [Header("SIZE OF SENSOR")]
         [SerializeField] private float cellingRadius;
         [SerializeField] private float groundDistance;
         [SerializeField] private float wallDistance;
+        [SerializeField] private float ledgeDistance;
         [SerializeField] private float spanOfLedge;
         [SerializeField] private float spanOfGrabWall;
 
@@ -20,36 +24,56 @@ namespace CoreSystem.Components
         [field: SerializeField] public Transform LedgeSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
-        [field: SerializeField] public LayerMask TerrainLayer { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForGroundSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForCeillingSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForWallSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForLedgeSensor { get; private set; }
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
+        [field: SerializeField] public string OneWayPlatform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
-        [field: SerializeField] public string Ledge { get; private set; }
 
         #region Sensors
         public RaycastHit2D GroundHit => Physics2D.Raycast(
             GroundSensor.position,
             Vector2.down,
             Mathf.NegativeInfinity,
-            TerrainLayer);
+            TargetLayerForGroundSensor);
 
         public RaycastHit2D WallHit => Physics2D.Raycast(
             WallSensor.position,
             Vector2.right * core.Movement.FacingDirection,
             wallDistance,
-            TerrainLayer);
+            TargetLayerForWallSensor);
 
         private RaycastHit2D LedgeHit => Physics2D.Raycast(
             LedgeSensor.position,
             Vector2.right * core.Movement.FacingDirection,
-            wallDistance,
-            TerrainLayer);
+            ledgeDistance,
+            TargetLayerForLedgeSensor);
 
-        public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TerrainLayer);
+        public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TargetLayerForCeillingSensor);
         #endregion
 
-        public bool IsGroundDetect() => groundDistance > GroundHit.distance;
+        protected override void Start()
+        {
+            base.Start();
+            entityCollider = GetComponentInParent<CapsuleCollider2D>();
+            inactiveGroundSensorDistance = GroundSensor.position.y - entityCollider.bounds.min.y;
+        }
+
+        public bool IsGroundDetect()
+            => groundDistance >= GroundHit.distance;
+
+        public bool IsPlatformDetect() 
+            => GroundHit.collider.CompareTag(Platform)
+            && groundDistance >= GroundHit.distance;
+
+        public bool IsOneWayPlatformDetect()
+            => GroundHit.collider.CompareTag(OneWayPlatform)
+            && groundDistance >= GroundHit.distance
+            && inactiveGroundSensorDistance <= GroundHit.distance;
 
         public bool IsCellingDetect() => Circle;
 
@@ -59,7 +83,7 @@ namespace CoreSystem.Components
                 new Vector2(WallSensor.position.x, WallSensor.position.y - spanOfGrabWall),
                 Vector2.right * core.Movement.FacingDirection,
                 wallDistance,
-                TerrainLayer);
+                TargetLayerForWallSensor);
 
             if (WallHit.collider is null || spanRayHit.collider is null) return false;
                                    
@@ -71,17 +95,17 @@ namespace CoreSystem.Components
             bool aboveIsEmpty = !Physics2D.Raycast(
                 new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge),
                 Vector2.right * core.Movement.FacingDirection,
-                wallDistance,
-                TerrainLayer);
+                ledgeDistance,
+                TargetLayerForLedgeSensor);
 
             bool betweenHitsIsEmpty = !Physics2D.Raycast(
-                new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge),
-                Vector2.down,
+                LedgeSensor.position,
+                Vector2.up,
                 spanOfLedge,
-                TerrainLayer);
+                TargetLayerForLedgeSensor);
 
             return LedgeHit.collider != null
-                && LedgeHit.collider.CompareTag(Platform)
+                && (LedgeHit.collider.CompareTag(Platform) || LedgeHit.collider.CompareTag(OneWayPlatform))
                 && betweenHitsIsEmpty
                 && aboveIsEmpty;
         }
@@ -117,8 +141,11 @@ namespace CoreSystem.Components
         public float GetGroundSlopeAngle() 
             => Vector2.Angle(GroundHit.normal, Vector2.up);
 
+        public bool IsGroundSlope() 
+            => GetGroundSlopeAngle() != default;
+
         public Vector2 GetGroundPerperdicular() 
-            => Vector2.Perpendicular(core.Sensor.GroundHit.normal).normalized;
+            => Vector2.Perpendicular(GroundHit.normal).normalized;
 
         private void OnDrawGizmos()
         {
@@ -127,10 +154,12 @@ namespace CoreSystem.Components
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(CeillingSensor.position, cellingRadius); //celling ray 
             Gizmos.DrawRay(GroundSensor.position, new Vector2(0, -groundDistance)); //ground ray
+
             Gizmos.DrawRay(WallSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //wall ray 1
             Gizmos.DrawRay(new Vector2(WallSensor.position.x, WallSensor.position.y - spanOfGrabWall), new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //wall ray 2
-            Gizmos.DrawRay(new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge), new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray 1
-            Gizmos.DrawRay(LedgeSensor.position, new Vector2(wallDistance * core.Movement.FacingDirection, 0)); //ledge ray 2
+
+            Gizmos.DrawRay(new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge), new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 1
+            Gizmos.DrawRay(LedgeSensor.position, new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 2
             Gizmos.DrawRay(LedgeSensor.position, new Vector2(0, spanOfLedge)); //ledge ray between      
         }
     }

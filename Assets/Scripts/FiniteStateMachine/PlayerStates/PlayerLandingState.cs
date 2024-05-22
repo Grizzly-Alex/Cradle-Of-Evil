@@ -27,9 +27,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
-
-            player.Input.JumpEvent += OnJump;
-
+           
             player.AirDashState.ResetAmountOfDash();
 			player.JumpState.ResetAmountOfJump();
 			player.Core.Movement.SetVelocityZero();
@@ -54,6 +52,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
+                player.Input.JumpEvent += OnJump;
                 player.Core.VisualFx.CreateAnimationFX(DustType.Landing, groundSurfacePoint, rotation);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
@@ -87,15 +86,22 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrounded = player.Core.Sensor.IsPlatformDetect()
+                || player.Core.Sensor.IsOneWayPlatformDetect();
         }
 
         #region Input
         private void OnJump()
         {
-            if (LandingForce >= player.Data.LandingThreshold) return;
-
-            stateMachine.ChangeState(player.JumpState);
+            if (player.Input.InputVertical == Vector2.down.y)
+            {
+                if (!player.Core.Sensor.IsOneWayPlatformDetect()) return;
+                player.Core.Movement.LeaveOneWayPlatform();
+            }
+            else
+            {
+                stateMachine.ChangeState(player.JumpState);
+            }
         }
         #endregion
     }

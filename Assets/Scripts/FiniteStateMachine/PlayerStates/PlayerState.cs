@@ -1,5 +1,7 @@
 ﻿using Entities;
 using Interfaces;
+using UnityEngine;
+
 
 namespace FiniteStateMachine.PlayerStates
 {
@@ -18,6 +20,7 @@ namespace FiniteStateMachine.PlayerStates
         public virtual void Enter()
         {
             isAnimFinished = false;
+            Debug.Log(this);
         }
 
         public virtual void LogicUpdate()

@@ -8,7 +8,8 @@ namespace FiniteStateMachine.PlayerStates
         private readonly int hashVelocityY = Animator.StringToHash("velocityY");
         private readonly int hashInAir = Animator.StringToHash("InAirState");
 
-        private bool isGrounded;
+        private bool isOneWayPlatform;
+        private bool isPlatform;
         private bool isLedgeDetected;
         private bool isGrabWallDetected;
         private bool isFalling;
@@ -26,6 +27,7 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.DashEvent += OnAirDash;
 
             player.Core.Movement.ResetFreezePos();
+            player.SetColliderHeight(player.Data.StandColiderHeight);
 
             player.Animator.Play(hashInAir);
         }
@@ -34,7 +36,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            if (isGrounded)
+            if (isOneWayPlatform || isPlatform)
             {               
                 player.LandingState.LandingForce = fallingForce;
                 stateMachine.ChangeState(player.LandingState);
@@ -64,13 +66,15 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
             isLedgeDetected = false;
-            isGrabWallDetected = false; 
+            isGrabWallDetected = false;
+            isOneWayPlatform = false;
+            isPlatform = false;
 
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnAirDash;
 
             player.JumpState.DisableDoubleJumpFX();
-
+            
             ResetFallingForce();
         }
 
@@ -78,16 +82,21 @@ namespace FiniteStateMachine.PlayerStates
         {
             TrackingFallingForce();
 
-            isGrounded = player.Core.Sensor.IsGroundDetect();
-            isFalling = float.IsNegative(player.Core.Movement.CurrentVelocity.y);
+            isFalling = player.Core.Movement.CurrentVelocity.y <= (float)default;
 
+            isPlatform = player.Core.Sensor.IsPlatformDetect();
+
+            if (isFalling) 
+            {
+                isOneWayPlatform = player.Core.Sensor.IsOneWayPlatformDetect();
+            }
+                
             if (player.HangOnLedgeState.CanHang())
             {
                 if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
                     PlayerOnLedgeState.CornerPosition = ledgeCorner;
             }
-
-            
+          
             if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
                 PlayerOnWallState.DetectedPosition = wallPosition;
         }

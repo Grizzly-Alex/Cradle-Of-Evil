@@ -23,17 +23,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            if (player.PreviousState is PlayerOnGroundState or PlayerLandingState) 
-			{
-                player.Core.VisualFx.CreateAnimationFX(
-					DustType.JumpFromGround,
-					player.Core.Sensor.GroundHit.point,
-					player.transform.rotation);
-
-                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
-                jumpUpdate = UpdateJump;
-			}
-			else if (player.PreviousState is PlayerOnWallState)
+			if (player.PreviousState is PlayerOnWallState)
 			{
                 player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
@@ -62,6 +52,16 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
 			}
+			else
+			{
+                player.Core.VisualFx.CreateAnimationFX(
+                    DustType.JumpFromGround,
+                    player.Core.Sensor.GroundHit.point,
+                    player.transform.rotation);
+
+                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                jumpUpdate = UpdateJump;
+            }
         }
 
         public override void LogicUpdate()
