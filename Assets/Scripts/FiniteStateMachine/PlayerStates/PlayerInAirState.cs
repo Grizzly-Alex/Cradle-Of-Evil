@@ -12,6 +12,7 @@ namespace FiniteStateMachine.PlayerStates
         private bool isPlatform;
         private bool isLedgeDetected;
         private bool isGrabWallDetected;
+        private bool isGirderDetected;
         private bool isFalling;
         private float fallingForce;
 
@@ -99,6 +100,10 @@ namespace FiniteStateMachine.PlayerStates
           
             if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
                 PlayerOnWallState.DetectedPosition = wallPosition;
+
+            //test
+            if (isGirderDetected = player.Core.Sensor.GetDetectedGirderPosition(out Vector2 girderPosition))
+                Debug.Log(girderPosition);
         }
 
 		public override void AnimationTrigger() 

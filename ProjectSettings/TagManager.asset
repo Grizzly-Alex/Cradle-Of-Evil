@@ -9,6 +9,7 @@ TagManager:
   - Platform
   - VisualFx
   - OneWayPlatform
+  - Girder
   layers:
   - Default
   - TransparentFX

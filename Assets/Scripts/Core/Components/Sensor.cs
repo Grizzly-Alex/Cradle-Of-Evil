@@ -14,6 +14,7 @@ namespace CoreSystem.Components
         [SerializeField] private float groundDistance;
         [SerializeField] private float wallDistance;
         [SerializeField] private float ledgeDistance;
+        [SerializeField] private float girderDistance;
         [SerializeField] private float spanOfLedge;
         [SerializeField] private float spanOfGrabWall;
 
@@ -22,17 +23,20 @@ namespace CoreSystem.Components
         [field: SerializeField] public Transform GroundSensor { get; private set; }
         [field: SerializeField] public Transform WallSensor { get; private set; }
         [field: SerializeField] public Transform LedgeSensor { get; private set; }
+        [field: SerializeField] public Transform GirderSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
         [field: SerializeField] public LayerMask TargetLayerForGroundSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForCeillingSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForWallSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForLedgeSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForGirderSensor { get; private set; }
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
         [field: SerializeField] public string OneWayPlatform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
+        [field: SerializeField] public string Girder { get; private set; }
 
         #region Sensors
         public RaycastHit2D GroundHit => Physics2D.Raycast(
@@ -52,6 +56,12 @@ namespace CoreSystem.Components
             Vector2.right * core.Movement.FacingDirection,
             ledgeDistance,
             TargetLayerForLedgeSensor);
+
+        private RaycastHit2D GirderHit => Physics2D.Raycast(
+            GirderSensor.position,
+            Vector2.right * core.Movement.FacingDirection,
+            girderDistance,
+            TargetLayerForGirderSensor);
 
         public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TargetLayerForCeillingSensor);
         #endregion
@@ -138,6 +148,25 @@ namespace CoreSystem.Components
             return isDetected;
         }
 
+        public bool IsGirderDetect() =>
+            GirderHit.collider != null
+            && GirderHit.collider.CompareTag(Girder);
+
+        public bool GetDetectedGirderPosition(out Vector2 girderPosition)
+        {
+            girderPosition = Vector2.zero;
+            bool isDetected = IsGirderDetect();
+
+            if (isDetected)
+            {
+                Vector3Int cellPosition = grid.WorldToCell(GirderHit.point);
+                Vector3 centerOfCell = grid.GetCellCenterWorld(cellPosition);
+                girderPosition.Set(centerOfCell.x, centerOfCell.y);
+            }
+            return isDetected;
+        }
+
+
         public float GetGroundSlopeAngle() 
             => Vector2.Angle(GroundHit.normal, Vector2.up);
 
@@ -160,7 +189,9 @@ namespace CoreSystem.Components
 
             Gizmos.DrawRay(new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge), new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 1
             Gizmos.DrawRay(LedgeSensor.position, new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 2
-            Gizmos.DrawRay(LedgeSensor.position, new Vector2(0, spanOfLedge)); //ledge ray between      
+            Gizmos.DrawRay(LedgeSensor.position, new Vector2(0, spanOfLedge)); //ledge ray between
+
+            Gizmos.DrawRay(GirderSensor.position, new Vector2(girderDistance * core.Movement.FacingDirection, 0)); //girder ray 
         }
     }
 }
