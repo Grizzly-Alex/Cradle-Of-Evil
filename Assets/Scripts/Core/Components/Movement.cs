@@ -149,6 +149,7 @@ namespace CoreSystem.Components
         }
         public void IgnoreOneWayPlatform(bool isIgnore)
         {
+            if (Physics2D.GetIgnoreCollision(oneWayPlatformCollider, entityCollider) == isIgnore) return;   
             Physics2D.IgnoreCollision(oneWayPlatformCollider, entityCollider, isIgnore);           
         }
 
