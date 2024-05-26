@@ -624,7 +624,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeClimb
+  m_Name: Climb
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -835,7 +835,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeHold
+  m_Name: HangHold
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1191,7 +1191,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LedgeGrab
+  m_Name: Grab
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1281,7 +1281,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OnLedgeState
+  m_Name: OnHangState
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 8692389577787977169}

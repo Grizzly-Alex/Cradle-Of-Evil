@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Pool.ItemsPool;
+using System.Collections;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -13,6 +14,8 @@ namespace FiniteStateMachine.PlayerStates
         private bool isTouchedRoof;
         private float finishTime;
         private Dust dust;
+
+        public bool isReady { get; private set; } = true;
 
         public PlayerSlideState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -39,8 +42,7 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Animator.SetBool(hashIsMoving, true);
             player.Animator.Play(hashStartDash);
-            isMoving = true;
-            player.Input.InputCooldown = player.Data.SlideCooldown;
+            isMoving = true;           
         }
 
         public override void LogicUpdate()
@@ -88,8 +90,10 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Exit();
 
+            isReady = false;
+            player.StartCoroutine(CoolDown(player.Data.SlideCooldown));
             dust.ReturnToPool();
-            player.Core.Movement.ResetFreezePos();           
+            player.Core.Movement.ResetFreezePos();
         }
 
         public override void DoCheck()
@@ -97,6 +101,12 @@ namespace FiniteStateMachine.PlayerStates
             base.DoCheck();
 
             isTouchedRoof = player.Core.Sensor.IsCellingDetect();
+        }
+
+        public IEnumerator CoolDown(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            isReady = true;
         }
 
         public override void AnimationTrigger()

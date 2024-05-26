@@ -14,6 +14,7 @@ namespace CoreSystem.Components
         [SerializeField] private float groundDistance;
         [SerializeField] private float wallDistance;
         [SerializeField] private float ledgeDistance;
+        [SerializeField] private float girderRadius;
         [SerializeField] private float spanOfLedge;
         [SerializeField] private float spanOfGrabWall;
 
@@ -22,17 +23,20 @@ namespace CoreSystem.Components
         [field: SerializeField] public Transform GroundSensor { get; private set; }
         [field: SerializeField] public Transform WallSensor { get; private set; }
         [field: SerializeField] public Transform LedgeSensor { get; private set; }
+        [field: SerializeField] public Transform GirderSensor { get; private set; }
 
         [field: Header("LAYER MASK")]
         [field: SerializeField] public LayerMask TargetLayerForGroundSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForCeillingSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForWallSensor { get; private set; }
         [field: SerializeField] public LayerMask TargetLayerForLedgeSensor { get; private set; }
+        [field: SerializeField] public LayerMask TargetLayerForGirderSensor { get; private set; }
 
         [field: Header("TAG MASK")]
         [field: SerializeField] public string Platform { get; private set; }
         [field: SerializeField] public string OneWayPlatform { get; private set; }
         [field: SerializeField] public string GrabWall { get; private set; }
+        [field: SerializeField] public string Girder { get; private set; }
 
         #region Sensors
         public RaycastHit2D GroundHit => Physics2D.Raycast(
@@ -53,7 +57,15 @@ namespace CoreSystem.Components
             ledgeDistance,
             TargetLayerForLedgeSensor);
 
-        public Collider2D Circle => Physics2D.OverlapCircle(CeillingSensor.position, cellingRadius, TargetLayerForCeillingSensor);
+        private Collider2D GirderCollider => Physics2D.OverlapCircle(
+            GirderSensor.position,
+            girderRadius,
+            TargetLayerForGirderSensor);
+
+        public Collider2D CellingCollider => Physics2D.OverlapCircle(
+            CeillingSensor.position,
+            cellingRadius,
+            TargetLayerForCeillingSensor);
         #endregion
 
         protected override void Start()
@@ -75,7 +87,7 @@ namespace CoreSystem.Components
             && groundDistance >= GroundHit.distance
             && inactiveGroundSensorDistance <= GroundHit.distance;
 
-        public bool IsCellingDetect() => Circle;
+        public bool IsCellingDetect() => CellingCollider;
 
         public bool IsGrabWallDetect()
         {
@@ -138,6 +150,23 @@ namespace CoreSystem.Components
             return isDetected;
         }
 
+        public bool IsGirderDetect() => GirderCollider;
+
+        public bool GetDetectedGirderPosition(out Vector2 girderPosition)
+        {
+            girderPosition = Vector2.zero;
+            bool isDetected = IsGirderDetect();
+
+            if (isDetected)
+            {
+                Vector3 detectedPoint = GirderCollider.ClosestPoint(GirderSensor.position);
+                Vector3Int cellPosition = grid.WorldToCell(detectedPoint);
+                Vector3 centerOfCell = grid.GetCellCenterWorld(cellPosition);
+                girderPosition.Set(centerOfCell.x, centerOfCell.y);
+            }
+            return isDetected;
+        }
+
         public float GetGroundSlopeAngle() 
             => Vector2.Angle(GroundHit.normal, Vector2.up);
 
@@ -160,7 +189,9 @@ namespace CoreSystem.Components
 
             Gizmos.DrawRay(new Vector2(LedgeSensor.position.x, LedgeSensor.position.y + spanOfLedge), new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 1
             Gizmos.DrawRay(LedgeSensor.position, new Vector2(ledgeDistance * core.Movement.FacingDirection, 0)); //ledge ray 2
-            Gizmos.DrawRay(LedgeSensor.position, new Vector2(0, spanOfLedge)); //ledge ray between      
+            Gizmos.DrawRay(LedgeSensor.position, new Vector2(0, spanOfLedge)); //ledge ray between
+
+            Gizmos.DrawWireSphere(GirderSensor.position, girderRadius); //girder ray 
         }
     }
 }
