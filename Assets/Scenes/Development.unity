@@ -10809,10 +10809,10 @@ MonoBehaviour:
     <DashTime>k__BackingField: 0.22
     <SlideSpeed>k__BackingField: 14
     <SlideTime>k__BackingField: 0.22
-    <SlideCooldown>k__BackingField: 0.7
+    <SlideCooldown>k__BackingField: 0.3
     <KnockBackSpeed>k__BackingField: 14
     <KnockBackTime>k__BackingField: 0.1
-    <KnockBackCooldown>k__BackingField: 0.5
+    <KnockBackCooldown>k__BackingField: 0.3
     <StandColiderHeight>k__BackingField: 1.38
     <CrouchColiderHeight>k__BackingField: 0.85
 --- !u!1 &332105253614478520

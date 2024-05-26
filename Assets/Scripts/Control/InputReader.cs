@@ -17,15 +17,15 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     public event Action DashEvent;
     #endregion
 
-    #region InputCooldown
-    public bool CanInput { get; private set; }
-    private float inputCooldown;
-    public float InputCooldown
-    {
-        get { return inputCooldown; }
-        set { inputCooldown = value + Time.time; }
-    }  
-    #endregion
+    //#region InputCooldown
+    //public bool CanInput { get; private set; }
+    //private float inputCooldown;
+    //public float InputCooldown
+    //{
+    //    get { return inputCooldown; }
+    //    set { inputCooldown = value + Time.time; }
+    //}  
+    //#endregion
 
 
     public Vector2 MovementValue { get; private set; }
@@ -39,10 +39,10 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
         controls.Player.Enable();
     }
 
-    private void Update()
-    {
-        CanInput = CheckInputCooldown(inputCooldown);  
-    }
+    //private void Update()
+    //{
+    //    CanInput = CheckInputCooldown(inputCooldown);  
+    //}
 
     private void OnDestroy()
     {
@@ -77,5 +77,6 @@ public sealed class InputReader : MonoBehaviour, Controls.IPlayerActions
     }
 
     private int StickLimiter(float force, int input) => force > StickDeadzone ? input : 0;
-    private bool CheckInputCooldown(float finishTime) => Time.time >= finishTime;
+
+    //private bool CheckInputCooldown(float finishTime) => Time.time >= finishTime;
 }

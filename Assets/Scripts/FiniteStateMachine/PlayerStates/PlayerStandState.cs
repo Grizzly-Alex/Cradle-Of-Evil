@@ -88,11 +88,12 @@ namespace FiniteStateMachine.PlayerStates
 		{
             if (player.Input.InputHorizontal == player.Core.Movement.FacingDirection)
             {
-                if (!player.Input.CanInput) return;
+                if (!player.SlideState.isReady) return;
 			    stateMachine.ChangeState(player.SlideState);
             }
             else
             {
+                if (!player.KnockBackState.isReady) return;
                 stateMachine.ChangeState(player.KnockBackState);
             }
         }

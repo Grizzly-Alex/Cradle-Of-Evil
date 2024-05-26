@@ -100,13 +100,13 @@ namespace FiniteStateMachine.PlayerStates
             if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
                 PlayerOnWallState.DetectedPosition = wallPosition;       
             
-            if (player.HangOnLedgeState.CanHang)
+            if (player.HangOnLedgeState.isReady)
             {
                 if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
                     PlayerHangState.GrapPosition = ledgeCorner;
             }
             
-            if (player.HangOnGirderState.CanHang)
+            if (player.HangOnGirderState.isReady)
             {
                 if (isGirderDetected = player.Core.Sensor.GetDetectedGirderPosition(out Vector2 girderPosition))
                     PlayerHangState.GrapPosition = girderPosition;

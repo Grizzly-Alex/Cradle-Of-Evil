@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Pool.ItemsPool;
+using System.Collections;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -11,6 +12,7 @@ namespace FiniteStateMachine.PlayerStates
         private float finishTime;
         private bool isMoving;
 
+        public bool isReady { get; private set; } = true;
 
         public PlayerKnockBackState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
@@ -20,7 +22,6 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Input.InputCooldown = player.Data.KnockBackCooldown;
             finishTime = Time.time + player.Data.KnockBackTime;
             player.Core.Movement.ResetFreezePos();
             player.Animator.SetBool(hashIsMoving, true);
@@ -42,7 +43,6 @@ namespace FiniteStateMachine.PlayerStates
                 player.Animator.SetBool(hashIsMoving, false);
                 isMoving = false;
 
-
                 if (!isAnimFinished)
                 {
                     player.Core.Movement.SetVelocityZero();
@@ -62,6 +62,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+
             if (isMoving)
             {
                 player.Core.Movement.MoveAlongSurface(player.Data.KnockBackSpeed, player.Core.Movement.FacingDirection * -1);
@@ -71,12 +72,17 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+
+            isReady = false;
+            player.StartCoroutine(CoolDown(player.Data.KnockBackCooldown));
             player.Core.Movement.ResetFreezePos();
         }
 
-        public override void DoCheck()
+
+        public IEnumerator CoolDown(float delay)
         {
-            base.DoCheck();
+            yield return new WaitForSeconds(delay);
+            isReady = true;
         }
 
         public override void AnimationTrigger()

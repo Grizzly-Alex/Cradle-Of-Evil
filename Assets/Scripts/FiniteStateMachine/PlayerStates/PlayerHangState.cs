@@ -8,17 +8,17 @@ namespace FiniteStateMachine.PlayerStates
     {
         private readonly int hashHanging = Animator.StringToHash("Grab");
         protected bool isHanging;
-        public bool CanHang { get; private set; } = true;
+        public bool isReady { get; private set; } = true;
         public static Vector2 GrapPosition { get; set; }
 
         public PlayerHangState(StateMachine stateMachine, Player player) : base(stateMachine, player)
-        {
-             
+        {            
         }
 
         public override void Enter()
         {
             base.Enter();
+
             player.Animator.Play(hashHanging);
 
             player.Core.Movement.SetVelocityZero();
@@ -33,10 +33,10 @@ namespace FiniteStateMachine.PlayerStates
 
             if (player.Input.InputVertical == Vector2.down.y && isHanging)
             {
-                CanHang = false;
-                player.StartCoroutine(ResetCanHang(0.2f));
+                isReady = false;
+                player.StartCoroutine(CoolDown(0.2f));
                 player.Core.Movement.SetVelocityY(0.1f);
-                stateMachine.ChangeState(player.InAirState);
+                stateMachine.ChangeState(player.InAirState);                            
             }
         }
 
@@ -51,10 +51,10 @@ namespace FiniteStateMachine.PlayerStates
             => isHanging = true;
 
 
-        public IEnumerator ResetCanHang(float delay)
+        public IEnumerator CoolDown(float delay)
         {
             yield return new WaitForSeconds(delay);
-            CanHang = true;
+            isReady = true;
         }
 
         protected abstract Vector2 GetHangingPosition();
