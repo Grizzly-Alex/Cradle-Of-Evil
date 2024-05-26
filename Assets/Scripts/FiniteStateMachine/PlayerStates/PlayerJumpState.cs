@@ -52,7 +52,12 @@ namespace FiniteStateMachine.PlayerStates
                 player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
 			}
-			else
+            else if (player.PreviousState is PlayerHangOnGirderState)
+            {
+                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                jumpUpdate = UpdateJump;
+            }
+            else
 			{
                 player.Core.VisualFx.CreateAnimationFX(
                     DustType.JumpFromGround,

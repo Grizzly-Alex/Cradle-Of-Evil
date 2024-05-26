@@ -4,21 +4,26 @@ using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
 {
-    public sealed class PlayerClimbLedgeState : PlayerOnLedgeState
+    public sealed class PlayerClimbState : PlayerState
     {
+        private readonly int hashClimb = Animator.StringToHash("Climb");
+
         private Vector2 climbedPosition;
         //private bool isTouchingCeiling;
-        protected override int AnimationHash => Animator.StringToHash("LedgeClimb");
 
-        public PlayerClimbLedgeState(StateMachine stateMachine, Player player) : base(stateMachine, player)
+
+        public PlayerClimbState(StateMachine stateMachine, Player player) : base(stateMachine, player)
         {
         }
 
         public override void Enter()
         {
             base.Enter();
-            climbedPosition = GetClimbedPosition();
-            player.transform.position = climbedPosition;
+
+            player.transform.position = GetClimbedPosition();
+            player.Core.Movement.FreezePosY();
+
+            player.Animator.Play(hashClimb);
             player.Core.VisualFx.ShadowIsActive(false);
         }
 
@@ -35,6 +40,7 @@ namespace FiniteStateMachine.PlayerStates
         public override void Exit()
         {
             base.Exit();
+            player.Core.Movement.ResetFreezePos();
 
             //if (isTouchingCeiling) player.SetColliderHeight(player.Data.CrouchColiderHeight);
         }
@@ -63,8 +69,8 @@ namespace FiniteStateMachine.PlayerStates
 
         private Vector2 GetClimbedPosition()
         {
-            return new(CornerPosition.x + player.BodyCollider.size.x / 2 * player.Core.Movement.FacingDirection,
-                CornerPosition.y + Physics2D.defaultContactOffset);
+            return new(PlayerHangOnLedgeState.GrapPosition.x + player.BodyCollider.size.x / 2 * player.Core.Movement.FacingDirection,
+                PlayerHangOnLedgeState.GrapPosition.y + Physics2D.defaultContactOffset);
         }
     }
 }

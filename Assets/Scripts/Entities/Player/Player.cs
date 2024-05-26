@@ -19,11 +19,12 @@ namespace Entities
         public PlayerStandState StandState { get; private set; }
         public PlayerSlideState SlideState { get; private set; }
         public PlayerSitStandState SitStandState { get; private set; }
-        public PlayerHangOnLedgeState HangOnLedgeState { get; private set; }
-        public PlayerClimbLedgeState ClimbLedgeState { get; private set; }
+        public PlayerClimbState ClimbState { get; private set; }
         public PlayerOnWallState OnWallState { get; private set; }
         public PlayerAirDashState AirDashState { get; private set; }
-        public PlayerKnockBackState KnockBackState { get; private set; }    
+        public PlayerKnockBackState KnockBackState { get; private set; }   
+        public PlayerHangOnGirderState HangOnGirderState { get; private set; }
+        public PlayerHangOnLedgeState HangOnLedgeState { get; private set; }
         #endregion
 
         protected override void Awake()
@@ -38,10 +39,11 @@ namespace Entities
             SlideState = new PlayerSlideState(stateMachine, this);
             SitStandState = new PlayerSitStandState(stateMachine, this);
             HangOnLedgeState = new PlayerHangOnLedgeState(stateMachine, this);
-            ClimbLedgeState = new PlayerClimbLedgeState(stateMachine, this);
+            ClimbState = new PlayerClimbState(stateMachine, this);
             OnWallState = new PlayerOnWallState(stateMachine, this);
             AirDashState = new PlayerAirDashState(stateMachine, this);
             KnockBackState = new PlayerKnockBackState(stateMachine, this);
+            HangOnGirderState = new PlayerHangOnGirderState(stateMachine, this);
         }
 
         protected override void Start()
