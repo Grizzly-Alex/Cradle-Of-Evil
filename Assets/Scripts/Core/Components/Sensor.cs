@@ -150,7 +150,7 @@ namespace CoreSystem.Components
             return isDetected;
         }
 
-        public bool IsGirderDetect() => GirderCollider;
+        public bool IsGirderDetect() => GirderCollider && GirderCollider.CompareTag(Girder);
 
         public bool GetDetectedGirderPosition(out Vector2 girderPosition)
         {
