@@ -27,12 +27,12 @@ namespace FiniteStateMachine.PlayerStates
         public override void Enter()
         {
             base.Enter();
-           
+                       
             player.AirDashState.ResetAmountOfDash();
 			player.JumpState.ResetAmountOfJump();
 			player.Core.Movement.SetVelocityZero();
 
-            if (player.Core.Sensor.GetGroundSlopeAngle() != default)
+            if (player.Core.Sensor.IsGroundSlope())
             {
                 player.Core.Movement.FreezePosX();
             }
@@ -86,8 +86,8 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsPlatformDetect()
-                || player.Core.Sensor.IsOneWayPlatformDetect();
+            isGrounded = player.Core.Sensor.IsOneWayPlatformDetect() 
+                || player.Core.Sensor.IsPlatformDetect();
         }
 
         #region Input

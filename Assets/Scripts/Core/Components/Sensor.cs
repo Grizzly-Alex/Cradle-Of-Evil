@@ -9,6 +9,11 @@ namespace CoreSystem.Components
 
         private float inactiveGroundSensorDistance;
 
+        //test ladder
+        public bool IsLadder { get; set; }
+
+        //test ladder
+
         [Header("SIZE OF SENSOR")]
         [SerializeField] private float cellingRadius;
         [SerializeField] private float groundDistance;
@@ -75,6 +80,7 @@ namespace CoreSystem.Components
             inactiveGroundSensorDistance = GroundSensor.position.y - entityCollider.bounds.min.y;
         }
 
+        #region Ground check
         public bool IsGroundDetect()
             => groundDistance >= GroundHit.distance;
 
@@ -87,7 +93,18 @@ namespace CoreSystem.Components
             && groundDistance >= GroundHit.distance
             && inactiveGroundSensorDistance <= GroundHit.distance;
 
-        public bool IsCellingDetect() => CellingCollider;
+        public float GetGroundSlopeAngle() 
+            => Vector2.Angle(GroundHit.normal, Vector2.up);
+
+        public bool IsGroundSlope() 
+            => GetGroundSlopeAngle() != default;
+
+        public Vector2 GetGroundPerperdicular() 
+            => Vector2.Perpendicular(GroundHit.normal).normalized;
+        #endregion
+
+        public bool IsCellingDetect() 
+            => CellingCollider;
 
         public bool IsGrabWallDetect()
         {
@@ -167,14 +184,7 @@ namespace CoreSystem.Components
             return isDetected;
         }
 
-        public float GetGroundSlopeAngle() 
-            => Vector2.Angle(GroundHit.normal, Vector2.up);
 
-        public bool IsGroundSlope() 
-            => GetGroundSlopeAngle() != default;
-
-        public Vector2 GetGroundPerperdicular() 
-            => Vector2.Perpendicular(GroundHit.normal).normalized;
 
         private void OnDrawGizmos()
         {
