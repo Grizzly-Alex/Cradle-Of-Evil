@@ -20,17 +20,17 @@ namespace FiniteStateMachine.PlayerStates
         public virtual void Enter()
         {
             isAnimFinished = false;
-            Debug.Log(this);
+            DoCheck();
         }
 
         public virtual void LogicUpdate()
         {
-            DoCheck();
+            
         }
 
         public virtual void PhysicsUpdate()
         {
-
+            DoCheck();
         }
 
         public virtual void Exit()
