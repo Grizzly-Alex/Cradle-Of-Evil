@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 namespace CoreSystem.Components
 {
     public sealed class Sensor : CoreComponent

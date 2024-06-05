@@ -2,6 +2,7 @@ using FiniteStateMachine;
 using CoreSystem;
 using UnityEngine;
 using Interfaces;
+using NewCoreSystem;
 
 
 namespace Entities
@@ -9,7 +10,8 @@ namespace Entities
     public abstract class Entity : MonoBehaviour, IAnimationFinishTrigger, IAnimationTrigger
     {
         protected StateMachine stateMachine;
-        public Core Core { get; private set; }
+        public CoreSystem.Core Core { get; private set; }
+        public NewCoreSystem.Core NewCore { get; private set; }
         public Animator Animator { get; private set; }
         public Rigidbody2D Rigidbody {  get; private set; }
         public CapsuleCollider2D BodyCollider {  get; private set; }   
@@ -25,7 +27,8 @@ namespace Entities
 
         protected virtual void Start()
         {
-            Core = GetComponentInChildren<Core>();
+            Core = GetComponentInChildren<CoreSystem.Core>();
+            NewCore = GetComponentInChildren<NewCoreSystem.Core>();
         }
 
         protected virtual void Update()

@@ -23,7 +23,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.LogicUpdate();
 
-            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
+            player.NewCore.Physics.Flipping.FlipToDirection(player.Input.InputHorizontal);
 
 			if (!isGrounded)
             {
@@ -40,7 +40,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrounded = player.NewCore.Sensor.GroundDetector.IsGroundDetect();
         }
 	}
 }

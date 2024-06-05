@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Interfaces;
-using UnityEngine;
 
 
 namespace FiniteStateMachine.PlayerStates

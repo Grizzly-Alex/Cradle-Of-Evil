@@ -144,10 +144,10 @@ namespace CoreSystem.Components
         #endregion
 
         #region Animation effects
-        public AnimationFX<T> CreateAnimationFX<T>(T animationTypeFX, Vector2 offset = default)
+        public AnimationEffect<T> CreateAnimationFX<T>(T animationTypeFX, Vector2 offset = default)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetAnimationGameObject(animationTypeFX), entityTransform.position, entityTransform.rotation);
+            AnimationEffect<T> animationFx = PoolManager.Instance.GetFromPool<AnimationEffect<T>>(GetAnimationGameObject(animationTypeFX), entityTransform.position, entityTransform.rotation);
 
             if (animationFx != null)
             {
@@ -160,7 +160,7 @@ namespace CoreSystem.Components
         public void CreateAnimationFX<T>(T animationTypeFX, Vector2 position, Quaternion rotation, bool flipHorizontal = false)
             where T : Enum
         {
-            AnimationFX<T> animationFx = PoolManager.Instance.GetFromPool<AnimationFX<T>>(GetAnimationGameObject(animationTypeFX), position, rotation);
+            AnimationEffect<T> animationFx = PoolManager.Instance.GetFromPool<AnimationEffect<T>>(GetAnimationGameObject(animationTypeFX), position, rotation);
 
             if (flipHorizontal)
             {

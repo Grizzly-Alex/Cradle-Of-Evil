@@ -2,7 +2,7 @@
 
 namespace Pool.ItemsPool
 {
-    public sealed class AbilityFx : AnimationFX<AbilityFXType>
+    public sealed class AbilityFx : AnimationEffect<AbilityFXType>
     {
         #region Hash Animations
         private readonly int wingsDoubleJump = Animator.StringToHash("WingsDoubleJump");
