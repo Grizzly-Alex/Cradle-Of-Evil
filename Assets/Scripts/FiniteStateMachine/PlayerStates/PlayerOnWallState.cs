@@ -26,14 +26,14 @@ namespace FiniteStateMachine.PlayerStates
 			player.AirDashState.ResetAmountOfDash();
 			player.JumpState.ResetAmountOfJump();
 
-            player.Core.Movement.SetVelocityZero();
+            physicsCore.Movement.SetVelocityZero();
 
-             holdPosition.Set(
-                DetectedPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
-                DetectedPosition.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - player.Core.Sensor.WallSensor.position.y);
+            //holdPosition.Set(
+            //    DetectedPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * physicsCore.Flipping.FacingDirection,
+            //    DetectedPosition.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - sensorCore.GrabWallDetector.WallHitUp.position.y);
 
             player.transform.position = holdPosition;
-            player.Core.Movement.FreezePosY();
+            physicsCore.Freezing.FreezePosY();
 
             player.Animator.Play(hashLandingOnWall);
         }
@@ -48,7 +48,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Exit();
 
-            player.Core.Movement.ResetFreezePos();
+            physicsCore.Freezing.ResetFreezePos();
             player.Input.JumpEvent -= OnJump;
         }
 
@@ -64,7 +64,7 @@ namespace FiniteStateMachine.PlayerStates
 
         private void CreateDust(float yOffset)
         {
-            player.Core.VisualFx.CreateAnimationFX(DustType.LandingOnWall,
+            visualFxCore.AnimationFx.CreateAnimationFX(DustType.LandingOnWall,
                 new Vector2(DetectedPosition.x, player.BodyCollider.bounds.center.y - yOffset),
                 player.transform.rotation);
         }

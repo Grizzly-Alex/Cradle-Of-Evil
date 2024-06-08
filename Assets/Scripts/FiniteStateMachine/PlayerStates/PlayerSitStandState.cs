@@ -22,8 +22,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnJump;
 
-            player.Core.Movement.SetVelocityZero();
-            player.Core.Movement.FreezePosOnSlope();
+            physicsCore.Movement.SetVelocityZero();
+            physicsCore.Freezing.FreezePosOnSlope();
 
             switch (player.PreviousState)
             {
@@ -49,7 +49,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (!isGrounded)
             {
-                player.Core.Movement.ResetFreezePos();
+                physicsCore.Freezing.ResetFreezePos();
                 stateMachine.ChangeState(player.InAirState);
             }
         }
@@ -63,16 +63,16 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsPlatformDetect()
-                || player.Core.Sensor.IsOneWayPlatformDetect();
+            isGrounded = sensorCore.GroundDetector.IsPlatformDetect()
+                || sensorCore.GroundDetector.IsOneWayPlatformDetect();
         }
 
         private void OnJump()
         {
             if (player.Input.InputVertical == Vector2.down.y)
             {
-                if (!player.Core.Sensor.IsOneWayPlatformDetect()) return;
-                player.Core.Movement.LeaveOneWayPlatform();
+                if (!sensorCore.GroundDetector.IsOneWayPlatformDetect()) return;
+                bodyCore.PlatformCollision.IgnoreOneWayPlatform();
             }
             else
             {

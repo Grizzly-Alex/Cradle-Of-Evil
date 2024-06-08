@@ -33,7 +33,7 @@ namespace FiniteStateMachine.PlayerStates
 
         protected override Vector2 GetHangingPosition()
         {
-            return new(GrapPosition.x - (player.BodyCollider.size.x / 2 + offsetPosition) * player.Core.Movement.FacingDirection,
+            return new(GrapPosition.x - (player.BodyCollider.size.x / 2 + offsetPosition) * physicsCore.Flipping.FacingDirection,
                 GrapPosition.y - player.BodyCollider.size.y);
         }
 

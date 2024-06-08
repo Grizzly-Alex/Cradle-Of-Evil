@@ -1,5 +1,6 @@
 ﻿using NewCoreSystem;
 using Pool;
+using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace NewCore.CoreComponents.VisualFxComponents
         [SerializeField]
         private GameObject prefab;
 
-        private Pool.ItemsPool.Shadow shadowFromPool;
+        private Shadow shadowFromPool;
         private Vector3 initialShadowScale;
         private Vector3 scaleChange;
         private SpriteRenderer entitySpriteRenderer;

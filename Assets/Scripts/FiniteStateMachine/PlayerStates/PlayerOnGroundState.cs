@@ -17,17 +17,17 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.SetColliderHeight(ColiderHeight);
+            bodyCore.BodyCollision.SetColliderHeight(ColiderHeight);
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            player.NewCore.Physics.Flipping.FlipToDirection(player.Input.InputHorizontal);
+            physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
 
 			if (!isGrounded)
             {
-                player.Core.Movement.ResetFreezePos();
+                physicsCore.Freezing.ResetFreezePos();
                 player.JumpState.DecreaseAmountOfJump();
 				stateMachine.ChangeState(player.InAirState);
             }
@@ -40,7 +40,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.NewCore.Sensor.GroundDetector.IsGroundDetect();
+            isGrounded = sensorCore.GroundDetector.IsGroundDetect();
         }
 	}
 }

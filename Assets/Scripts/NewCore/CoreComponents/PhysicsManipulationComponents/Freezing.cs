@@ -1,5 +1,6 @@
 ﻿using NewCoreSystem;
 using System;
+using UnityEngine;
 
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
@@ -13,26 +14,26 @@ namespace NewCore.CoreComponents.PhysicsManipulationComponents
 
         public void FreezePosOnSlope()
         {
-            //if (core.Sensor.IsGroundSlope())
-                //FreezePosX();
+            if (core.Sensor.GroundDetector.IsGroundSlope())
+                FreezePosX();
         }
 
         public void FreezePosX()
         {
-            //if (rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX)) return;
-            //rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+            if (body.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX)) return;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
 
         public void FreezePosY()
         {
-            //if (rigidbody.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY)) return;
-            //rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
+            if (body.constraints is (RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY)) return;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
         }
 
         public void ResetFreezePos()
         {
-            //if (rigidbody.constraints == RigidbodyConstraints2D.FreezeRotation) return;
-            //rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            if (body.constraints == RigidbodyConstraints2D.FreezeRotation) return;
+            body.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
     }
 }

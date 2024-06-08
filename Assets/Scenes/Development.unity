@@ -11057,7 +11057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PlatformCollision>k__BackingField:
-    timeIgnoreCollisions: 0.2
+    timeIgnoreCollisions: 2
     oneWayPlatformCollider: {fileID: 470535325}
 --- !u!114 &313213196578530368
 MonoBehaviour:

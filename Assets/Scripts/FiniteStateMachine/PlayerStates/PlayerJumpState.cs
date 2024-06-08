@@ -25,10 +25,10 @@ namespace FiniteStateMachine.PlayerStates
 
 			if (player.PreviousState is PlayerOnWallState)
 			{
-                player.Core.VisualFx.CreateAnimationFX(DustType.JumpFromWall,
+                visualFxCore.AnimationFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
 				{
-					x = player.Core.Movement.FacingDirection != Vector2.right.x
+					x = physicsCore.Flipping.FacingDirection != Vector2.right.x
 						? player.BodyCollider.bounds.min.x
 						: player.BodyCollider.bounds.max.x,
 					y = player.BodyCollider.bounds.min.y,
@@ -37,34 +37,34 @@ namespace FiniteStateMachine.PlayerStates
 
                 finishTime = Time.time + player.Data.WallJumpTime;
 				player.Animator.Play(hashInAir);
-				player.Core.Movement.Flip();
-				player.Core.Movement.SetVelocity(
+				physicsCore.Flipping.Flip();
+                physicsCore.Movement.SetVelocity(
 					player.Data.JumpForce,
 					new Vector2(1, 2),
-					player.Core.Movement.FacingDirection);
+                    physicsCore.Flipping.FacingDirection);
                 jumpUpdate = UpdateJumpFromWall;
 			}
             else if (player.PreviousState is PlayerInAirState)
 			{
-                wingsDoubleJump = (AbilityFx)player.Core.VisualFx.CreateAnimationFX(
+                wingsDoubleJump = (AbilityFx)visualFxCore.AnimationFx.CreateAnimationFX(
 					AbilityFXType.WingsDoubleJump,
 					new Vector2(x:0, y:0.9f));
-                player.Core.Movement.SetVelocityY(player.Data.DoubleJumpForce);
+                physicsCore.Movement.SetVelocityY(player.Data.DoubleJumpForce);
                 jumpUpdate = UpdateJump;
 			}
             else if (player.PreviousState is PlayerHangOnGirderState)
             {
-                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                physicsCore.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJump;
             }
             else
 			{
-                player.Core.VisualFx.CreateAnimationFX(
+                visualFxCore.AnimationFx.CreateAnimationFX(
                     DustType.JumpFromGround,
-                    player.Core.Sensor.GroundHit.point,
+                    sensorCore.GroundDetector.GroundHit.point,
                     player.transform.rotation);
 
-                player.Core.Movement.SetVelocityY(player.Data.JumpForce);
+                physicsCore.Movement.SetVelocityY(player.Data.JumpForce);
                 jumpUpdate = UpdateJump;
             }
         }
@@ -91,7 +91,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		private void UpdateJumpFromWall()
 		{			
-			player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
+			player.Animator.SetFloat(hashVelocityY, physicsCore.Movement.CurrentVelocity.y);
 			if (Time.time >= finishTime) isAbilityDone = true;
 		}
 		#endregion

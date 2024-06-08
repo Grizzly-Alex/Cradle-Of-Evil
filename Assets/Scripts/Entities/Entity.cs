@@ -1,8 +1,8 @@
 using FiniteStateMachine;
-using CoreSystem;
 using UnityEngine;
 using Interfaces;
 using NewCoreSystem;
+using NewCoreSystem.CoreComponents;
 
 
 namespace Entities
@@ -10,11 +10,10 @@ namespace Entities
     public abstract class Entity : MonoBehaviour, IAnimationFinishTrigger, IAnimationTrigger
     {
         protected StateMachine stateMachine;
-        public CoreSystem.Core Core { get; private set; }
-        public NewCoreSystem.Core NewCore { get; private set; }
         public Animator Animator { get; private set; }
         public Rigidbody2D Rigidbody {  get; private set; }
         public CapsuleCollider2D BodyCollider {  get; private set; }   
+        public Core Core { get; private set; }
 
 
         protected virtual void Awake()
@@ -22,13 +21,13 @@ namespace Entities
             stateMachine = new StateMachine();
             Animator = GetComponent<Animator>();
             Rigidbody = GetComponent<Rigidbody2D>();
-            BodyCollider = GetComponent<CapsuleCollider2D>();        
+            BodyCollider = GetComponent<CapsuleCollider2D>();
+            Core = GetComponentInChildren<Core>();
         }
 
         protected virtual void Start()
         {
-            Core = GetComponentInChildren<CoreSystem.Core>();
-            NewCore = GetComponentInChildren<NewCoreSystem.Core>();
+
         }
 
         protected virtual void Update()
@@ -40,17 +39,6 @@ namespace Entities
         protected virtual void FixedUpdate()
         {
             stateMachine.CurrentState.PhysicsUpdate();
-        }
-
-        public void SetColliderHeight(float height)
-        {
-            if (BodyCollider.size.y == height) return;
-
-            Vector2 offset = BodyCollider.offset;
-            Vector2 newSize = new(BodyCollider.size.x, height);
-            offset.y += (height - BodyCollider.size.y) / 2;
-            BodyCollider.size = newSize;
-            BodyCollider.offset = offset;
         }
 
         public void AnimationFinishTrigger() 

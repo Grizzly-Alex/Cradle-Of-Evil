@@ -26,19 +26,19 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.Core.VisualFx.CreateAnimationFX(
+            visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.StartSlide,
-                player.Core.Sensor.GroundHit.point,
+                sensorCore.GroundDetector.GroundHit.point,
                 player.transform.rotation);
 
-            dust = (Dust)player.Core.VisualFx.CreateAnimationFX(
+            dust = (Dust)visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.Sliding,
                 new Vector2(x: 0.4f, y: 0.0f));
 
             finishTime = Time.time + player.Data.SlideTime;
 
-            player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.Data.CrouchColiderHeight);
+            physicsCore.Freezing.ResetFreezePos();
+            bodyCore.BodyCollision.SetColliderHeight(player.Data.CrouchColiderHeight);
 
             player.Animator.SetBool(hashIsMoving, true);
             player.Animator.Play(hashStartDash);
@@ -62,8 +62,8 @@ namespace FiniteStateMachine.PlayerStates
 
                 if (!isAnimFinished)
                 {
-                    player.Core.Movement.SetVelocityZero();
-                    player.Core.Movement.FreezePosOnSlope();
+                    physicsCore.Movement.SetVelocityZero();
+                    physicsCore.Freezing.FreezePosOnSlope();
                 }
                 else
                 { 
@@ -72,7 +72,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {               
-                player.Core.VisualFx.CreateAfterImage(distanceBetweenImages: 0.6f);
+                visualFxCore.AfterImage.CreateAfterImage(distanceBetweenImages: 0.6f);
 
             }
         }
@@ -82,7 +82,7 @@ namespace FiniteStateMachine.PlayerStates
             base.PhysicsUpdate();
             if (isMoving)
             {
-                player.Core.Movement.MoveAlongSurface(player.Data.SlideSpeed, player.Core.Movement.FacingDirection);
+                physicsCore.Movement.MoveAlongSurface(player.Data.SlideSpeed, physicsCore.Flipping.FacingDirection);
             }
         }
 
@@ -93,14 +93,14 @@ namespace FiniteStateMachine.PlayerStates
             isReady = false;
             player.StartCoroutine(CoolDown(player.Data.SlideCooldown));
             dust.ReturnToPool();
-            player.Core.Movement.ResetFreezePos();
+            physicsCore.Freezing.ResetFreezePos();
         }
 
         public override void DoCheck()
         {
             base.DoCheck();
 
-            isTouchedRoof = player.Core.Sensor.IsCellingDetect();
+            isTouchedRoof = sensorCore.CeilingDetector.IsCeilingDetect();
         }
 
         public IEnumerator CoolDown(float delay)
@@ -111,18 +111,18 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void AnimationTrigger()
         {
-            float offsetX = 0.4f; 
+            float offsetX = 0.4f;
 
-            player.Core.VisualFx.CreateAnimationFX(
+            visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.Brake,
                 new Vector2
                 {
                     y = player.BodyCollider.bounds.min.y,
-                    x = player.Core.Movement.FacingDirection != Vector2.right.x 
+                    x = physicsCore.Flipping.FacingDirection != Vector2.right.x
                         ? player.BodyCollider.bounds.min.x - offsetX
                         : player.BodyCollider.bounds.max.x + offsetX,
                 },
-                player.transform.rotation);
+                player.transform.rotation) ;
         }
     }
 }

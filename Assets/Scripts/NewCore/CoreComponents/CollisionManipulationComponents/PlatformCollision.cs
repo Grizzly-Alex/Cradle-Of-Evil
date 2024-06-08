@@ -20,21 +20,23 @@ namespace NewCore.CoreComponents.CollisionManipulationComponents
         {
         }
 
-        public void LeaveOneWayPlatform()
+        public void IgnoreOneWayPlatform()
         {
-            IgnoreOneWayPlatform(true);
-            core.StartCoroutine(StopIgnoringOneWayPlatform(timeIgnoreCollisions));
-        }
-        public void IgnoreOneWayPlatform(bool isIgnore)
-        {
-            if (Physics2D.GetIgnoreCollision(oneWayPlatformCollider, entityCollider) == isIgnore) return;
-            Physics2D.IgnoreCollision(oneWayPlatformCollider, entityCollider, isIgnore);
+            IgnoreCollision(true, oneWayPlatformCollider);
+            core.StartCoroutine(
+                ResetIgnoreCollision(timeIgnoreCollisions, () => IgnoreCollision(false, oneWayPlatformCollider)));
         }
 
-        private IEnumerator StopIgnoringOneWayPlatform(float delay)
+        public void IgnoreCollision(bool isIgnore, Collider2D collider)
+        {
+            if (Physics2D.GetIgnoreCollision(collider, entityCollider) == isIgnore) return;
+            Physics2D.IgnoreCollision(collider, entityCollider, isIgnore);
+        }
+
+        private IEnumerator ResetIgnoreCollision(float delay, Action action)
         {
             yield return new WaitForSeconds(delay);
-            IgnoreOneWayPlatform(false);
+            action.Invoke();
         }
     }
 }

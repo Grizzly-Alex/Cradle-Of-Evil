@@ -23,7 +23,7 @@ namespace FiniteStateMachine.PlayerStates
             base.Enter();
 
             finishTime = Time.time + player.Data.KnockBackTime;
-            player.Core.Movement.ResetFreezePos();
+            physicsCore.Freezing.ResetFreezePos();
             player.Animator.SetBool(hashIsMoving, true);
             player.Animator.Play(hashKnockBacking);
             isMoving = true;
@@ -45,8 +45,8 @@ namespace FiniteStateMachine.PlayerStates
 
                 if (!isAnimFinished)
                 {
-                    player.Core.Movement.SetVelocityZero();
-                    player.Core.Movement.FreezePosOnSlope();
+                    physicsCore.Movement.SetVelocityZero();
+                    physicsCore.Freezing.FreezePosOnSlope();
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateAfterImage(distanceBetweenImages: 0.3f);
+                visualFxCore.AfterImage.CreateAfterImage(distanceBetweenImages: 0.3f);
             }
         }
 
@@ -65,7 +65,7 @@ namespace FiniteStateMachine.PlayerStates
 
             if (isMoving)
             {
-                player.Core.Movement.MoveAlongSurface(player.Data.KnockBackSpeed, player.Core.Movement.FacingDirection * -1);
+                physicsCore.Movement.MoveAlongSurface(player.Data.KnockBackSpeed, physicsCore.Flipping.FacingDirection * -1);
             }
         }
 
@@ -75,9 +75,8 @@ namespace FiniteStateMachine.PlayerStates
 
             isReady = false;
             player.StartCoroutine(CoolDown(player.Data.KnockBackCooldown));
-            player.Core.Movement.ResetFreezePos();
+            physicsCore.Freezing.ResetFreezePos();
         }
-
 
         public IEnumerator CoolDown(float delay)
         {
@@ -87,9 +86,9 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void AnimationTrigger()
         {
-            player.Core.VisualFx.CreateAnimationFX(
+            visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.Brake,
-                player.Core.Sensor.GroundHit.point,
+                sensorCore.GroundDetector.GroundHit.point,
                 player.transform.rotation, 
                 flipHorizontal: true);
         }

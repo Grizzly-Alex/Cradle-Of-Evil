@@ -43,13 +43,13 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.Move(player.Data.StandMoveSpeed, player.Input.InputHorizontal);
+            physicsCore.Movement.Move(player.Data.StandMoveSpeed, player.Input.InputHorizontal);
         }
 
         public override void Exit()
         {
             base.Exit();
-            player.Core.Movement.SetVelocityZero();
+            physicsCore.Movement.SetVelocityZero();
             player.Input.JumpEvent -= OnJump;
             player.Input.DashEvent -= OnDash;
         }
@@ -58,21 +58,21 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (player.Input.InputHorizontal != default)
             {
-                player.Core.VisualFx.CreateAnimationFX(
+                visualFxCore.AnimationFx.CreateAnimationFX(
                     DustType.Tiny,
-                    player.Core.Sensor.GroundHit.point,
+                    sensorCore.GroundDetector.GroundHit.point,
                     player.transform.rotation);
             }
             else
             {
-                player.Core.VisualFx.CreateAnimationFX(
+                visualFxCore.AnimationFx.CreateAnimationFX(
                     DustType.AfterMove,
                     new Vector2()
                     {
-                        x = player.Core.Movement.FacingDirection != Vector2.right.x
+                        x = physicsCore.Flipping.FacingDirection != Vector2.right.x
                             ? player.BodyCollider.bounds.min.x
                             : player.BodyCollider.bounds.max.x,
-                        y = player.Core.Sensor.GroundHit.point.y,
+                        y = sensorCore.GroundDetector.GroundHit.point.y,
                     },
                     player.transform.rotation);
             }
@@ -86,7 +86,7 @@ namespace FiniteStateMachine.PlayerStates
 
 		private void OnDash()
 		{
-            if (player.Input.InputHorizontal == player.Core.Movement.FacingDirection)
+            if (player.Input.InputHorizontal == physicsCore.Flipping.FacingDirection)
             {
                 if (!player.SlideState.isReady) return;
 			    stateMachine.ChangeState(player.SlideState);
