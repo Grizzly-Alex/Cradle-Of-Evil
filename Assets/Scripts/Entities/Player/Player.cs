@@ -44,13 +44,14 @@ namespace Entities
             AirDashState = new PlayerAirDashState(stateMachine, this);
             KnockBackState = new PlayerKnockBackState(stateMachine, this);
             HangOnGirderState = new PlayerHangOnGirderState(stateMachine, this);
+
+            Input = GetComponent<InputReader>();
         }
 
         protected override void Start()
         {
             base.Start();
 
-            Input = GetComponent<InputReader>();
             stateMachine.InitState(StandState);
         }
 

@@ -18,16 +18,17 @@ namespace Entities
 
         protected virtual void Awake()
         {
+            Core = GetComponentInChildren<Core>();
+
             stateMachine = new StateMachine();
+
             Animator = GetComponent<Animator>();
             Rigidbody = GetComponent<Rigidbody2D>();
             BodyCollider = GetComponent<CapsuleCollider2D>();
-            Core = GetComponentInChildren<Core>();
         }
 
         protected virtual void Start()
         {
-
         }
 
         protected virtual void Update()

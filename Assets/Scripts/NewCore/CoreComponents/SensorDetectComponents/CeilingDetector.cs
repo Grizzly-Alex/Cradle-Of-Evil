@@ -1,27 +1,22 @@
 ﻿using NewCore.CoreComponents.SensorDetectComponents;
-using NewCoreSystem;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 {
-    [Serializable]
     public class CeilingDetector : SensorDetectComponent
     {
-        private readonly Vector2 sensorPosition;
-
         [SerializeField] private float circleRadius;
         [SerializeField] private float positionOffsetY;
-        [SerializeField] public LayerMask targetLayer;
+        [SerializeField] private LayerMask targetLayer;
 
+        protected override string SensorName => nameof(CeilingDetector);
 
-        public CeilingDetector(Core core) : base(core)
-        {
-            sensorPosition = new Vector2(entityCollider.bounds.max.y - positionOffsetY, entityCollider.bounds.center.x);
-        }
+        protected override Vector2 InitSensorPosition =>
+            new(entityCollider.bounds.center.x, entityCollider.bounds.center.y + positionOffsetY);
+
 
         public Collider2D CeilingCollider => Physics2D.OverlapCircle(
-            sensorPosition,
+            sensor.position,
             circleRadius,
             targetLayer);
 
@@ -33,7 +28,7 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
             if (!Application.isPlaying) return;
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(sensorPosition, circleRadius);
+            Gizmos.DrawWireSphere(sensor.position, circleRadius);
         }
     }
 }

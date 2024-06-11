@@ -1,17 +1,20 @@
 ﻿using Interfaces;
 using NewCoreSystem;
+using NewCoreSystem.CoreComponents;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.CollisionManipulationComponents
 {
-    public abstract class CollisionManipulationComponent : ILogicUpdate
+    [RequireComponent(typeof(CollisionManipulation))]
+    public abstract class CollisionManipulationComponent : MonoBehaviour, ILogicUpdate
     {
-        protected readonly Core core;
-        protected readonly CapsuleCollider2D entityCollider;
+        protected Core core;
+        protected CapsuleCollider2D entityCollider;
 
-        public CollisionManipulationComponent(Core core)
+
+        protected virtual void Start()
         {
-            this.core = core;
+            this.core = GetComponent<CollisionManipulation>().Core;
             entityCollider = core.GetComponentInParent<CapsuleCollider2D>();
         }
 

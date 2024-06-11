@@ -1,18 +1,20 @@
 ﻿using Interfaces;
 using NewCoreSystem;
+using NewCoreSystem.CoreComponents;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.VisualFxComponents
 {
-    public abstract class VisualFxComponent : ILogicUpdate
+    [RequireComponent(typeof(VisualFx))]
+    public abstract class VisualFxComponent : MonoBehaviour, ILogicUpdate
     {
-        protected readonly Core core;
+        protected Core core;
         protected Transform entityTransform;
 
 
-        public VisualFxComponent(Core core)
+        protected virtual void Start()
         {
-            this.core = core;
+            this.core = GetComponent<VisualFx>().Core;
             entityTransform = core.GetComponentInParent<Transform>();
         }
 

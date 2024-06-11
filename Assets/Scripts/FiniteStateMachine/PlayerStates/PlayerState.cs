@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Interfaces;
 using NewCoreSystem.CoreComponents;
+using UnityEngine;
 
 
 namespace FiniteStateMachine.PlayerStates
@@ -22,7 +23,6 @@ namespace FiniteStateMachine.PlayerStates
         {
             this.stateMachine = stateMachine;
             this.player = player;
-
             physicsCore = player.Core.Physics;
             sensorCore = player.Core.Sensor;
             visualFxCore = player.Core.VisualFx;

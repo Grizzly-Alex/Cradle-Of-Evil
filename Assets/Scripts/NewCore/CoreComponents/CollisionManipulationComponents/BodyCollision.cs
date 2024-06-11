@@ -1,17 +1,10 @@
-﻿using NewCoreSystem;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace NewCore.CoreComponents.CollisionManipulationComponents
 {
-    [Serializable]
     public class BodyCollision : CollisionManipulationComponent
     {
-        public BodyCollision(Core core) : base(core)
-        {
-        }
-
         public void SetColliderHeight(float height)
         {
             if (entityCollider.size.y == height) return;

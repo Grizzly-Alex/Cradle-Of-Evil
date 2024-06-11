@@ -1,17 +1,10 @@
-﻿using NewCoreSystem;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
 {
-    [Serializable]
     public class Freezing : PhysicsManipulationComponent
     {
-        public Freezing(Core core) : base(core)
-        {
-        }
-
         public void FreezePosOnSlope()
         {
             if (core.Sensor.GroundDetector.IsGroundSlope())

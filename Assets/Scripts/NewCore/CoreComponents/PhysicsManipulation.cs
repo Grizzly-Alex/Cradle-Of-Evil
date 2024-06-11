@@ -6,16 +6,9 @@ namespace NewCoreSystem.CoreComponents
 {
     public sealed class PhysicsManipulation : CoreComponent
     {
-        [field: SerializeField]
         public Movement Movement { get; private set; }
-
-        [field: SerializeField]
         public Flipping Flipping { get; private set; }
-
-        [field: SerializeField]
         public Freezing Freezing { get; private set; }
-
-        [field: SerializeField]
         public Gravitation Gravitation { get; private set; }
 
 
@@ -23,17 +16,20 @@ namespace NewCoreSystem.CoreComponents
         {
             base.Awake();
 
-            Movement = new(core);
-            Flipping = new(core);
-            Freezing = new(core);
-            Gravitation = new(core);           
+            Movement = GetComponent<Movement>();
+            Flipping = GetComponent<Flipping>();
+            Freezing = GetComponent<Freezing>();
+            Gravitation = GetComponent<Gravitation>();         
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            Movement.LogicUpdate();         
+            Movement.LogicUpdate();       
+            Flipping.LogicUpdate();
+            Freezing.LogicUpdate();
+            Gravitation.LogicUpdate();
         }
     }
 }

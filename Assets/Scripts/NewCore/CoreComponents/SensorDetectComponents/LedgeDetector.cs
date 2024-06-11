@@ -1,14 +1,11 @@
 ﻿using NewCore.CoreComponents.SensorDetectComponents;
-using NewCoreSystem;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 {
-    [Serializable]
     public class LedgeDetector : SensorDetectComponent
     {
-        private readonly Vector2 sensorPosition;
+        private Vector2 sensorPosition;
 
         [SerializeField] private float hitDistance;
         [SerializeField] private float positionOffsetY;
@@ -16,16 +13,18 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
         [SerializeField] public LayerMask targetLayer;
         [SerializeField] public Grid grid;
 
-        public LedgeDetector(Core core) : base(core)
-        {
-            sensorPosition = new Vector2(entityCollider.bounds.max.y - positionOffsetY, entityCollider.bounds.min.x);
-        }
+        protected override string SensorName => nameof(LedgeDetector);
+
+        protected override Vector2 InitSensorPosition => default;
+
+
 
         private RaycastHit2D LedgeHit => Physics2D.Raycast(
             sensorPosition,
             Vector2.right * core.Physics.Flipping.FacingDirection,
             hitDistance,
             targetLayer);
+
 
         public bool IsLedgeDetect()
         {

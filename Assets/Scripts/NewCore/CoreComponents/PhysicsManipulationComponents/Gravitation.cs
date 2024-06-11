@@ -1,16 +1,13 @@
-﻿using NewCoreSystem;
-using System;
-
-
-namespace NewCore.CoreComponents.PhysicsManipulationComponents
+﻿namespace NewCore.CoreComponents.PhysicsManipulationComponents
 {
-    [Serializable]
     public class Gravitation : PhysicsManipulationComponent
     {
-        private readonly float defaultGravityScale;
+        private float defaultGravityScale;
 
-        public Gravitation(Core core) : base(core)
+        protected override void Start()
         {
+            base.Start();
+
             defaultGravityScale = body.gravityScale;
         }
 

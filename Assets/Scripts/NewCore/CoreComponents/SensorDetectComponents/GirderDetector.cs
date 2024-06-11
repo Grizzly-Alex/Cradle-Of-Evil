@@ -1,30 +1,28 @@
 ﻿using NewCore.CoreComponents.SensorDetectComponents;
-using NewCoreSystem;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 {
-    [Serializable]
     public class GirderDetector : SensorDetectComponent
     {
-        private readonly Vector2 sensorPosition;
+        private Vector2 sensorPosition;
 
         [SerializeField] private float circleRadius;
         [SerializeField] private float positionOffsetY;
-        [SerializeField] public LayerMask targetLayer;
+        [SerializeField] private LayerMask targetLayer;
         [SerializeField] private Grid grid;
 
+        protected override string SensorName => nameof(GirderDetector);
 
-        public GirderDetector(Core core) : base(core)
-        {
-            sensorPosition = new Vector2(entityCollider.bounds.max.y - positionOffsetY, entityCollider.bounds.center.x);
-        }
+        protected override Vector2 InitSensorPosition => default;
+
+
 
         public Collider2D GirderCollider => Physics2D.OverlapCircle(
             sensorPosition,
             circleRadius,
             targetLayer);
+
 
         public bool IsGirderDetect() => GirderCollider;
 

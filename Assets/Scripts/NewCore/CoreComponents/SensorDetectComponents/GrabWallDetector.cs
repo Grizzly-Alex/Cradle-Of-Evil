@@ -1,11 +1,9 @@
 ﻿using NewCore.CoreComponents.SensorDetectComponents;
-using NewCoreSystem;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 {
-    [Serializable]
+    
     public class GrabWallDetector : SensorDetectComponent
     {
         private Vector2 sensorPositionUp;
@@ -17,13 +15,11 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
         [SerializeField] public string targetTag;
         [SerializeField] public LayerMask targetLayer;
 
+        protected override string SensorName => nameof(GrabWallDetector);
 
-        public GrabWallDetector(Core core) : base(core)
-        {
-            Vector2 bodyCenter = entityCollider.bounds.center;
-            sensorPositionUp.Set(bodyCenter.x, bodyCenter.y + upOffsetPositionY);
-            sensorPositionDown.Set(bodyCenter.x, bodyCenter.y - downOffsetPositionY);
-        }
+        protected override Vector2 InitSensorPosition => default;
+
+
 
         public RaycastHit2D WallHitUp => Physics2D.Raycast(
             sensorPositionUp,

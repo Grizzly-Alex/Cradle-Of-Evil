@@ -1,18 +1,12 @@
-﻿using NewCoreSystem;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
 {
-    [Serializable]
     public class Movement : PhysicsManipulationComponent
     {
         public Vector2 CurrentVelocity { get; private set; }
         private Vector2 workingVector;
 
-        public Movement(Core core) : base(core)
-        {
-        }
 
         public override void LogicUpdate()
         {

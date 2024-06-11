@@ -1,12 +1,10 @@
-﻿using NewCoreSystem;
-using Pool;
+﻿using Pool;
 using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.VisualFxComponents
 {
-    [Serializable]
     public class AfterImageFx : VisualFxComponent
     {
         [Range(0, 1)]
@@ -20,10 +18,14 @@ namespace NewCore.CoreComponents.VisualFxComponents
         private float lastImageXpos;
         private SpriteRenderer entitySpriteRenderer;
 
-        public AfterImageFx(Core core) : base(core)
+
+        protected override void Start()
         {
+            base.Start();
+
             entitySpriteRenderer = core.GetComponentInParent<SpriteRenderer>();
         }
+
 
         public void CreateAfterImage(float distanceBetweenImages)
         {

@@ -1,20 +1,25 @@
 ﻿using Interfaces;
 using NewCoreSystem;
+using NewCoreSystem.CoreComponents;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
 {
-    public abstract class PhysicsManipulationComponent : ILogicUpdate
+    [RequireComponent(typeof(PhysicsManipulation))]
+    public abstract class PhysicsManipulationComponent : MonoBehaviour, ILogicUpdate
     {
-        protected readonly Core core;
-        protected readonly Rigidbody2D body;
+        protected Core core;
+        protected Rigidbody2D body;
 
-        public PhysicsManipulationComponent(Core core)
+        protected virtual void Awake()
         {
-            this.core = core;
-            body = core.GetComponentInParent<Rigidbody2D>();
         }
 
+        protected virtual void Start()
+        {
+            this.core = GetComponent<PhysicsManipulation>().Core;
+            body = core.GetComponentInParent<Rigidbody2D>();
+        }
 
         public virtual void LogicUpdate()
         {

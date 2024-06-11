@@ -25,6 +25,8 @@ namespace NewCoreSystem
         {
             Physics.LogicUpdate();
             VisualFx.LogicUpdate();
+            Body.LogicUpdate();
+            Sensor.LogicUpdate();
         }
     }
 }

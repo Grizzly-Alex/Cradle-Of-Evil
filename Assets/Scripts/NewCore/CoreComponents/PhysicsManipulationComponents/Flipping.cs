@@ -1,16 +1,16 @@
-﻿using NewCoreSystem;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
-{
-    [Serializable]
+{ 
     public class Flipping : PhysicsManipulationComponent
     {
         public int FacingDirection { get; private set; }
 
-        public Flipping(Core core) : base(core)
+
+        protected override void Awake()
         {
+            base.Awake();
+
             FacingDirection = 1;
         }
 

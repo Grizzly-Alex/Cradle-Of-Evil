@@ -1,5 +1,4 @@
-﻿using NewCoreSystem;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,7 +6,6 @@ using UnityEngine.Tilemaps;
 
 namespace NewCore.CoreComponents.CollisionManipulationComponents
 {
-    [Serializable]
     public class PlatformCollision : CollisionManipulationComponent
     {
         [SerializeField]
@@ -15,10 +13,6 @@ namespace NewCore.CoreComponents.CollisionManipulationComponents
         [SerializeField]
         private TilemapCollider2D oneWayPlatformCollider;
 
-
-        public PlatformCollision(Core core) : base(core)
-        {
-        }
 
         public void IgnoreOneWayPlatform()
         {

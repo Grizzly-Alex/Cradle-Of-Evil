@@ -1,12 +1,10 @@
-﻿using NewCoreSystem;
-using Pool;
+﻿using Pool;
 using Pool.ItemsPool;
 using System;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.VisualFxComponents
 {
-    [Serializable]
     public class AnimationFx : VisualFxComponent
     {
         [SerializeField]
@@ -15,9 +13,6 @@ namespace NewCore.CoreComponents.VisualFxComponents
         [SerializeField]
         private Dust dustPrefab;
 
-        public AnimationFx(Core core) : base(core)
-        {
-        }
 
         public AnimationEffect<T> CreateAnimationFX<T>(T animationTypeFX, Vector2 offset = default)
             where T : Enum

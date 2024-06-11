@@ -5,11 +5,11 @@ namespace NewCoreSystem.CoreComponents
 {
     public abstract class CoreComponent: MonoBehaviour, ILogicUpdate
     {
-        protected Core core;
+        public Core Core { get; private set; }
 
         protected virtual void Awake()
         {
-            core = GetComponentInParent<Core>();
+            Core = GetComponentInParent<Core>();
         }
 
         public virtual void LogicUpdate()

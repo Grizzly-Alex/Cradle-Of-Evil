@@ -1,17 +1,12 @@
 ﻿using NewCore.CoreComponents.VisualFxComponents;
-using UnityEngine;
+
 
 namespace NewCoreSystem.CoreComponents
 {
     public class VisualFx : CoreComponent
     {
-        [field: SerializeField]
-        public ShadowFx Shadow  { get; private set; }
-
-        [field: SerializeField]
+        public ShadowFx Shadow  { get;  private set; }
         public AfterImageFx AfterImage { get; private set; }
-
-        [field: SerializeField]
         public AnimationFx AnimationFx { get; private set; }
 
 
@@ -19,9 +14,9 @@ namespace NewCoreSystem.CoreComponents
         {
             base.Awake();
 
-            Shadow = new(core);
-            AfterImage = new(core);
-            AnimationFx = new(core);
+            Shadow = GetComponent<ShadowFx>();
+            AfterImage = GetComponent<AfterImageFx>();
+            AnimationFx = GetComponent<AnimationFx>();
         }
 
         public override void LogicUpdate()
@@ -29,6 +24,8 @@ namespace NewCoreSystem.CoreComponents
             base.LogicUpdate();
 
             Shadow.LogicUpdate();
+            AfterImage.LogicUpdate();
+            AnimationFx.LogicUpdate();
         }
     }
 }

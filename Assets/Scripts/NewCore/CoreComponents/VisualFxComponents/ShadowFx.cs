@@ -1,12 +1,9 @@
-﻿using NewCoreSystem;
-using Pool;
+﻿using Pool;
 using Pool.ItemsPool;
-using System;
 using UnityEngine;
 
 namespace NewCore.CoreComponents.VisualFxComponents
 {
-    [Serializable]
     public class ShadowFx : VisualFxComponent
     {
         [SerializeField]
@@ -21,9 +18,17 @@ namespace NewCore.CoreComponents.VisualFxComponents
         private Vector3 scaleChange;
         private SpriteRenderer entitySpriteRenderer;
 
-        public ShadowFx(Core core) : base(core)
+
+        protected override void Start()
         {
-            entitySpriteRenderer = core.GetComponentInParent<SpriteRenderer>();
+            base.Start();
+
+            if (shadowOn)
+            {
+                entitySpriteRenderer = core.GetComponentInParent<SpriteRenderer>();
+                shadowFromPool = CreateShadow();
+                initialShadowScale = shadowFromPool.transform.localScale;
+            }           
         }
 
         public override void LogicUpdate()
@@ -34,9 +39,9 @@ namespace NewCore.CoreComponents.VisualFxComponents
             }
         }
 
-        private Pool.ItemsPool.Shadow CreateShadow()
+        private Shadow CreateShadow()
         {
-            Pool.ItemsPool.Shadow shadow = PoolManager.Instance.GetFromPool<Pool.ItemsPool.Shadow>(prefab, entityTransform.position, entityTransform.rotation);
+            Shadow shadow = PoolManager.Instance.GetFromPool<Shadow>(prefab, entityTransform.position, entityTransform.rotation);
 
             if (shadow != null)
             {
@@ -49,9 +54,9 @@ namespace NewCore.CoreComponents.VisualFxComponents
         {
             Vector2 position = core.Sensor.GroundDetector.GroundHit.point;
             bool isActive = shadowFromPool.isActiveAndEnabled;
-
+            
             if (isActive) shadowFromPool.transform.SetPositionAndRotation(position, entityTransform.rotation);
-
+            
             if (core.Sensor.GroundDetector.IsGroundDetect())
             {
                 if (shadowFromPool.transform.localScale == initialShadowScale) return;

@@ -1,33 +1,37 @@
 ﻿using NewCore.CoreComponents.SensorDetectComponents;
-using NewCoreSystem;
-using System;
 using UnityEngine;
+
 
 namespace NewCore.CoreComponents.PhysicsComponents
 {
-    [Serializable]
     public class GroundDetector : SensorDetectComponent
     {
-        private readonly float inactiveGroundSensorDistance;
-        private readonly Vector2 sensorPosition;
-
         [SerializeField] private float hitDistance;
-        [SerializeField] public LayerMask targetLayer;
         [SerializeField] public string platformTag;
         [SerializeField] public string oneWayPlatformTag;
+        [SerializeField] public LayerMask targetLayer;
+
+        private float inactiveGroundSensorDistance;
+
+        protected override string SensorName => nameof(GroundDetector);
+
+        protected override Vector2 InitSensorPosition => entityCollider.bounds.center;
 
 
-        public GroundDetector(Core core) : base(core)
+        protected override void Awake()
         {
-            sensorPosition = entityCollider.bounds.center;
-            inactiveGroundSensorDistance = sensorPosition.y - entityCollider.bounds.min.y;
+            base.Awake();
+
+            inactiveGroundSensorDistance = sensor.position.y - entityCollider.bounds.min.y;
         }
 
+
         public RaycastHit2D GroundHit => Physics2D.Raycast(
-            sensorPosition,
+            sensor.position,
             Vector2.down,
             Mathf.NegativeInfinity,
             targetLayer);
+
 
         public bool IsGroundDetect()
             => hitDistance >= GroundHit.distance;
@@ -56,7 +60,7 @@ namespace NewCore.CoreComponents.PhysicsComponents
             if (!Application.isPlaying) return;
 
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(sensorPosition, new Vector2(0, -hitDistance));
+            Gizmos.DrawRay(sensor.position, new Vector2(0, -hitDistance));
         }
     }
 }
