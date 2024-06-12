@@ -54,9 +54,11 @@ namespace FiniteStateMachine.PlayerStates
             {
                 stateMachine.ChangeState(player.HangOnGirderState);
             }
-
-            player.Animator.SetFloat(hashVelocityY, physicsCore.Movement.CurrentVelocity.y);
-            physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
+            else
+            {
+                physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
+                player.Animator.SetFloat(hashVelocityY, physicsCore.Movement.CurrentVelocity.y);
+            }
         }
 
         public override void PhysicsUpdate() 
@@ -98,8 +100,10 @@ namespace FiniteStateMachine.PlayerStates
             }
                 
             if (isGrabWallDetected = sensorCore.GrabWallDetector.GetDetectedGrabWallPosition(out Vector2 wallPosition))
-                PlayerOnWallState.DetectedPosition = wallPosition;       
-            
+            {
+                PlayerOnWallState.DetectedPosition = wallPosition;
+            }                
+          
             if (player.HangOnLedgeState.isReady)
             {
                 if (isLedgeDetected = sensorCore.LedgeDetector.GetDetectedLedgeCorner(out Vector2 ledgeCorner))

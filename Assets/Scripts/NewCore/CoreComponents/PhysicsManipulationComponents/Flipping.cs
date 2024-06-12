@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Extensions;
+using UnityEngine;
 
 namespace NewCore.CoreComponents.PhysicsManipulationComponents
 { 
@@ -13,6 +14,8 @@ namespace NewCore.CoreComponents.PhysicsManipulationComponents
 
             FacingDirection = 1;
         }
+
+        public bool IsLeftDirection() => FacingDirection.IsNegative();
 
         public void FlipToDirection(int xInput)
         {

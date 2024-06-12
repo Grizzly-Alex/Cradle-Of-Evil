@@ -118,7 +118,7 @@ namespace FiniteStateMachine.PlayerStates
                 new Vector2
                 {
                     y = player.BodyCollider.bounds.min.y,
-                    x = physicsCore.Flipping.FacingDirection != Vector2.right.x
+                    x = physicsCore.Flipping.IsLeftDirection()
                         ? player.BodyCollider.bounds.min.x - offsetX
                         : player.BodyCollider.bounds.max.x + offsetX,
                 },

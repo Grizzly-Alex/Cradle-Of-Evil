@@ -27,7 +27,7 @@ namespace FiniteStateMachine.PlayerStates
 
             physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
 
-			if (!isGrounded)
+            if (!isGrounded)
             {
                 physicsCore.Freezing.ResetFreezePos();
                 player.JumpState.DecreaseAmountOfJump();

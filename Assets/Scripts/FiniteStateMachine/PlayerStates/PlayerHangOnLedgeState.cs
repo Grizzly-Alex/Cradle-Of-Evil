@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using Pool.ItemsPool;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace FiniteStateMachine.PlayerStates
             visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.Tiny,
                 GrapPosition,
-                new Quaternion() { y = physicsCore.Flipping.FacingDirection == Vector2.left.x ? 0 : 180 });
+                new Quaternion() { y = physicsCore.Flipping.IsLeftDirection() ? 0 : 180 });
         }
 
         public override void LogicUpdate()

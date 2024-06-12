@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using Pool.ItemsPool;
 using UnityEngine;
 
@@ -28,11 +29,12 @@ namespace FiniteStateMachine.PlayerStates
 
             physicsCore.Movement.SetVelocityZero();
 
-            //holdPosition.Set(
-            //    DetectedPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * physicsCore.Flipping.FacingDirection,
-            //    DetectedPosition.y - player.BodyCollider.size.y + player.BodyCollider.bounds.max.y - sensorCore.GrabWallDetector.WallHitUp.position.y);
+            holdPosition.Set(
+                DetectedPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * physicsCore.Flipping.FacingDirection,
+                DetectedPosition.y - player.BodyCollider.size.y);          
 
             player.transform.position = holdPosition;
+
             physicsCore.Freezing.FreezePosY();
 
             player.Animator.Play(hashLandingOnWall);

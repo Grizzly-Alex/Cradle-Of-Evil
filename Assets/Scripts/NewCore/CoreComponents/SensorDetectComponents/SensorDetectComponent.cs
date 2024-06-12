@@ -1,5 +1,4 @@
-﻿using NewCore.CoreComponents.PhysicsComponents;
-using NewCoreSystem;
+﻿using NewCoreSystem;
 using NewCoreSystem.CoreComponents;
 using UnityEngine;
 
@@ -10,8 +9,8 @@ namespace NewCore.CoreComponents.SensorDetectComponents
     {
         protected Core core;
         protected CapsuleCollider2D entityCollider;
-
         protected Transform sensor;
+
         protected abstract Vector2 InitSensorPosition { get; }
         protected abstract string SensorName { get; }
 

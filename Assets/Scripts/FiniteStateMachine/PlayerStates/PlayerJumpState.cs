@@ -28,7 +28,7 @@ namespace FiniteStateMachine.PlayerStates
                 visualFxCore.AnimationFx.CreateAnimationFX(DustType.JumpFromWall,
 				new Vector2()
 				{
-					x = physicsCore.Flipping.FacingDirection != Vector2.right.x
+					x = physicsCore.Flipping.IsLeftDirection()
 						? player.BodyCollider.bounds.min.x
 						: player.BodyCollider.bounds.max.x,
 					y = player.BodyCollider.bounds.min.y,

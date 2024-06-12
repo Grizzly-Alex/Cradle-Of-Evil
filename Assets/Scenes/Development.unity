@@ -10607,9 +10607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a7f10a2831db74f8894cb62c6cdc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upOffsetPositionY: 0
-  downOffsetPositionY: 0
-  hitDistance: 0
+  span: 0.4
+  hitDistance: 0.4
   targetTag: GrabWall
   targetLayer:
     serializedVersion: 2
@@ -11187,7 +11186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46729da3750a3249a3c29c1f55259e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeIgnoreCollisions: 3
+  timeIgnoreCollisions: 0.2
   oneWayPlatformCollider: {fileID: 470535325}
 --- !u!114 &1933304571
 MonoBehaviour:

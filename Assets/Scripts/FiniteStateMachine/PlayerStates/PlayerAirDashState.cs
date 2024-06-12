@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using Pool.ItemsPool;
 using UnityEngine;
 
@@ -58,7 +59,7 @@ namespace FiniteStateMachine.PlayerStates
             physicsCore.Gravitation.GravitationOn();
 		}
 
-        public bool CanDash() => amountOfDashLeft > 0;
+        public bool CanDash() => amountOfDashLeft.IsPositive();
 		public void ResetAmountOfDash() => amountOfDashLeft = amountOfDash;
 		public void DecreaseAmountOfDash() => amountOfDashLeft--;
 	}

@@ -6,29 +6,24 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
     
     public class GrabWallDetector : SensorDetectComponent
     {
-        private Vector2 sensorPositionUp;
-        private Vector2 sensorPositionDown;
-
-        [SerializeField] private float upOffsetPositionY;
-        [SerializeField] private float downOffsetPositionY;
+        [SerializeField] private float span;
         [SerializeField] private float hitDistance;
         [SerializeField] public string targetTag;
         [SerializeField] public LayerMask targetLayer;
 
         protected override string SensorName => nameof(GrabWallDetector);
 
-        protected override Vector2 InitSensorPosition => default;
-
+        protected override Vector2 InitSensorPosition => entityCollider.bounds.center;
 
 
         public RaycastHit2D WallHitUp => Physics2D.Raycast(
-            sensorPositionUp,
+            new Vector2(sensor.position.x, sensor.position.y + span),
             Vector2.right * core.Physics.Flipping.FacingDirection,
             hitDistance,
             targetLayer);
 
         public RaycastHit2D WallHitDown => Physics2D.Raycast(
-            sensorPositionDown,
+            new Vector2(sensor.position.x, sensor.position.y - span),
             Vector2.right * core.Physics.Flipping.FacingDirection,
             hitDistance,
             targetLayer);
@@ -60,8 +55,8 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 
             Gizmos.color = Color.red;
 
-            Gizmos.DrawRay(sensorPositionUp, new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
-            Gizmos.DrawRay(sensorPositionDown, new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
+            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + span), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
+            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y - span), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
         }
     }
 }

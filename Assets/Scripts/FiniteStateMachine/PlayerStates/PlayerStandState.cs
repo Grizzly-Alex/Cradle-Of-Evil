@@ -69,7 +69,7 @@ namespace FiniteStateMachine.PlayerStates
                     DustType.AfterMove,
                     new Vector2()
                     {
-                        x = physicsCore.Flipping.FacingDirection != Vector2.right.x
+                        x = physicsCore.Flipping.IsLeftDirection()
                             ? player.BodyCollider.bounds.min.x
                             : player.BodyCollider.bounds.max.x,
                         y = sensorCore.GroundDetector.GroundHit.point.y,
