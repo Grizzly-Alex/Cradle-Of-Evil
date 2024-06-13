@@ -1,6 +1,6 @@
 ﻿using Entities;
 using Interfaces;
-using NewCoreSystem.CoreComponents;
+using CoreSystem.CoreComponents;
 using UnityEngine;
 
 

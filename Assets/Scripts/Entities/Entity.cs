@@ -1,8 +1,8 @@
 using FiniteStateMachine;
 using UnityEngine;
 using Interfaces;
-using NewCoreSystem;
-using NewCoreSystem.CoreComponents;
+using CoreSystem;
+using CoreSystem.CoreComponents;
 
 
 namespace Entities
