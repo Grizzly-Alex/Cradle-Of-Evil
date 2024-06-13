@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using Pool.ItemsPool;
 using UnityEngine;
 
@@ -17,10 +18,10 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Input.JumpEvent += OnClimb;
 
-            player.Core.VisualFx.CreateAnimationFX(
+            visualFxCore.AnimationFx.CreateAnimationFX(
                 DustType.Tiny,
                 GrapPosition,
-                new Quaternion() { y = player.Core.Movement.FacingDirection == Vector2.left.x ? 0 : 180 });
+                new Quaternion() { y = physicsCore.Flipping.IsLeftDirection() ? 0 : 180 });
         }
 
         public override void LogicUpdate()
@@ -42,7 +43,7 @@ namespace FiniteStateMachine.PlayerStates
 
         protected override Vector2 GetHangingPosition()
         {
-            return new(GrapPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * player.Core.Movement.FacingDirection,
+            return new(GrapPosition.x - (player.BodyCollider.size.x / 2 + Physics2D.defaultContactOffset) * physicsCore.Flipping.FacingDirection,
                 GrapPosition.y - player.BodyCollider.size.y + Physics2D.defaultContactOffset);
         }
 

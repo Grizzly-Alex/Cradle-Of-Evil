@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Pool.ItemsPool
 {
-    public abstract class AnimationFX<T> : PooledObject, IAnimationFinishTrigger
+    public abstract class AnimationEffect<T> : PooledObject, IAnimationFinishTrigger
         where T : Enum
     {
         [SerializeField]

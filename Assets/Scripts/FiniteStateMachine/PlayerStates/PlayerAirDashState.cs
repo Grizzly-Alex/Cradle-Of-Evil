@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using Pool.ItemsPool;
 using UnityEngine;
 
@@ -21,10 +22,10 @@ namespace FiniteStateMachine.PlayerStates
             base.Enter();
 
             finishTime = Time.time + player.Data.DashTime;
-            player.Core.Movement.FreezePosY();
-            player.Core.Movement.GravitationOff();
+            physicsCore.Freezing.FreezePosY();
+            physicsCore.Gravitation.GravitationOff();
 			player.Animator.Play(hashDash);
-            player.Core.VisualFx.CreateAnimationFX(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
+            visualFxCore.AnimationFx.CreateAnimationFX(DustType.Dash, player.BodyCollider.bounds.center, player.transform.rotation);
         }
 
         public override void LogicUpdate()
@@ -37,7 +38,7 @@ namespace FiniteStateMachine.PlayerStates
             }
             else
             {
-                player.Core.VisualFx.CreateAfterImage(0.6f);
+                visualFxCore.AfterImage.CreateAfterImage(0.6f);
             }
         }
 
@@ -45,7 +46,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.SetVelocity(player.Data.DashSpeed, new Vector2(1, 0), player.Core.Movement.FacingDirection);
+            physicsCore.Movement.SetVelocity(player.Data.DashSpeed, new Vector2(1, 0), physicsCore.Flipping.FacingDirection);
         }
 
         public override void Exit()
@@ -53,12 +54,12 @@ namespace FiniteStateMachine.PlayerStates
             base.Exit();
 
 			DecreaseAmountOfDash();
-            player.Core.Movement.SetVelocityZero();
-            player.Core.Movement.ResetFreezePos();
-			player.Core.Movement.GravitationOn();
+            physicsCore.Movement.SetVelocityZero();
+            physicsCore.Freezing.ResetFreezePos();
+            physicsCore.Gravitation.GravitationOn();
 		}
 
-        public bool CanDash() => amountOfDashLeft > 0;
+        public bool CanDash() => amountOfDashLeft.IsPositive();
 		public void ResetAmountOfDash() => amountOfDashLeft = amountOfDash;
 		public void DecreaseAmountOfDash() => amountOfDashLeft--;
 	}

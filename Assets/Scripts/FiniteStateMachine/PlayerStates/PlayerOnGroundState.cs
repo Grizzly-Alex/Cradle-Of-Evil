@@ -1,4 +1,6 @@
 ﻿using Entities;
+using UnityEngine;
+
 
 namespace FiniteStateMachine.PlayerStates
 {
@@ -17,17 +19,17 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Enter();
 
-            player.SetColliderHeight(ColiderHeight);
+            bodyCore.BodyCollision.SetColliderHeight(ColiderHeight);
         }
         public override void LogicUpdate()
         {
             base.LogicUpdate();
 
-            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
+            physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
 
-			if (!isGrounded)
+            if (!isGrounded)
             {
-                player.Core.Movement.ResetFreezePos();
+                physicsCore.Freezing.ResetFreezePos();
                 player.JumpState.DecreaseAmountOfJump();
 				stateMachine.ChangeState(player.InAirState);
             }
@@ -40,7 +42,7 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsGroundDetect();
+            isGrounded = sensorCore.GroundDetector.IsGroundDetect();
         }
 	}
 }

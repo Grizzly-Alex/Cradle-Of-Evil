@@ -30,19 +30,19 @@ namespace FiniteStateMachine.PlayerStates
            
             player.AirDashState.ResetAmountOfDash();
 			player.JumpState.ResetAmountOfJump();
-			player.Core.Movement.SetVelocityZero();
+			physicsCore.Movement.SetVelocityZero();
 
-            if (player.Core.Sensor.GetGroundSlopeAngle() != default)
+            if (sensorCore.GroundDetector.GetGroundSlopeAngle() != default)
             {
-                player.Core.Movement.FreezePosX();
+                physicsCore.Freezing.FreezePosX();
             }
 
-            Vector2 groundSurfacePoint = player.Core.Sensor.GroundHit.point;
+            Vector2 groundSurfacePoint = sensorCore.GroundDetector.GroundHit.point;
             Quaternion rotation = player.transform.rotation;
 
             if (LandingForce >= player.Data.LandingThreshold)
             {
-                player.Core.VisualFx.CreateAnimationFX(DustType.HardLanding, groundSurfacePoint, rotation);
+                visualFxCore.AnimationFx.CreateAnimationFX(DustType.HardLanding, groundSurfacePoint, rotation);
                 player.Animator.Play(hashHardLanding);
                 updateLogic = () =>
                 {
@@ -53,7 +53,7 @@ namespace FiniteStateMachine.PlayerStates
             else
             {
                 player.Input.JumpEvent += OnJump;
-                player.Core.VisualFx.CreateAnimationFX(DustType.Landing, groundSurfacePoint, rotation);
+                visualFxCore.AnimationFx.CreateAnimationFX(DustType.Landing, groundSurfacePoint, rotation);
                 player.Animator.Play(hashSoftLanding);
                 updateLogic = () =>
                 {
@@ -86,8 +86,8 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsPlatformDetect()
-                || player.Core.Sensor.IsOneWayPlatformDetect();
+            isGrounded = sensorCore.GroundDetector.IsPlatformDetect()
+                || sensorCore.GroundDetector.IsOneWayPlatformDetect();
         }
 
         #region Input
@@ -95,8 +95,8 @@ namespace FiniteStateMachine.PlayerStates
         {
             if (player.Input.InputVertical == Vector2.down.y)
             {
-                if (!player.Core.Sensor.IsOneWayPlatformDetect()) return;
-                player.Core.Movement.LeaveOneWayPlatform();
+                if (!sensorCore.GroundDetector.IsOneWayPlatformDetect()) return;
+                bodyCore.PlatformCollision.IgnoreOneWayPlatform();
             }
             else
             {

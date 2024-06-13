@@ -37,7 +37,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.SetVelocityZero();
+            physicsCore.Movement.SetVelocityZero();
         }
 
         public override void Exit()
@@ -49,14 +49,14 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsPlatformDetect() 
-                || player.Core.Sensor.IsOneWayPlatformDetect();
+            isGrounded = sensorCore.GroundDetector.IsPlatformDetect() 
+                || sensorCore.GroundDetector.IsOneWayPlatformDetect();
         }
 
         private void OnJumpFromOneWayPlatform()
         {
-            if (!player.Core.Sensor.IsOneWayPlatformDetect()) return;
-            player.Core.Movement.LeaveOneWayPlatform();
+            if (!sensorCore.GroundDetector.IsOneWayPlatformDetect()) return;
+            bodyCore.PlatformCollision.IgnoreOneWayPlatform();
         }
     }
 }

@@ -42,8 +42,8 @@ namespace FiniteStateMachine.PlayerStates
 
         public override void DoCheck()
         {
-            isGrounded = player.Core.Sensor.IsPlatformDetect() 
-                || player.Core.Sensor.IsOneWayPlatformDetect();
+            isGrounded = sensorCore.GroundDetector.IsPlatformDetect() 
+                || sensorCore.GroundDetector.IsOneWayPlatformDetect();
         }
     }
 }

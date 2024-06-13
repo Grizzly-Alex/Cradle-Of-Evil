@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -27,8 +28,8 @@ namespace FiniteStateMachine.PlayerStates
             player.Input.JumpEvent += OnJump;
             player.Input.DashEvent += OnAirDash;
 
-            player.Core.Movement.ResetFreezePos();
-            player.SetColliderHeight(player.Data.StandColiderHeight);
+            physicsCore.Freezing.ResetFreezePos();
+            bodyCore.BodyCollision.SetColliderHeight(player.Data.StandColiderHeight);
 
             player.Animator.Play(hashInAir);
         }
@@ -54,16 +55,18 @@ namespace FiniteStateMachine.PlayerStates
             {
                 stateMachine.ChangeState(player.HangOnGirderState);
             }
-
-            player.Animator.SetFloat(hashVelocityY, player.Core.Movement.CurrentVelocity.y);
-            player.Core.Movement.FlipToDirection(player.Input.InputHorizontal);
+            else
+            {
+                physicsCore.Flipping.FlipToDirection(player.Input.InputHorizontal);
+                player.Animator.SetFloat(hashVelocityY, physicsCore.Movement.CurrentVelocity.y);
+            }
         }
 
         public override void PhysicsUpdate() 
         {
             base.PhysicsUpdate();
 
-            player.Core.Movement.SetVelocityX(player.Input.InputHorizontal * player.Data.InAirMoveSpeed);
+            physicsCore.Movement.SetVelocityX(player.Input.InputHorizontal * player.Data.InAirMoveSpeed);
         }
 
         public override void Exit()
@@ -88,27 +91,29 @@ namespace FiniteStateMachine.PlayerStates
         {
             TrackingFallingForce();
 
-            isFalling = player.Core.Movement.CurrentVelocity.y <= (float)default;
+            isFalling = physicsCore.Movement.CurrentVelocity.y <= 0;
 
-            isPlatform = player.Core.Sensor.IsPlatformDetect();
+            isPlatform = sensorCore.GroundDetector.IsPlatformDetect();
 
             if (isFalling) 
             {
-                isOneWayPlatform = player.Core.Sensor.IsOneWayPlatformDetect();
+                isOneWayPlatform = sensorCore.GroundDetector.IsOneWayPlatformDetect();
             }
                 
-            if (isGrabWallDetected = player.Core.Sensor.GetDetectedGrabWallPosition(out Vector2 wallPosition))
-                PlayerOnWallState.DetectedPosition = wallPosition;       
-            
+            if (isGrabWallDetected = sensorCore.GrabWallDetector.GetDetectedGrabWallPosition(out Vector2 wallPosition))
+            {
+                PlayerOnWallState.DetectedPosition = wallPosition;
+            }                
+          
             if (player.HangOnLedgeState.isReady)
             {
-                if (isLedgeDetected = player.Core.Sensor.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
+                if (isLedgeDetected = sensorCore.LedgeDetector.GetDetectedLedgeCorner(out Vector2 ledgeCorner))
                     PlayerHangState.GrapPosition = ledgeCorner;
             }
             
             if (player.HangOnGirderState.isReady)
             {
-                if (isGirderDetected = player.Core.Sensor.GetDetectedGirderPosition(out Vector2 girderPosition))
+                if (isGirderDetected = sensorCore.GirderDetector.GetDetectedGirderPosition(out Vector2 girderPosition))
                     PlayerHangState.GrapPosition = girderPosition;
             }
         }
@@ -119,9 +124,9 @@ namespace FiniteStateMachine.PlayerStates
 
         private void TrackingFallingForce() 
         {
-            if (player.Core.Movement.CurrentVelocity.y < fallingForce)
+            if (physicsCore.Movement.CurrentVelocity.y < fallingForce)
             {
-                fallingForce = player.Core.Movement.CurrentVelocity.y;
+                fallingForce = physicsCore.Movement.CurrentVelocity.y;
             }
         }
 

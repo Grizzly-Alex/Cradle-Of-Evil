@@ -97,5 +97,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ded2a812223b241b7f4d79a9a9b822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PoolId>k__BackingField: 26902
+  <PoolId>k__BackingField: 0
   entitySpriteRenderer: {fileID: 0}

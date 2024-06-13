@@ -21,8 +21,8 @@ namespace FiniteStateMachine.PlayerStates
 
             player.Animator.Play(hashHanging);
 
-            player.Core.Movement.SetVelocityZero();
-            player.Core.Movement.FreezePosY();
+            physicsCore.Movement.SetVelocityZero();
+            physicsCore.Freezing.FreezePosY();
 
             player.transform.position = GetHangingPosition();
         }
@@ -35,7 +35,7 @@ namespace FiniteStateMachine.PlayerStates
             {
                 isReady = false;
                 player.StartCoroutine(CoolDown(0.2f));
-                player.Core.Movement.SetVelocityY(0.1f);
+                physicsCore.Movement.SetVelocityY(0.1f);
                 stateMachine.ChangeState(player.InAirState);                            
             }
         }
@@ -44,7 +44,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             base.Exit();
             isHanging = false;
-            player.Core.Movement.ResetFreezePos();               
+            physicsCore.Freezing.ResetFreezePos();               
         }
 
         public override void AnimationTrigger()

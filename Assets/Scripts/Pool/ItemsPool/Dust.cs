@@ -3,7 +3,7 @@
 
 namespace Pool.ItemsPool
 {
-    public sealed class Dust : AnimationFX<DustType>
+    public sealed class Dust : AnimationEffect<DustType>
     {
         #region Hash Animations
         private readonly int afterMove = Animator.StringToHash("AfterMoveDust");

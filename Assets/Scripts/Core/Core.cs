@@ -1,27 +1,32 @@
-using CoreSystem.Components;
-using Interfaces;
 using UnityEngine;
+using Interfaces;
+using CoreSystem.CoreComponents;
+
 
 namespace CoreSystem
-{
+{  
     public sealed class Core : MonoBehaviour, ILogicUpdate
     {
-        public Movement Movement { get; private set; }
-        public Sensor Sensor { get; private set; }
+        public PhysicsManipulation Physics { get; private set; }
+        public SensorDetect Sensor { get; private set; }
         public VisualFx VisualFx { get; private set; }
+        public CollisionManipulation Body { get; private set; }
 
 
         public void Awake()
         {
-            Sensor = GetComponent<Sensor>();
-            Movement = GetComponent<Movement>();
-            VisualFx = GetComponent<VisualFx>();
+            Sensor = GetComponentInChildren<SensorDetect>();
+            Physics = GetComponentInChildren<PhysicsManipulation>();
+            VisualFx = GetComponentInChildren<VisualFx>();
+            Body = GetComponentInChildren<CollisionManipulation>();
         }
 
         public void LogicUpdate()
         {
-            Movement.LogicUpdate();
+            Physics.LogicUpdate();
             VisualFx.LogicUpdate();
+            Body.LogicUpdate();
+            Sensor.LogicUpdate();
         }
     }
 }
