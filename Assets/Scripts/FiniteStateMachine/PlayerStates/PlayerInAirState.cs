@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Extensions;
 using UnityEngine;
 
 namespace FiniteStateMachine.PlayerStates
@@ -90,7 +91,7 @@ namespace FiniteStateMachine.PlayerStates
         {
             TrackingFallingForce();
 
-            isFalling = physicsCore.Movement.CurrentVelocity.y <= (float)default;
+            isFalling = physicsCore.Movement.CurrentVelocity.y <= 0;
 
             isPlatform = sensorCore.GroundDetector.IsPlatformDetect();
 

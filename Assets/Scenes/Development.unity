@@ -9533,21 +9533,21 @@ CompositeCollider2D:
   - m_Collider: {fileID: 1364601273}
     m_ColliderPaths:
     - - X: -519999872
-        Y: 29999960
+        Y: 39999960
       - X: -519999872
-        Y: 55000044
+        Y: 65000044
       - X: -519999968
-        Y: 55000100
+        Y: 65000100
       - X: -525000032
-        Y: 55000100
+        Y: 65000100
       - X: -525000128
-        Y: 55000044
+        Y: 65000044
       - X: -525000128
-        Y: 29999960
+        Y: 39999960
       - X: -525000032
-        Y: 29999900
+        Y: 39999900
       - X: -519999968
-        Y: 29999900
+        Y: 39999900
     - - X: -554999872
         Y: 19999960
       - X: -554999872
@@ -9566,14 +9566,14 @@ CompositeCollider2D:
         Y: 19999900
   m_CompositePaths:
     m_Paths:
-    - - {x: -51.99999, y: 2.999996}
-      - {x: -51.99999, y: 5.5000043}
-      - {x: -51.999996, y: 5.50001}
-      - {x: -52.500004, y: 5.50001}
-      - {x: -52.500015, y: 5.5000043}
-      - {x: -52.500015, y: 2.999996}
-      - {x: -52.500004, y: 2.99999}
-      - {x: -51.999996, y: 2.99999}
+    - - {x: -51.99999, y: 3.999996}
+      - {x: -51.99999, y: 6.5000043}
+      - {x: -51.999996, y: 6.50001}
+      - {x: -52.500004, y: 6.50001}
+      - {x: -52.500015, y: 6.5000043}
+      - {x: -52.500015, y: 3.999996}
+      - {x: -52.500004, y: 3.99999}
+      - {x: -51.999996, y: 3.99999}
     - - {x: -55.49999, y: 1.9999961}
       - {x: -55.49999, y: 3.500004}
       - {x: -55.499992, y: 3.50001}
@@ -9727,7 +9727,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -53, y: 3, z: 0}
+  - first: {x: -53, y: 4, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 97
@@ -9737,7 +9737,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -53, y: 4, z: 0}
+  - first: {x: -53, y: 5, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 96
@@ -9747,7 +9747,7 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: -53, y: 5, z: 0}
+  - first: {x: -53, y: 6, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 95
@@ -10570,8 +10570,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a623d527384c44a90b26629e985522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  circleRadius: 0
-  positionOffsetY: 0
+  circleRadius: 0.18
+  positionOffsetY: 0.7
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
