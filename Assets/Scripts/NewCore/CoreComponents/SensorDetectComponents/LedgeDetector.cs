@@ -13,27 +13,27 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 
         protected override string SensorName => nameof(LedgeDetector);
 
-        protected override Vector2 InitSensorPosition => entityCollider.bounds.center;
+        protected override Vector2 InitSensorPosition => 
+            new Vector2(entityCollider.bounds.min.x, entityCollider.bounds.center.y);
 
 
         private RaycastHit2D LedgeHit => Physics2D.Raycast(
-            sensor.position,
+            new Vector2(sensor.position.x, sensor.position.y + positionOffsetY),
             Vector2.right * core.Physics.Flipping.FacingDirection,
             hitDistance,
             targetLayer);
 
 
-
         public bool IsLedgeDetect()
         {
             bool aboveIsEmpty = !Physics2D.Raycast(
-                new Vector2(sensor.position.x, sensor.position.y + spanOfLedge),
+                new Vector2(sensor.position.x, sensor.position.y + positionOffsetY + spanOfLedge),
                 Vector2.right * core.Physics.Flipping.FacingDirection,
                 hitDistance,
                 targetLayer);
 
             bool betweenHitsIsEmpty = !Physics2D.Raycast(
-                sensor.position,
+                new Vector2(sensor.position.x, sensor.position.y + positionOffsetY),
                 Vector2.up,
                 spanOfLedge,
                 targetLayer);
@@ -59,11 +59,13 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
             return isDetected;
         }
 
+
         protected override void DrawRay()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + spanOfLedge), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 1
-            Gizmos.DrawRay(sensor.position, new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 2
+            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + positionOffsetY), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 1
+            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + positionOffsetY + spanOfLedge), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 2
+            Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + positionOffsetY + spanOfLedge), new Vector2(0, - spanOfLedge)); //ledge ray 3
         }
     }
 }

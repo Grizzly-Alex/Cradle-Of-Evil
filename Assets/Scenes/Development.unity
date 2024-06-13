@@ -10485,7 +10485,7 @@ Transform:
   m_GameObject: {fileID: 1444150607}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -56.5, y: 5.5, z: -10}
+  m_LocalPosition: {x: -34, y: 4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10570,7 +10570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a623d527384c44a90b26629e985522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActiveGizmos: 0
+  isShowRay: 0
   circleRadius: 0.18
   positionOffsetY: 0.7
   targetLayer:
@@ -10589,13 +10589,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5558f49f4fdbb45ae418b273020e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActiveGizmos: 0
+  isShowRay: 0
   hitDistance: 0.75
-  positionOffsetY: 0
-  spanOfLedge: 0
+  positionOffsetY: 0.6
+  spanOfLedge: 0.2
   targetLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 128
   grid: {fileID: 893964105}
 --- !u!114 &1480867152
 MonoBehaviour:
@@ -10609,7 +10609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a7f10a2831db74f8894cb62c6cdc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActiveGizmos: 0
+  isShowRay: 0
   span: 0.4
   hitDistance: 0.4
   targetTag: GrabWall
@@ -10628,7 +10628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd0188b3e5e53742bc101754635fe86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActiveGizmos: 0
+  isShowRay: 0
   circleRadius: 0.26
   positionOffsetY: 0.4
   targetLayer:
@@ -10646,7 +10646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfe2f11186e6ad42b95f9ef0f70af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isActiveGizmos: 0
+  isShowRay: 0
   hitDistance: 0.8
   platformTag: Platform
   oneWayPlatformTag: OneWayPlatform
@@ -11073,7 +11073,7 @@ Transform:
   m_GameObject: {fileID: 1892614046}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -56.5, y: 5.5, z: -10}
+  m_LocalPosition: {x: -34, y: 4.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -11322,7 +11322,7 @@ Transform:
   m_GameObject: {fileID: 332105253614478520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -56.5, y: 4.5, z: 0}
+  m_LocalPosition: {x: -34, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
