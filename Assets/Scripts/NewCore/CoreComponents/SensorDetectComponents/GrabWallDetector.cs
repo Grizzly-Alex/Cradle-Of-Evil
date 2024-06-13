@@ -49,12 +49,9 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
             return isDetected;
         }
 
-        private void OnDrawGizmos()
+        protected override void DrawRay()
         {
-            if (!Application.isPlaying) return;
-
             Gizmos.color = Color.red;
-
             Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + span), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
             Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y - span), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0));
         }

@@ -13,7 +13,7 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
 
         protected override string SensorName => nameof(LedgeDetector);
 
-        protected override Vector2 InitSensorPosition => default;
+        protected override Vector2 InitSensorPosition => entityCollider.bounds.center;
 
 
         private RaycastHit2D LedgeHit => Physics2D.Raycast(
@@ -21,6 +21,7 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
             Vector2.right * core.Physics.Flipping.FacingDirection,
             hitDistance,
             targetLayer);
+
 
 
         public bool IsLedgeDetect()
@@ -58,11 +59,9 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
             return isDetected;
         }
 
-        private void OnDrawGizmos()
-        { 
-            if (!Application.isPlaying) return;
-
-            Gizmos.color = Color.cyan;
+        protected override void DrawRay()
+        {
+            Gizmos.color = Color.red;
             Gizmos.DrawRay(new Vector2(sensor.position.x, sensor.position.y + spanOfLedge), new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 1
             Gizmos.DrawRay(sensor.position, new Vector2(hitDistance * core.Physics.Flipping.FacingDirection, 0)); //ledge ray 2
         }

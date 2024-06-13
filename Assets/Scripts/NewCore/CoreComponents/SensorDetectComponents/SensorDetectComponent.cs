@@ -7,9 +7,13 @@ namespace NewCore.CoreComponents.SensorDetectComponents
     [RequireComponent(typeof(SensorDetect))]
     public abstract class SensorDetectComponent : MonoBehaviour
     {
+        [SerializeField]
+        protected bool isShowRay;
+
         protected Core core;
         protected CapsuleCollider2D entityCollider;
         protected Transform sensor;
+
 
         protected abstract Vector2 InitSensorPosition { get; }
         protected abstract string SensorName { get; }
@@ -29,5 +33,22 @@ namespace NewCore.CoreComponents.SensorDetectComponents
             obj.transform.position = InitSensorPosition;
             sensor = obj.transform;
         }
+
+
+        protected abstract void DrawRay();
+
+        private void DrawGizmos()
+        {
+            if (!Application.isPlaying) return;
+            if (!isShowRay) return;
+
+            DrawRay();
+        }
+
+        private void OnDrawGizmos()
+        {
+            DrawGizmos();
+        }
+
     }
 }

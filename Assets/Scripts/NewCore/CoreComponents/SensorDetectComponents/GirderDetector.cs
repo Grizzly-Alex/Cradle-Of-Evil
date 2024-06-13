@@ -40,10 +40,8 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
         }
 
 
-        private void OnDrawGizmos()
+        protected override void DrawRay()
         {
-            if (!Application.isPlaying) return;
-
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(new Vector2(sensor.position.x, sensor.position.y + positionOffsetY), circleRadius); //girder ray 
         }

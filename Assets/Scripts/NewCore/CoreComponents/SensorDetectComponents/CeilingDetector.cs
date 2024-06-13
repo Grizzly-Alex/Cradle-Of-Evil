@@ -23,10 +23,8 @@ namespace Assets.Scripts.NewCore.CoreComponents.SensorDetectComponents
         public bool IsCeilingDetect() => CeilingCollider;
 
 
-        private void OnDrawGizmos()
+        protected override void DrawRay()
         {
-            if (!Application.isPlaying) return;
-
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(sensor.position, circleRadius);
         }

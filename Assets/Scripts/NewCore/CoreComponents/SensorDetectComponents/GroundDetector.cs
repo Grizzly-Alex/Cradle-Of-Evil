@@ -54,11 +54,9 @@ namespace NewCore.CoreComponents.PhysicsComponents
         public Vector2 GetGroundPerperdicular()
             => Vector2.Perpendicular(GroundHit.normal).normalized;
 
-
-        private void OnDrawGizmos()
+        
+        protected override void DrawRay()
         {
-            if (!Application.isPlaying) return;
-
             Gizmos.color = Color.red;
             Gizmos.DrawRay(sensor.position, new Vector2(0, -hitDistance));
         }

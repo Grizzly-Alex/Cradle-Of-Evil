@@ -10570,6 +10570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a623d527384c44a90b26629e985522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActiveGizmos: 0
   circleRadius: 0.18
   positionOffsetY: 0.7
   targetLayer:
@@ -10588,7 +10589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5558f49f4fdbb45ae418b273020e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitDistance: 0
+  isActiveGizmos: 0
+  hitDistance: 0.75
   positionOffsetY: 0
   spanOfLedge: 0
   targetLayer:
@@ -10607,6 +10609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a7f10a2831db74f8894cb62c6cdc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActiveGizmos: 0
   span: 0.4
   hitDistance: 0.4
   targetTag: GrabWall
@@ -10625,6 +10628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd0188b3e5e53742bc101754635fe86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActiveGizmos: 0
   circleRadius: 0.26
   positionOffsetY: 0.4
   targetLayer:
@@ -10642,6 +10646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfe2f11186e6ad42b95f9ef0f70af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActiveGizmos: 0
   hitDistance: 0.8
   platformTag: Platform
   oneWayPlatformTag: OneWayPlatform
